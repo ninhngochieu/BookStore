@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
+using BookStore.Models;
+using BookStore.SeedData;
 using BookStore.Token;
 using BookStore.TokenGenerators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,7 +50,7 @@ namespace BookStore
                     .AllowAnyHeader();
                 });
             });
-            //services.AddEntityFrameworkSqlite().AddDbContext<bookstoreContext>();
+            services.AddEntityFrameworkSqlite().AddDbContext<bookstoreContext>();
 
             services.AddSwaggerGen(c =>
             {
@@ -128,6 +130,7 @@ namespace BookStore
             {
                 endpoints.MapControllers();
             });
+            AppDbInitializer.Seed(app);
         }
     }
 }

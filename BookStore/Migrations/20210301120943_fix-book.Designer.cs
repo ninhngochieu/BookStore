@@ -3,14 +3,16 @@ using System;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookStore.Migrations
 {
     [DbContext(typeof(bookstoreContext))]
-    partial class bookstoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210301120943_fix-book")]
+    partial class fixbook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,23 +34,35 @@ namespace BookStore.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Discount")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Price")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("PublicationDate")
+                    b.Property<int>("RatingCount")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BookStore.Models.BookDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("PublicationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RatingCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SKU")
@@ -57,9 +71,7 @@ namespace BookStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Books");
+                    b.ToTable("BookDetails");
                 });
 
             modelBuilder.Entity("BookStore.Models.Category", b =>
@@ -93,7 +105,7 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Models.User", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -101,14 +113,8 @@ namespace BookStore.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("TokenCreateAt")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -121,15 +127,42 @@ namespace BookStore.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BookStore.Models.UserToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserTokens");
+                });
+
             modelBuilder.Entity("BookStore.Models.Book", b =>
                 {
                     b.HasOne("BookStore.Models.Category", "Category")
-                        .WithMany("Books")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("BookStore.Models.BookDetail", b =>
+                {
+                    b.HasOne("BookStore.Models.Book", "Book")
+                        .WithOne("BookDetail")
+                        .HasForeignKey("BookStore.Models.BookDetail", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("BookStore.Models.User", b =>
@@ -143,14 +176,30 @@ namespace BookStore.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BookStore.Models.Category", b =>
+            modelBuilder.Entity("BookStore.Models.UserToken", b =>
                 {
-                    b.Navigation("Books");
+                    b.HasOne("BookStore.Models.User", "User")
+                        .WithOne("UserToken")
+                        .HasForeignKey("BookStore.Models.UserToken", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookStore.Models.Book", b =>
+                {
+                    b.Navigation("BookDetail");
                 });
 
             modelBuilder.Entity("BookStore.Models.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BookStore.Models.User", b =>
+                {
+                    b.Navigation("UserToken");
                 });
 #pragma warning restore 612, 618
         }

@@ -19,8 +19,8 @@ namespace BookStore.Models
 
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserToken> UserTokens{ get; set; }
-
+        public virtual DbSet<Category> Categories{ get; set; }
+        public virtual DbSet<Book> Books{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +33,14 @@ namespace BookStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .HasOne(r => r.Role)
+                .WithMany(u => u.Users)
+                .HasForeignKey(u => u.RoleId);
+            modelBuilder.Entity<Book>()
+                .HasOne(c=> c.Category)
+                .WithMany(b=>b.Books)
+                .HasForeignKey(b=>b.CategoryId);
             OnModelCreatingPartial(modelBuilder);
         }
 

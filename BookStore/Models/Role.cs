@@ -13,7 +13,7 @@ namespace BookStore.Models
         [Required]
         public string RoleName { get; set; }
 
-        //Navigation properties
+        //Role - User : 1 - n
         public ICollection<User> Users { get; set; }
     }
 }

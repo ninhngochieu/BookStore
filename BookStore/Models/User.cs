@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.Models
 {
     public class User
     {
-
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
-
-        //Role
+        public string? RefreshToken { get; set; }
+        public DateTime? TokenCreateAt { get; set; }
+        //User - Role: 1 - 1
+        [Required]
         public int RoleId { get; set; }
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
 
-        //User token
-        public virtual UserToken UserToken { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookStore.Migrations
 {
     [DbContext(typeof(bookstoreContext))]
-    partial class bookstoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210301122452_removeOne2One")]
+    partial class removeOne2One
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Models.User", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -107,7 +109,7 @@ namespace BookStore.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("TokenCreateAt")
+                    b.Property<DateTime>("TokenCreateAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
@@ -124,7 +126,7 @@ namespace BookStore.Migrations
             modelBuilder.Entity("BookStore.Models.Book", b =>
                 {
                     b.HasOne("BookStore.Models.Category", "Category")
-                        .WithMany("Books")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -141,11 +143,6 @@ namespace BookStore.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("BookStore.Models.Category", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("BookStore.Models.Role", b =>
