@@ -34,6 +34,13 @@ namespace BookStore
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore", Version = "v1" });
             });
+            services.AddCors(c => {
+                c.AddPolicy("TCAPolicy", builder => {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod() 
+                    .AllowAnyHeader() ; 
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +63,7 @@ namespace BookStore
             {
                 endpoints.MapControllers();
             });
+            app.UseCors("TCAPolicy");
         }
     }
 }
