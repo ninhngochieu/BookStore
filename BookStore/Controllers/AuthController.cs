@@ -61,7 +61,7 @@ namespace BookStore.Controllers
                     return Ok(new
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = token.ValidTo,
+                        expiration = ((DateTimeOffset)token.ValidTo).ToUnixTimeSeconds(),
                     });
 
                 }
