@@ -72,25 +72,6 @@ namespace BookStore.Controllers
             }
         }
 
-        [Obsolete]
-        private object GenerateTokenString(User user)
-        {
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim("UserId", user.Id.ToString())
-                }),
-                Expires = DateTime.Now.AddMinutes(5),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"].ToString())),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            return securityToken;
-        }  
-
         // GET: api/Auth
         [HttpGet]
         public IEnumerable<string> Get()
