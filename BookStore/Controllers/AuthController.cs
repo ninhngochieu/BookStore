@@ -50,21 +50,30 @@ namespace BookStore.Controllers
 
         private object GenerateTokenString(User user)
         {
-            var tokenDescriptor = new SecurityTokenDescriptor()
+            var authClaims = new List<Claim>
             {
-                Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim("UserId", user.Id.ToString())
-                }),
-                Expires = DateTime.Now.AddMinutes(5),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"].ToString())),
-                    SecurityAlgorithms.HmacSha256Signature)
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            return securityToken;
-        }  
+            //foreach (var role in userRoles)
+            //{
+            //    authClaims.Add(new Claim(ClaimTypes.Role, role));
+            //}
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(1.5),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo,
+            });
+        }
 
         // GET: api/Auth
         [HttpGet]
@@ -79,12 +88,6 @@ namespace BookStore.Controllers
         {
             return "value";
         }
-
-        //// POST: api/Auth
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
 
         // PUT: api/Auth/5
         [HttpPut("{id}")]
