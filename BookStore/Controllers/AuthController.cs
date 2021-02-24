@@ -21,6 +21,7 @@ namespace BookStore.Controllers
     {
         private bookstoreContext _context;
         private IConfiguration _configuration;
+        private List<Claim> _claims;
 
         public AuthController(bookstoreContext bookstoreContext, IConfiguration configuration)
         {
@@ -50,10 +51,15 @@ namespace BookStore.Controllers
                 if (isValid)
                 {
                     var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
+                    _claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name,user.Username),
+                        new Claim(ClaimTypes.Role,user.Password),
+                    };
                     var token = new JwtSecurityToken(
                         issuer: _configuration["JWT:ValidIssuer"],
                         audience: _configuration["JWT:ValidAudience"],
+                        claims: _claims,
                         expires: DateTime.Now.AddHours(1.5),
                         signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                         );

@@ -14,6 +14,5 @@ namespace BookStore.Models
         [Key]
         public long Id { get; set; }
         public string Name { get; set; }
-        public long Active { get; set; }
     }
 }
