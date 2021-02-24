@@ -16,9 +16,5 @@ namespace BookStore.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public long? Roles { get; set; }
-
-        [ForeignKey(nameof(Roles))]
-        [InverseProperty(nameof(Role.Users))]
-        public virtual Role RolesNavigation { get; set; }
     }
 }

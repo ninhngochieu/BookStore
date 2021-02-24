@@ -36,6 +36,7 @@ namespace BookStore.Models
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
