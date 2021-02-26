@@ -39,6 +39,17 @@ namespace BookStore.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
+            modelBuilder.Entity<Book>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<BookDetail>(entity =>
+            {
+                entity.HasNoKey();
+                entity.Property(e => e.BookId).ValueGeneratedNever();
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
