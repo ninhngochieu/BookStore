@@ -46,7 +46,7 @@ namespace BookStore.Models
 
             modelBuilder.Entity<BookDetail>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.BookId);
                 entity.Property(e => e.BookId).ValueGeneratedNever();
             });
 

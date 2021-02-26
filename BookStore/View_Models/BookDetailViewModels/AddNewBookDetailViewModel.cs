@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BookStore.Models
+namespace BookStore.View_Models.BookDetailViewModels
 {
-    public class BookDetail
+    public class AddNewBookDetailViewModel
     {
         public int BookId { get; set; }
         public int Quantity { get; set; }

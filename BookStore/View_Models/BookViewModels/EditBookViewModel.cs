@@ -1,10 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.Models
+namespace BookStore.View_Models.BookViewModels
 {
-    public class BookDetail
+    public class EditBookViewModel
     {
-        public int BookId { get; set; }
+        [Required]
+        public int Id { get; set; }
+        public string BookName { get; set; }
+        public decimal Price { get; set; }
+        public decimal Rating { get; set; }
         public int Quantity { get; set; }
         public string DistributorId { get; set; }
         public DateTime? PublicationDate { get; set; }
