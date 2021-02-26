@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using BookStore.Models;
+using BookStore.Token;
+using BookStore.TokenGenerators;
 using BookStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,14 +19,17 @@ namespace BookStore.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly AccessToken _accessToken;
+        private readonly RefreshToken _refreshToken;
         private bookstoreContext _context;
-        private IConfiguration _configuration;
-        private List<Claim> _claims;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(bookstoreContext bookstoreContext, IConfiguration configuration)
+        public AuthController(bookstoreContext bookstoreContext, IConfiguration configuration, AccessToken accessTokenGenerate, RefreshToken refreshTokenGenerator)
         {
             _context = bookstoreContext;
             _configuration = configuration;
+            _accessToken = accessTokenGenerate;
+            _refreshToken = refreshTokenGenerator;
         }
 
 
@@ -50,30 +53,53 @@ namespace BookStore.Controllers
                 bool isValid = user.Password.Equals(info.Password);
                 if (isValid)
                 {
-                    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-                    _claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name,user.Username),
-                        new Claim(ClaimTypes.Role,user.Password),
-                    };
-                    var token = new JwtSecurityToken(
-                        issuer: _configuration["JWT:ValidIssuer"],
-                        audience: _configuration["JWT:ValidAudience"],
-                        claims: _claims,
-                        expires: DateTime.Now.AddHours(1.5),
-                        signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                        );
-
+                    //return Ok(new
+                    //{
+                    //    //token = new JwtSecurityTokenHandler().WriteToken(token) ,
+                    //    accessToken = _accessTokenGenerate.GenerateToken(user),
+                    //    refreshToken = _refreshTokenGenerator.GenerateToken()
+                    //}) ;
                     return Ok(new
                     {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = ((DateTimeOffset)token.ValidTo).ToUnixTimeSeconds(),
+                        data = new TokenPair
+                        {
+                            Access = _accessToken.GenerateToken(user),
+                            Refresh = _refreshToken.GenerateToken()
+                        },
+                        success = true
                     });
-
-                }
+                 }
                 else
                 {
                     return Unauthorized();
+                }
+            }
+        }
+
+        //2 Van de
+        //+ 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Refresh")]
+        public ActionResult Refresh([FromBody] TokenPair token)
+        {
+            if (token.Refresh is null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                bool isValidToken = _refreshToken.Validate(token.Refresh);
+                if (isValidToken)
+                {
+                    return Ok(new
+                    {
+                        data = token
+                    });
+                }
+                else
+                {
+                    return BadRequest("Invalid refresh token");
                 }
             }
         }

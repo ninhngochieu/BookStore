@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BookStore.Models;
+using BookStore.Token;
+using BookStore.TokenGenerators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +29,25 @@ namespace BookStore
         public void ConfigureServices(IServiceCollection services)
         {
             //dotnet ef dbcontext scaffold -o Models -f -d "Data Source=bookstore.db" "Microsoft.EntityFrameworkCore.Sqlite"
+            //Configuration
+            AuthenConfig authenConfig = new AuthenConfig();
+            Configuration.Bind("JWT", authenConfig);
+            services.AddSingleton(x => {
+                return authenConfig;
+            });
+
+            // Services
             services.AddControllers();
+            services.AddSingleton<TokenGenerator>();
+            services.AddSingleton<AccessToken>();
+            services.AddSingleton<RefreshToken>();
+            services.AddCors(c => {
+                c.AddPolicy("TCAPolicy", builder => {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
             services.AddEntityFrameworkSqlite().AddDbContext<bookstoreContext>();
 
             services.AddSwaggerGen(c =>
@@ -59,14 +79,6 @@ namespace BookStore
                 });
             });
 
-            services.AddCors(c => {
-                c.AddPolicy("TCAPolicy", builder => {
-                    builder.AllowAnyOrigin()
-                    .AllowAnyMethod() 
-                    .AllowAnyHeader() ; 
-                });
-            });
-
             services.AddAuthentication(option => {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -83,11 +95,13 @@ namespace BookStore
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = Configuration["JWT:ValidIssuer"],
                     ValidAudience = Configuration["JWT:ValidAudience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenConfig.AccessTokenSecret)),
+                    RequireExpirationTime = false,
                 };
             });
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,6 +116,8 @@ namespace BookStore
 
             app.UseHttpsRedirection();
 
+            app.UseCors("TCAPolicy");
+
             app.UseRouting();
 
             app.UseAuthentication(); 
@@ -112,7 +128,6 @@ namespace BookStore
             {
                 endpoints.MapControllers();
             });
-            app.UseCors("TCAPolicy");
         }
     }
 }
