@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="View Models\" />
     <Folder Include="Token\" />
+    <Folder Include="View_Models\UserViewModel\" />
   </ItemGroup>
 </Project>

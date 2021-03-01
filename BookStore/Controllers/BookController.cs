@@ -61,19 +61,19 @@ namespace BookStore.Controllers
         {
             return new GetBookByIdViewModel
             {
-                Id = book.Id,
-                BookName = book.BookName,
-                Price = book.Price,
-                Rating = book.Rating,
-                CoverType = bookDetail.CoverType,
-                Description = bookDetail.Description,
-                DistributorId = bookDetail.DistributorId,
-                Pages = bookDetail.Pages,
-                PublicationDate = bookDetail.PublicationDate,
-                PublisherId = bookDetail.PublisherId,
-                Quantity = bookDetail.Quantity,
-                Size = bookDetail.Size,
-                SKU = bookDetail.SKU,
+                //Id = book.Id,
+                //BookName = book.BookName,
+                //Price = book.Price,
+                //Rating = book.Rating,
+                //CoverType = bookDetail.CoverType,
+                //Description = bookDetail.Description,
+                //DistributorId = bookDetail.DistributorId,
+                //Pages = bookDetail.Pages,
+                //PublicationDate = bookDetail.PublicationDate,
+                //PublisherId = bookDetail.PublisherId,
+                //Quantity = bookDetail.Quantity,
+                //Size = bookDetail.Size,
+                //SKU = bookDetail.SKU,
             };
         }
 
@@ -93,11 +93,11 @@ namespace BookStore.Controllers
             
             // Cái này dùng AutoMapper lỗi lên xuống nên tạm thời map tay bằng MapBookAndDetail()
             // Truyền tay Id sách ở trên xuống dưới
-            var bookDetailVm = MapBookAndDetailAdd(book.Id, bookVm);
+            //var bookDetailVm = MapBookAndDetailAdd(book.Id, bookVm);
 
-            // Thêm chi tiết sách
-            _bookDetailsService.Add(_mapper.Map<BookDetail>(bookDetailVm));
-            await _context.SaveChangesAsync();
+            //// Thêm chi tiết sách
+            //_bookDetailsService.Add(_mapper.Map<BookDetail>(bookDetailVm));
+            //await _context.SaveChangesAsync();
 
             // Trả về thông tin sách được thêm
             return Created("Book created:", book);
@@ -142,18 +142,18 @@ namespace BookStore.Controllers
 
         private void MapBookAndDetailEdit(Book book, BookDetail bookDetail, EditBookViewModel model)
         {
-            book.BookName = model.BookName;
-            book.Price = model.Price;
-            book.Rating = model.Rating;
-            bookDetail.Quantity = model.Quantity;
-            bookDetail.DistributorId = model.DistributorId;
-            bookDetail.PublicationDate = model.PublicationDate;
-            bookDetail.Size = model.Size;
-            bookDetail.CoverType = model.CoverType;
-            bookDetail.Pages = model.Pages;
-            bookDetail.SKU = model.SKU;
-            bookDetail.PublisherId = model.PublisherId;
-            bookDetail.Description = model.Description;
+            //book.BookName = model.BookName;
+            //book.Price = model.Price;
+            //book.Rating = model.Rating;
+            //bookDetail.Quantity = model.Quantity;
+            //bookDetail.DistributorId = model.DistributorId;
+            //bookDetail.PublicationDate = model.PublicationDate;
+            //bookDetail.Size = model.Size;
+            //bookDetail.CoverType = model.CoverType;
+            //bookDetail.Pages = model.Pages;
+            //bookDetail.SKU = model.SKU;
+            //bookDetail.PublisherId = model.PublisherId;
+            //bookDetail.Description = model.Description;
         }
 
         // DELETE api/<BookController>/5

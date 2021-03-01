@@ -1,10 +1,20 @@
-﻿namespace BookStore.Models
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
+namespace BookStore.Models
 {
-    public class Book
+    public partial class Book
     {
-        public int Id { get; set; }
+        [Key]
+        public long Id { get; set; }
         public string BookName { get; set; }
-        public decimal Price { get; set; }
-        public decimal Rating { get; set; }
+        public long? Price { get; set; }
+        public double? Rating { get; set; }
+        public long? CategoryId { get; set; }
     }
 }

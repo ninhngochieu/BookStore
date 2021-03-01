@@ -4,7 +4,7 @@ namespace BookStore.View_Models.BookViewModels
 {
     public class GetBookByIdViewModel
     {
-        public int Id { get; set; }
+        public long? Id { get; set; }
         public string BookName { get; set; }
         public decimal Price { get; set; }
         public decimal Rating { get; set; }
@@ -13,7 +13,7 @@ namespace BookStore.View_Models.BookViewModels
         public DateTime? PublicationDate { get; set; }
         public string Size { get; set; }
         public string CoverType { get; set; }
-        public int Pages { get; set; }
+        public long Pages { get; set; }
         public string SKU { get; set; }
         public string PublisherId { get; set; }
         public string Description { get; set; }
