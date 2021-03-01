@@ -17,12 +17,10 @@ namespace BookStore.Models
         {
         }
 
-        public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<BookDetail> BookDetails { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserToken> UserTokens { get; set; }
+        public virtual DbSet<UserToken> UserTokens{ get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,21 +33,6 @@ namespace BookStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BookDetail>(entity =>
-            {
-                entity.Property(e => e.BookId).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<UserToken>(entity =>
-            {
-                entity.Property(e => e.UserId).ValueGeneratedNever();
-            });
-
             OnModelCreatingPartial(modelBuilder);
         }
 

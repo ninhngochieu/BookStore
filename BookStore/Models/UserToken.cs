@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-#nullable disable
 
 namespace BookStore.Models
 {
-    [Index(nameof(RefreshToken), IsUnique = true)]
-    public partial class UserToken
+    public class UserToken
     {
-        [Key]
-        public long UserId { get; set; }
+        public UserToken()
+        {
+            CreateAt = DateTime.Now;
+        }
+        [ForeignKey("User")]
+        public int Id { get; set; }
         public string RefreshToken { get; set; }
-        public long? CreateAt { get; set; }
+        public DateTime CreateAt { get; set; }
+
+        //User
+        public virtual User User { get; set; }
     }
 }

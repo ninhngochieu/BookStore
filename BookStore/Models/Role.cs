@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-#nullable disable
 
 namespace BookStore.Models
 {
-    [Index(nameof(Role1), IsUnique = true)]
-    public partial class Role
+    public class Role
     {
-        [Key]
-        public long Id { get; set; }
-        [Column("Role")]
-        public string Role1 { get; set; }
+        public Role()
+        {
+        }
+        public int Id { get; set; }
+        [Required]
+        public string RoleName { get; set; }
+
+        //Navigation properties
+        public ICollection<User> Users { get; set; }
     }
 }

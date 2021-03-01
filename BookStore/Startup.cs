@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Text;
-using BookStore.Models;
-using BookStore.Services;
 using BookStore.Token;
 using BookStore.TokenGenerators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,8 +39,8 @@ namespace BookStore
             services.AddSingleton<TokenGenerator>();
             services.AddSingleton<AccessToken>();
             services.AddSingleton<RefreshToken>();
-            services.AddScoped<UserServices>();
-            services.AddScoped<UserTokenServices>();
+            //services.AddScoped<UserServices>();
+            //services.AddScoped<UserTokenServices>();
             services.AddCors(c => {
                 c.AddPolicy("TCAPolicy", builder => {
                     builder.AllowAnyOrigin()
@@ -50,7 +48,7 @@ namespace BookStore
                     .AllowAnyHeader();
                 });
             });
-            services.AddEntityFrameworkSqlite().AddDbContext<bookstoreContext>();
+            //services.AddEntityFrameworkSqlite().AddDbContext<bookstoreContext>();
 
             services.AddSwaggerGen(c =>
             {

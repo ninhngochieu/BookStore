@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-#nullable disable
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.Models
 {
-    [Index(nameof(Username), IsUnique = true)]
-    public partial class User
+    public class User
     {
-        [Key]
-        public long? Id { get; set; }
+
+        public int Id { get; set; }
+        [Required]
         public string Username { get; set; }
+        [Required]
         public string Password { get; set; }
-        public long? Roles { get; set; }
+
+        //Role
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
+
+        //User token
+        public virtual UserToken UserToken { get; set; }
     }
 }
