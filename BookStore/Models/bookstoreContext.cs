@@ -20,6 +20,7 @@ namespace BookStore.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserToken> UserTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,6 +36,11 @@ namespace BookStore.Models
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<UserToken>(entity =>
+            {
+                entity.Property(e => e.UserId).ValueGeneratedNever();
             });
 
             OnModelCreatingPartial(modelBuilder);

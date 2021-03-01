@@ -11,7 +11,7 @@ namespace BookStore.TokenGenerators
 {
     public class TokenGenerator
     {
-        internal string GenerateToken(AuthenConfig _configuration,string SecretKey, List<Claim> claims = null)
+        internal string GenerateToken(AuthenConfig _configuration,string SecretKey, double tokenExpirationMinutes, List<Claim> claims = null)
         {
             SecurityKey authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey)); ;
             SigningCredentials credentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256); ;
@@ -20,8 +20,7 @@ namespace BookStore.TokenGenerators
                 issuer: _configuration.ValidIssuer,
                 audience: _configuration.ValidAudience,
                 claims: claims,
-                notBefore: DateTime.Now,
-                expires: DateTime.Now.AddMinutes(_configuration.AccessTokenExpirationMinutes),
+                expires: DateTime.Now.AddMinutes(tokenExpirationMinutes),
                 signingCredentials: credentials
             ); ; ;
             return new JwtSecurityTokenHandler().WriteToken(token);

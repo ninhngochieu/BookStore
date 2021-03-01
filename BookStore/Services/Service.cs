@@ -1,10 +1,16 @@
 ﻿using System;
+using BookStore.Models;
+
 namespace BookStore.Services
 {
-    public class Service
+    public abstract class Service
     {
-        public Service()
+        protected readonly bookstoreContext _context;
+
+        public Service(bookstoreContext bookstoreContext)
         {
+            _context = bookstoreContext;
         }
+
     }
 }

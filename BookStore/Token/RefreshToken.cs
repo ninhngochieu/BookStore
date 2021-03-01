@@ -36,7 +36,8 @@ namespace BookStore.Token
         {
             return _tokenGenerator.GenerateToken(
                 _authenConfig,
-                _authenConfig.RefreshTokenSecret);
+                _authenConfig.RefreshTokenSecret,
+                _authenConfig.RefreshTokenExpirationMinutes);
         }
 
         internal bool Validate(string refreshToken)
@@ -56,12 +57,12 @@ namespace BookStore.Token
                     RequireExpirationTime = false,
                 }; ;
                 tokenHandler.ValidateToken(refreshToken, validationParameters, out SecurityToken validatedToken);
-                return true;
             }
             catch(Exception e)
             {
                 return false;
             }
+            return true;
         }
     }
 }

@@ -30,6 +30,7 @@ namespace BookStore.TokenGenerators
             return _tokenGenerator.GenerateToken(
                 _configuration,
                 _configuration.AccessTokenSecret,
+                _configuration.AccessTokenExpirationMinutes,
                 _claims
                 );
         }
