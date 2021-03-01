@@ -83,10 +83,17 @@ namespace BookStore.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Co loi xay ra");
+            }
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/User/5
