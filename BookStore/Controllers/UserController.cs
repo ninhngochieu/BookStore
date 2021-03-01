@@ -23,10 +23,14 @@ namespace BookStore.Controllers
 
         // GET: api/User
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Select(u=>new User
+            {
+                Id = u.Id,
+                Username = u.Username
+            }).ToListAsync();
         }
 
         // GET: api/User/5

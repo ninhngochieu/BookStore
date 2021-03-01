@@ -18,7 +18,7 @@ namespace BookStore.Services
             {
                 UserToken newUserToken = new UserToken
                 {
-                    UserId = user.Id,
+                    UserId = user.Id??0,
                     RefreshToken = refreshToken,
                     CreateAt = DateTimeOffset.Now.ToUnixTimeSeconds()
 

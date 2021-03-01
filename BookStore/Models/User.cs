@@ -12,7 +12,7 @@ namespace BookStore.Models
     public partial class User
     {
         [Key]
-        public long Id { get; set; }
+        public long? Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public long? Roles { get; set; }

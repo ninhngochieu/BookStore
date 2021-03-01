@@ -8,7 +8,6 @@ using BookStore.Models;
 using BookStore.Services;
 using BookStore.Token;
 using BookStore.TokenGenerators;
-using BookStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -41,17 +40,18 @@ namespace BookStore.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("Login")]
-        public ActionResult Post([FromBody] Login info)
+        public ActionResult Post([FromBody] User info)
         {
-            if (!ModelState.IsValid)
+            bool isValidUserPost = info.Password is not null && info.Username is not null ;
+            if (!isValidUserPost)
             {
-                return Unauthorized();
+                return Unauthorized("Failed to login!");
             }
 
             User user = _context.Users.Where(u => u.Username==info.Username).FirstOrDefault();
             if (user is null)
             {
-                return Unauthorized();
+                return Unauthorized("Failed to login");
             }
             else
             {
