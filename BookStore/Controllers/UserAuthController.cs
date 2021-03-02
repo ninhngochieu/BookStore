@@ -9,6 +9,8 @@ using BookStore.Models;
 using BookStore.Services;
 using BookStore.TokenGenerators;
 using BookStore.Token;
+using Microsoft.AspNetCore.Authorization;
+using BookStore.ViewModels.User;
 
 namespace BookStore.Controllers
 {
@@ -103,6 +105,16 @@ namespace BookStore.Controllers
                 success = true,
             });
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, EditUserViewModel user)
+        {
+            bool isValidResponse = id == user.Id;
+            if (!isValidResponse)
+            {
+                return BadRequest();
+            }
 
+            return Ok(_userServices.UpdateAsync(user));
+        }
     }
 }

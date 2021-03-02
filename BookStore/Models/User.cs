@@ -10,8 +10,13 @@ namespace BookStore.Models
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
+#nullable enable
+        public string? Name { get; set; }
+        public string? Email { get; set; }
         public string? RefreshToken { get; set; }
+        public string? Avatar { get; set; }
         public DateTime? TokenCreateAt { get; set; }
+
         //User - Role: 1 - 1
         [Required]
         public int RoleId { get; set; }
