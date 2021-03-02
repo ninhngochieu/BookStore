@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using BookStore.Models;
 using BookStore.SeedData;
+using BookStore.Services;
 using BookStore.Token;
 using BookStore.TokenGenerators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,7 +42,8 @@ namespace BookStore
             services.AddSingleton<TokenGenerator>();
             services.AddSingleton<AccessToken>();
             services.AddSingleton<RefreshToken>();
-            //services.AddScoped<UserServices>();
+            services.AddScoped<UserServices>();
+
             //services.AddScoped<UserTokenServices>();
             services.AddCors(c => {
                 c.AddPolicy("TCAPolicy", builder => {

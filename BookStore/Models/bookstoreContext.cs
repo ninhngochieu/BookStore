@@ -37,6 +37,7 @@ namespace BookStore.Models
                 .HasOne(r => r.Role)
                 .WithMany(u => u.Users)
                 .HasForeignKey(u => u.RoleId);
+
             modelBuilder.Entity<Book>()
                 .HasOne(c=> c.Category)
                 .WithMany(b=>b.Books)

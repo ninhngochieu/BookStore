@@ -22,10 +22,11 @@ namespace BookStore.TokenGenerators
         {
             List<Claim> _claims = new List<Claim>()
             {
-                //new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-                //new Claim("id",user.Id.ToString()),
-                //new Claim("username",user.Username),
-                //new Claim("role", user.Roles.ToString())
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                new Claim("id",user.Id.ToString()),
+                new Claim("username",user.Username),
+                new Claim("roleId", user.Role.Id.ToString()),
+                new Claim("role", user.Role.RoleName)
             };
             return _tokenGenerator.GenerateToken(
                 _configuration,

@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Models;
+using BookStore.Services;
+using BookStore.Token;
+using BookStore.TokenGenerators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +15,43 @@ namespace BookStore.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        // GET: api/Auth
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        private readonly UserServices _userServices;
 
-        // GET: api/Auth/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        private readonly AccessToken _accessToken;
 
+        private readonly RefreshToken _refreshToken;
+
+        public AuthController(UserServices userServices,AccessToken accessToken, RefreshToken refreshToken)
+        {
+            _userServices = userServices;
+            _accessToken = accessToken;
+            _refreshToken = refreshToken;
+        }
+        
         // POST: api/Auth
+        [Route("login")]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] User user)
         {
-        }
+            bool isValidUser = !(user.Username is null) && !(user.Password is null);
+            if (!isValidUser)
+            {
+                return BadRequest("Invalid User");
+            }
 
-        // PUT: api/Auth/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+            User fromDb = _userServices.Find(user);
+            if(fromDb is null)
+            {
+                return Unauthorized("Failed to login");
+            }
 
-        // DELETE: api/Auth/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            //TokenPair tokenPair = new TokenPair()
+            //{
+            //    Access = _accessToken.GenerateToken(user),
+            //    Refresh = _refreshToken.GenerateToken()
+            //};
+            //return Ok(tokenPair);
+            return Ok(user);
         }
     }
 }
