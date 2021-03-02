@@ -33,10 +33,13 @@ namespace BookStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasOne(r => r.Role)
-                .WithMany(u => u.Users)
-                .HasForeignKey(u => u.RoleId);
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(u=>u.Id);
+                entity.HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u=>u.RoleId);
+            });
 
             modelBuilder.Entity<Book>()
                 .HasOne(c=> c.Category)
