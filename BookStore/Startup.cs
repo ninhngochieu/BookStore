@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BookStore.Models;
+using BookStore.Modules.AutoMapper;
 using BookStore.SeedData;
 using BookStore.Services;
 using BookStore.Token;
@@ -106,6 +107,8 @@ namespace BookStore
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
+
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

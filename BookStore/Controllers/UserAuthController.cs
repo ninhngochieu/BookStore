@@ -29,13 +29,6 @@ namespace BookStore.Controllers
             _refreshToken = refreshToken;
         }
 
-        // GET: api/UserAuth
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            return await _userServices.GetAllUser();
-        }
-
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult<User>> Login(User user)

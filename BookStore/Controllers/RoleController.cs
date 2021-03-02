@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
+using BookStore.ViewModels;
+using AutoMapper;
 
 namespace BookStore.Controllers
 {
@@ -14,10 +16,12 @@ namespace BookStore.Controllers
     public class RoleController : ControllerBase
     {
         private readonly bookstoreContext _context;
+        private readonly IMapper _mapper;
 
-        public RoleController(bookstoreContext context)
+        public RoleController(bookstoreContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Role
@@ -102,6 +106,16 @@ namespace BookStore.Controllers
         private bool RoleExists(int id)
         {
             return _context.Roles.Any(e => e.Id == id);
+        }
+
+        [HttpGet]
+        [Route("test")]
+        public async Task<ActionResult<IList<RoleViewModel>>> GetRolesTest()
+        {
+            var roles = await _context.Roles.ToListAsync();
+            var vm = _mapper.Map<IList<Role>, IList<RoleViewModel>>(roles);
+            return Ok(vm);
+            //return await _context.Roles.Include(u => u.Users).ToListAsync();
         }
     }
 }

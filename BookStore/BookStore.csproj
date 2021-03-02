@@ -36,5 +36,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
     <Folder Include="Seed Data\" />
+    <Folder Include="Modules\" />
+    <Folder Include="Modules\AutoMapper\" />
   </ItemGroup>
 </Project>
