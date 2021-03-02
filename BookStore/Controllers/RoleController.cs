@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using BookStore.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
@@ -110,6 +111,7 @@ namespace BookStore.Controllers
 
         [HttpGet]
         [Route("test")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<IList<RoleViewModel>>> GetRolesTest()
         {
             var roles = await _context.Roles.ToListAsync();

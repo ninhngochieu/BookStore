@@ -26,9 +26,9 @@ namespace BookStore.TokenGenerators
                 new Claim("id",user.Id.ToString()),
                 new Claim("username",user.Username),
                 new Claim("roleId", user.Role.Id.ToString()),
-                new Claim("roleName", user.Role.RoleName),
                 new Claim("Name",user.Name??""),
                 new Claim("Email",user.Email??"")
+                new Claim(ClaimTypes.Role, user.Role.RoleName),
             };
             return _tokenGenerator.GenerateToken(
                 _configuration,
