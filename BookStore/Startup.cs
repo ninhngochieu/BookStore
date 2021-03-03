@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using BookStore.Models;
 using BookStore.Modules.AutoMapper;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -108,7 +110,10 @@ namespace BookStore
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 
+
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+            //services.AddDirectoryBrowser();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,6 +140,14 @@ namespace BookStore
             {
                 endpoints.MapControllers();
             });
+            //app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "Images")),
+                RequestPath = "/Images"
+            });
+
             AppDbInitializer.Seed(app);
         }
     }

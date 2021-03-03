@@ -48,76 +48,76 @@ namespace BookStore.Controllers
 
         // PUT: api/Role/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRole(int id, Role role)
-        {
-            if (id != role.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutRole(int id, Role role)
+        //{
+        //    if (id != role.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(role).State = EntityState.Modified;
+        //    _context.Entry(role).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!RoleExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Role
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Role>> PostRole(Role role)
-        {
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
+        //[HttpPost]
+        //public async Task<ActionResult<Role>> PostRole(Role role)
+        //{
+        //    _context.Roles.Add(role);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRole", new { id = role.Id }, role);
-        }
+        //    return CreatedAtAction("GetRole", new { id = role.Id }, role);
+        //}
 
         // DELETE: api/Role/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRole(int id)
-        {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteRole(int id)
+        //{
+        //    var role = await _context.Roles.FindAsync(id);
+        //    if (role == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
+        //    _context.Roles.Remove(role);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool RoleExists(int id)
-        {
-            return _context.Roles.Any(e => e.Id == id);
-        }
+        //private bool RoleExists(int id)
+        //{
+        //    return _context.Roles.Any(e => e.Id == id);
+        //}
 
-        [HttpGet]
-        [Route("test")]
-        [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<IList<RoleViewModel>>> GetRolesTest()
-        {
-            var roles = await _context.Roles.ToListAsync();
-            var vm = _mapper.Map<IList<Role>, IList<RoleViewModel>>(roles);
-            return Ok(vm);
-            //return await _context.Roles.Include(u => u.Users).ToListAsync();
-        }
+        //[HttpGet]
+        //[Route("test")]
+        //[Authorize(Roles = "User,Admin")]
+        //public async Task<ActionResult<IList<RoleViewModel>>> GetRolesTest()
+        //{
+        //    var roles = await _context.Roles.ToListAsync();
+        //    var vm = _mapper.Map<IList<Role>, IList<RoleViewModel>>(roles);
+        //    return Ok(vm);
+        //    //return await _context.Roles.Include(u => u.Users).ToListAsync();
+        //}
     }
 }

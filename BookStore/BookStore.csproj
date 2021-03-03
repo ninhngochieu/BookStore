@@ -27,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,5 +40,7 @@
     <Folder Include="Modules\" />
     <Folder Include="Modules\AutoMapper\" />
     <Folder Include="View Models\User\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 </Project>

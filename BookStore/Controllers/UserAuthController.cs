@@ -11,6 +11,7 @@ using BookStore.TokenGenerators;
 using BookStore.Token;
 using Microsoft.AspNetCore.Authorization;
 using BookStore.ViewModels.User;
+using AutoMapper;
 
 namespace BookStore.Controllers
 {
@@ -19,29 +20,31 @@ namespace BookStore.Controllers
     public class UserAuthController : ControllerBase
     {
         private readonly UserServices _userServices;
-        private AccessToken _accessToken;
+        private readonly AccessToken _accessToken;
         private readonly RefreshToken _refreshToken;
+        private readonly IMapper _mapper;
 
         public UserAuthController(UserServices userServices,
             AccessToken accessToken,
-            RefreshToken refreshToken)
+            RefreshToken refreshToken,
+            IMapper mapper)
         {
             _userServices = userServices;
             _accessToken = accessToken;
             _refreshToken = refreshToken;
+            _mapper = mapper;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<User>> Login(User user)
+        public async Task<ActionResult<User>> Login(LoginViewModel user)
         {
-            bool isValidUser = !(user.Username is null) && !(user.Password is null);
-            if (!isValidUser)
+            if (!ModelState.IsValid)
             {
                 return BadRequest("Invalid User");
             }
 
-            User fromDb = await _userServices.FindAsync(user);
+            User fromDb = await _userServices.DoLogin(user);
             if (fromDb is null)
             {
                 return Unauthorized("Failed to login");
@@ -81,7 +84,7 @@ namespace BookStore.Controllers
             //Validate from server
             User user = await _userServices.GetByRefreshToken(token.Refresh);
 
-            if(user is null)
+            if (user is null)
             {
                 return NotFound("Refresh token not found");
             }
@@ -105,16 +108,36 @@ namespace BookStore.Controllers
                 success = true,
             });
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, EditUserViewModel user)
+        [HttpPut("profile/{id}")]
+        public async Task<IActionResult> Update(int id,[FromForm]UserInfoPostModel userVM)
         {
-            bool isValidResponse = id == user.Id;
-            if (!isValidResponse)
+            if (!_userServices.isValidImage(userVM.Avatar))
             {
-                return BadRequest();
+                return BadRequest("Invalid Image");
+            }
+            
+            if (await _userServices.UpdateInfoAsync(userVM,id))
+            {
+                return Ok(new { data = userVM });
+            }
+            else
+            {
+                return BadRequest("Co loi xay ra");
             }
 
-            return Ok(_userServices.UpdateAsync(user));
         }
+
+        [HttpGet("profile/{id}")]
+        public async Task<ActionResult<UserInfoViewModel>> GetUserInfo(int id)
+        {
+            User user = await _userServices.GetUserById(id);
+            if (user is null)
+            {
+                return NotFound("Not found user");
+            }
+            UserInfoViewModel userInfo = _mapper.Map<User, UserInfoViewModel>(user);
+            return Ok(new { data = userInfo, success = true });
+        }
+        
     }
 }

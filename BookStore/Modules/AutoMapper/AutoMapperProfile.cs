@@ -14,12 +14,13 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(u => u.Users, options => options.DoNotValidate());
             CreateMap<RoleViewModel, Role>();
 
-            CreateMap<User, EditUserViewModel>()
+            CreateMap<User, UserInfoViewModel>()
                 .ForSourceMember(u => u.RefreshToken, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Username, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Role, options => options.DoNotValidate())
                 .ForSourceMember(u => u.RoleId, options => options.DoNotValidate())
                 .ForSourceMember(u => u.TokenCreateAt, options => options.DoNotValidate());
-        }   
+   
+        }
     }
 }
