@@ -55,6 +55,7 @@ namespace BookStore.Token
                     ValidAudience = _authenConfig.ValidAudience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenConfig.RefreshTokenSecret)),
                     RequireExpirationTime = false,
+                    ClockSkew = TimeSpan.Zero,
                 }; ;
                 tokenHandler.ValidateToken(refreshToken, validationParameters, out SecurityToken validatedToken);
             }

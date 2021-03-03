@@ -19,8 +19,11 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(u => u.Username, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Role, options => options.DoNotValidate())
                 .ForSourceMember(u => u.RoleId, options => options.DoNotValidate())
-                .ForSourceMember(u => u.TokenCreateAt, options => options.DoNotValidate());
-   
+                .ForSourceMember(u => u.TokenCreateAt, options => options.DoNotValidate())
+                    .ForSourceMember(u => u.Id, options => options.DoNotValidate())
+                    .ForSourceMember(u => u.Password, options => options.DoNotValidate());
+
+
         }
     }
 }

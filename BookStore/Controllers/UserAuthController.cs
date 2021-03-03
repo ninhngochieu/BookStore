@@ -109,16 +109,18 @@ namespace BookStore.Controllers
             });
         }
         [HttpPut("profile/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id,[FromForm]UserInfoPostModel userVM)
         {
             if (!_userServices.isValidImage(userVM.Avatar))
             {
                 return BadRequest("Invalid Image");
             }
-            
-            if (await _userServices.UpdateInfoAsync(userVM,id))
+
+            UserInfoViewModel userInfoViewModel = await _userServices.UpdateInfoAsync(userVM, id);
+            if(userInfoViewModel is not null)
             {
-                return Ok(new { data = userVM });
+                return Ok(new { data = userInfoViewModel, success = true });
             }
             else
             {

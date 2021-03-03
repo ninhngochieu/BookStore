@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -104,6 +105,7 @@ namespace BookStore
                     ValidAudience = Configuration["JWT:ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenConfig.AccessTokenSecret)),
                     RequireExpirationTime = false,
+                    ClockSkew = TimeSpan.Zero,
                 };
             });
             services.AddControllersWithViews().AddNewtonsoftJson(options =>

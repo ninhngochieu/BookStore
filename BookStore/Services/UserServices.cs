@@ -54,10 +54,11 @@ namespace BookStore.Services
             return await _bookstoreContext.Users.Where(u=>u.RefreshToken.Equals(refresh)).FirstOrDefaultAsync();
         }
 
-        internal async Task<bool> UpdateInfoAsync(UserInfoPostModel userVM, int id)
+        internal async Task<UserInfoViewModel> UpdateInfoAsync(UserInfoPostModel userVM, int id)
         {
+            UserInfoViewModel userInfoViewModel = null;
             User user = await _bookstoreContext.Users.FindAsync(id);
-            if (user is null) return false;
+            if (user is null) return userInfoViewModel;
 
             if (userVM.Name is not null)
             {
@@ -71,35 +72,31 @@ namespace BookStore.Services
             {
                 user.Avatar = DateTimeOffset.Now.ToUnixTimeSeconds()+"_"+userVM.Avatar.FileName;
             }
-
             _bookstoreContext.Entry(user).State = EntityState.Modified;
-
             try
             {
                 bool isUpdateSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
                 if (isUpdateSuccess&&userVM is not null)
                 {
+                    userInfoViewModel = _mapper.Map<UserInfoViewModel>(user);
                     UploadImage(userVM.Avatar, user.Avatar);
-                    return true;
-                }
-                else
-                {
-                    return false;
                 }
 
             }
             catch (DbUpdateConcurrencyException)
             {
-                return false;
+                throw;
             }
+            return userInfoViewModel;
+
         }
 
         private void UploadImage(IFormFile file, string AvatarName)
         {
-            //if (!Directory.Exists(_webHostEnvironment.WebRootPath + "/Images"))
-            //{
-            //    Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "/Images");
-            //}
+            if (!Directory.Exists(_webHostEnvironment.WebRootPath + "/Images"))
+            {
+                Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "/Images");
+            }
 
             string filePath = Path.Combine(_webHostEnvironment.WebRootPath,"Images",AvatarName);
             file.CopyToAsync(new FileStream(filePath,FileMode.Create));
@@ -112,6 +109,7 @@ namespace BookStore.Services
 
         internal bool isValidImage(IFormFile postedFile)
         {
+            if (postedFile is null) return false;
             int ImageMinimumBytes = 2048;
             if (postedFile.ContentType.ToLower() != "image/jpg" &&
                     postedFile.ContentType.ToLower() != "image/jpeg" &&
