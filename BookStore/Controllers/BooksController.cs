@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using BookStore.Services;
+using AutoMapper;
+using BookStore.View_Models.Book;
 
 namespace BookStore.Controllers
 {
@@ -16,32 +18,41 @@ namespace BookStore.Controllers
     {
         private readonly BookServices _bookServices;
         private readonly bookstoreContext _context;
+        private readonly IMapper _mapper;
+        private readonly ImageServices _imageServices;
 
-        public BooksController(BookServices bookServices, bookstoreContext bookstoreContext)
+        public BooksController(BookServices bookServices,
+            bookstoreContext bookstoreContext,
+            IMapper mapper,
+            ImageServices imageServices
+            )
         {
             _bookServices = bookServices;
             _context = bookstoreContext;
+            _mapper = mapper;
+            _imageServices = imageServices;
         }
 
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
-            return await _context.Book.ToListAsync();
+            List<Book> books = await _context.Book.Include(c => c.Category).ToListAsync().ConfigureAwait(false);
+            return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books)});
         }
 
         // GET: api/Books/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await _context.Book.FindAsync(id);
+            var book = await _context.Book.Include(c => c.Category).Where(b=>b.Id==id).FirstAsync();
 
             if (book == null)
             {
                 return NotFound();
             }
 
-            return book;
+            return Ok(new { data = _mapper.Map<BookInfoViewModel>(book) });
         }
 
         // PUT: api/Books/5
@@ -78,12 +89,41 @@ namespace BookStore.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<ActionResult<Book>> PostBook([FromForm]CreateNewBookDTO book)
         {
-            _context.Book.Add(book);
-            await _context.SaveChangesAsync();
+            Book newBook = _mapper.Map<Book>(book);
+            _context.Book.Add(newBook);
+            bool isSave = await _context.SaveChangesAsync()!=0;
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            if (isSave)
+            {
+                BookImage bookImage = new BookImage();
+                bookImage.BookId = newBook.Id;
+                if (book.Image1 is not null)
+                {
+                    bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() +'_'+book.Image1.FileName;
+                    _imageServices.UploadImage(book.Image1, bookImage.Image1);
+                }
+                if (book.Image2 is not null)
+                {
+                    bookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + book.Image2.FileName;
+                    _imageServices.UploadImage(book.Image2, bookImage.Image2);
+                }
+                if (book.Image3 is not null)
+                {
+                    bookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + book.Image3.FileName;
+                    _imageServices.UploadImage(book.Image3, bookImage.Image3);
+                }
+                if (book.Image4 is not null)
+                {
+                    bookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + book.Image4.FileName;
+                    _imageServices.UploadImage(book.Image4, bookImage.Image4);
+                }
+                _context.BookImage.Add(bookImage);
+                await _context.SaveChangesAsync();
+            }
+
+            return CreatedAtAction("GetBook", new { id = newBook.Id }, newBook);
         }
 
         // DELETE: api/Books/5

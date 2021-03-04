@@ -21,7 +21,10 @@ namespace BookStore.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Category> Categories{ get; set; }
-        
+        public virtual DbSet<Book> Book{ get; set; }
+        public virtual DbSet<BookImage> BookImage{ get; set; }
+        public virtual DbSet<BookComment> BookComment{ get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -38,6 +41,5 @@ namespace BookStore.Models
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-        public DbSet<BookStore.Models.Book> Book { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.Book;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,8 @@ namespace BookStore.Services
 {
     public class BookServices : Service
     {
-        private IMapper _mapper;
-        public BookServices(bookstoreContext bookstoreContext, IMapper mapper) : base(bookstoreContext)
+        public BookServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper) : base(bookstoreContext, webHostEnvironment, mapper)
         {
-            _mapper = mapper;
         }
 
         public async Task<IList<BookInfoViewModel>> GetAllBook()

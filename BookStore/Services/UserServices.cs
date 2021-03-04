@@ -18,13 +18,8 @@ namespace BookStore.Services
 {
     public class UserServices : Service
     {
-        private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public UserServices(bookstoreContext bookstoreContext, IMapper mapper, IWebHostEnvironment webHostEnvironment) : base(bookstoreContext)
+        public UserServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper) : base(bookstoreContext, webHostEnvironment, mapper)
         {
-            _mapper = mapper;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         internal async Task<User> DoLogin(LoginViewModel user)
@@ -92,17 +87,6 @@ namespace BookStore.Services
             }
             return userInfoViewModel;
 
-        }
-
-        private void UploadImage(IFormFile file, string AvatarName)
-        {
-            if (!Directory.Exists(_webHostEnvironment.WebRootPath + "/Images"))
-            {
-                Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "/Images");
-            }
-
-            string filePath = Path.Combine(_webHostEnvironment.WebRootPath,"Images",AvatarName);
-            file.CopyToAsync(new FileStream(filePath,FileMode.Create));
         }
 
         internal async Task<User> GetUserById(int id)

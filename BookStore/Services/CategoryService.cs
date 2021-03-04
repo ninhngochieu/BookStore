@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.Category;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,10 @@ namespace BookStore.Services
     public class CategoryService : Service
     {
         private readonly BookServices _bookServices;
-        private readonly IMapper _mapper;
 
-        public CategoryService(bookstoreContext bookstoreContext,
-                                BookServices bookServices,
-                                IMapper mapper) : base(bookstoreContext)
+        public CategoryService(BookServices bookServices,bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper) : base(bookstoreContext, webHostEnvironment, mapper)
         {
             _bookServices = bookServices;
-            _mapper = mapper;
         }
 
         public async Task<IList<CategoryViewModel>> GetAllCategories()

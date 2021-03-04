@@ -26,9 +26,14 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(u => u.Password, options => options.DoNotValidate());
 
             CreateMap<Book, BookInfoViewModel>()
-                .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName))
                 .ForMember(d => d.PublicationDate, options => options.MapFrom(s => DateTime.Parse(s.PublicationDate)));
-
+            CreateMap<CreateNewBookDTO, Book>()
+                .ForSourceMember(s => s.Image4, options => options.DoNotValidate())
+                .ForSourceMember(s => s.Image1, options => options.DoNotValidate())
+                .ForSourceMember(s => s.Image2, options => options.DoNotValidate())
+                .ForSourceMember(s => s.Image3, options => options.DoNotValidate())
+                                .ForSourceMember(s => s.Image4, options => options.DoNotValidate())
+                                .ForMember(d => d.PublicationDate, options => options.MapFrom(s => DateTimeOffset.Now.ToUnixTimeSeconds()));
             CreateMap<Category, CategoryViewModel>()
                 .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<Category, DeletedCategoryViewModel>()
