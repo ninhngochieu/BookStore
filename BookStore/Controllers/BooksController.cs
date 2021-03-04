@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
+using BookStore.Services;
 
 namespace BookStore.Controllers
 {
@@ -13,11 +14,13 @@ namespace BookStore.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly BookServices _bookServices;
         private readonly bookstoreContext _context;
 
-        public BooksController(bookstoreContext context)
+        public BooksController(BookServices bookServices, bookstoreContext bookstoreContext)
         {
-            _context = context;
+            _bookServices = bookServices;
+            _context = bookstoreContext;
         }
 
         // GET: api/Books
