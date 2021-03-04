@@ -78,8 +78,11 @@ namespace BookStore.Services
                 bool isUpdateSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
                 if (isUpdateSuccess&&userVM is not null)
                 {
+                    if(userVM.Avatar is not null)
+                    {
+                        UploadImage(userVM.Avatar, user.Avatar);
+                    }
                     userInfoViewModel = _mapper.Map<UserInfoViewModel>(user);
-                    UploadImage(userVM.Avatar, user.Avatar);
                 }
 
             }
