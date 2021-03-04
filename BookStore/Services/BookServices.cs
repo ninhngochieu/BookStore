@@ -12,7 +12,6 @@ namespace BookStore.Services
     public class BookServices : Service
     {
         private IMapper _mapper;
-
         public BookServices(bookstoreContext bookstoreContext, IMapper mapper) : base(bookstoreContext)
         {
             _mapper = mapper;
@@ -20,12 +19,9 @@ namespace BookStore.Services
 
         public async Task<IList<BookInfoViewModel>> GetAllBook()
         {
-            var list = _mapper.Map<IList<BookInfoViewModel>>(await _bookstoreContext.Books.ToListAsync());
+            var list = _mapper.Map<IList<BookInfoViewModel>>(await _bookstoreContext.Book.ToListAsync());
             return list;
         }
 
-        
-
-        
     }
 }
