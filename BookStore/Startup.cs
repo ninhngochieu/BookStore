@@ -47,6 +47,7 @@ namespace BookStore
             services.AddSingleton<AccessToken>();
             services.AddSingleton<RefreshToken>();
             services.AddScoped<UserServices>();
+            services.AddScoped<BookServices>();
 
             //services.AddScoped<UserTokenServices>();
             services.AddCors(c => {

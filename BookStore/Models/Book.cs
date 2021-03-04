@@ -15,7 +15,7 @@ namespace BookStore.Models
         public int Discount { get; set; }
         [Required]
         public int Quantity { get; set; }
-        public DateTime? PublicationDate{ get; set; }
+        public string? PublicationDate{ get; set; }
         [Required]
         public string SKU { get; set; }
         [Required]
