@@ -2,6 +2,7 @@
 using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.Book;
+using BookStore.View_Models.Category;
 using BookStore.ViewModels;
 using BookStore.ViewModels.User;
 
@@ -27,6 +28,12 @@ namespace BookStore.Modules.AutoMapper
             CreateMap<Book, BookInfoViewModel>()
                 .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName))
                 .ForMember(d => d.PublicationDate, options => options.MapFrom(s => DateTime.Parse(s.PublicationDate)));
+
+            CreateMap<Category, CategoryViewModel>()
+                .ForSourceMember(s => s.Books, options => options.DoNotValidate());
+            CreateMap<Category, DeletedCategoryViewModel>()
+                .ForSourceMember(s => s.Books, options => options.DoNotValidate());
+            CreateMap<CreateNewCategoryDTO, Category>();
         }   
     }
 }
