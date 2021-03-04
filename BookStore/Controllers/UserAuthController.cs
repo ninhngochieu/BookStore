@@ -112,9 +112,9 @@ namespace BookStore.Controllers
         [Authorize]
         public async Task<IActionResult> Update(int id,[FromForm]UserInfoPostModel userVM)
         {
-            if (!_userServices.isValidImage(userVM.Avatar))
+            if (userVM.Avatar is not null)
             {
-                return BadRequest("Invalid Image");
+                if (!_userServices.isValidImage(userVM.Avatar)) return BadRequest("Anh khong hop le");
             }
 
             UserInfoViewModel userInfoViewModel = await _userServices.UpdateInfoAsync(userVM, id);
@@ -124,7 +124,7 @@ namespace BookStore.Controllers
             }
             else
             {
-                return BadRequest("Co loi xay ra");
+                return BadRequest("Cap nhat that bai, co loi xay ra");
             }
 
         }

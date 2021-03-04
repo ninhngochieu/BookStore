@@ -109,7 +109,6 @@ namespace BookStore.Services
 
         internal bool isValidImage(IFormFile postedFile)
         {
-            if (postedFile is null) return false;
             int ImageMinimumBytes = 2048;
             if (postedFile.ContentType.ToLower() != "image/jpg" &&
                     postedFile.ContentType.ToLower() != "image/jpeg" &&
