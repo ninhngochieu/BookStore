@@ -1,11 +1,13 @@
+﻿using BookStore.Models;
+using BookStore.Services;
+using BookStore.View_Models.Category;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BookStore.Models;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
 {
@@ -13,95 +15,57 @@ namespace BookStore.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly bookstoreContext _context;
+        private readonly CategoryService _categoryService;
 
-        public CategoryController(bookstoreContext context)
+        public CategoryController(CategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
-        // GET: api/Category
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
-        {
-            return await _context.Categories.ToListAsync();
-        }
+        [Route("GetAllCategories")]
+        public async Task<IList<CategoryViewModel>> GetAll() => await _categoryService.GetAllCategories();
 
-        // GET: api/Category/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
+        [HttpGet]
+        [Route("GetCategoryById")]
+        public async Task<CategoryViewModel> GetCategoryById(int id) => await _categoryService.GetCategoryById(id);
 
-            if (category == null)
-            {
-                return NotFound();
-            }
+        [HttpGet]
+        [Route("GetCategoryBooksById")]
+        public async Task<Category> GetCategoryBooksById(int id) => await _categoryService.GetCategoryBooksById(id);
 
-            return category;
-        }
-
-        // PUT: api/Category/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
-        {
-            if (id != category.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Category
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
-        {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+        [Route("CreateNewCategory")]
+        public async Task<CategoryViewModel> CreateNewCategory([FromBody] CreateNewCategoryDTO model) => await _categoryService.CreateNewCategory(model);
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
-        }
-
-        // DELETE: api/Category/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        
+        [HttpPut]
+        [Route("ChangeCategoryName")]
+        public async Task<IActionResult> Put([FromBody] ChangeCategoryNameDTO model)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var changedCategory = await _categoryService.ChangeCategoryName(model);
+            if(changedCategory.Id == 0)
             {
                 return NotFound();
             }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(changedCategory) ;
         }
 
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
+        // DELETE api/<CategoryController>/5
+        [HttpDelete]
+        [Route("DeleteCategory")]
+        public async Task<IActionResult> Delete(int id)
+        { 
+            var deletedCategory = await _categoryService.DeleteCategory(id); 
+            if(deletedCategory.DeletedStatus)
+            {
+                return Ok(deletedCategory);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
+        
     }
 }

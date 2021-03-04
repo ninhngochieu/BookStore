@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Token\" />
     <Folder Include="View Models\" />
     <Folder Include="Models\" />
