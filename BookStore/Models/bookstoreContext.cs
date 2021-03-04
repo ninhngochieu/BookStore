@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using BookStore.Models;
 
 #nullable disable
 
@@ -36,5 +37,7 @@ namespace BookStore.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<BookStore.Models.Book> Book { get; set; }
     }
 }
