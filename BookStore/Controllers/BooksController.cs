@@ -89,7 +89,7 @@ namespace BookStore.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook([FromForm]CreateNewBookDTO bookDTO)
+        public async Task<ActionResult<BookInfoViewModel>> PostBook([FromForm]CreateNewBookDTO bookDTO)
         {
             Book addNewBook = _mapper.Map<Book>(bookDTO);
             addNewBook.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.MainImage.FileName;
@@ -127,7 +127,7 @@ namespace BookStore.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return CreatedAtAction("GetBook", new { id = addNewBook.Id }, addNewBook);
+            return CreatedAtAction("GetBook", new { id = addNewBook.Id }, _mapper.Map<BookInfoViewModel>(addNewBook));
         }
 
         // DELETE: api/Books/5
