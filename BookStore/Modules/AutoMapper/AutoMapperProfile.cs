@@ -28,6 +28,7 @@ namespace BookStore.Modules.AutoMapper
             CreateMap<Book, BookInfoViewModel>()
                 .ForMember(d => d.PublicationDate, options => options.MapFrom(s => DateTime.Parse(s.PublicationDate)));
             CreateMap<CreateNewBookDTO, Book>()
+                                .ForSourceMember(s => s.MainImage, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image4, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image1, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image2, options => options.DoNotValidate())

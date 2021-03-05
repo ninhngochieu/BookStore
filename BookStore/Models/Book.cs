@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Models
 {
@@ -17,7 +18,8 @@ namespace BookStore.Models
         public string SKU { get; set; }
         [Required]
         public string Description { get; set; }
-        
+        [Required]
+        public string MainImage{ get; set; }
         //Navigation Properties
         public int CategoryId { get; set; }
         public Category Category { get; set; }

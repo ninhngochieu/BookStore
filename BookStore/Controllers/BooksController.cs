@@ -37,7 +37,7 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
-            List<Book> books = await _context.Book.Include(c => c.Category).ToListAsync().ConfigureAwait(false);
+            List<Book> books = await _context.Book.Include(c => c.Category).ToListAsync();
             return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books)});
         }
 
@@ -89,41 +89,45 @@ namespace BookStore.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook([FromForm]CreateNewBookDTO book)
+        public async Task<ActionResult<Book>> PostBook([FromForm]CreateNewBookDTO bookDTO)
         {
-            Book newBook = _mapper.Map<Book>(book);
-            _context.Book.Add(newBook);
+            Book addNewBook = _mapper.Map<Book>(bookDTO);
+            addNewBook.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.MainImage.FileName;
+            _context.Book.Add(addNewBook);
             bool isSave = await _context.SaveChangesAsync()!=0;
 
             if (isSave)
             {
+                //Save main image
+                _imageServices.UploadImage(bookDTO.MainImage, addNewBook.MainImage);
+                //Save many image
                 BookImage bookImage = new BookImage();
-                bookImage.BookId = newBook.Id;
-                if (book.Image1 is not null)
+                bookImage.BookId = addNewBook.Id;
+                if (bookDTO.Image1 is not null)
                 {
-                    bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() +'_'+book.Image1.FileName;
-                    _imageServices.UploadImage(book.Image1, bookImage.Image1);
+                    bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() +'_'+bookDTO.Image1.FileName;
+                    _imageServices.UploadImage(bookDTO.Image1, bookImage.Image1);
                 }
-                if (book.Image2 is not null)
+                if (bookDTO.Image2 is not null)
                 {
-                    bookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + book.Image2.FileName;
-                    _imageServices.UploadImage(book.Image2, bookImage.Image2);
+                    bookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.Image2.FileName;
+                    _imageServices.UploadImage(bookDTO.Image2, bookImage.Image2);
                 }
-                if (book.Image3 is not null)
+                if (bookDTO.Image3 is not null)
                 {
-                    bookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + book.Image3.FileName;
-                    _imageServices.UploadImage(book.Image3, bookImage.Image3);
+                    bookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.Image3.FileName;
+                    _imageServices.UploadImage(bookDTO.Image3, bookImage.Image3);
                 }
-                if (book.Image4 is not null)
+                if (bookDTO.Image4 is not null)
                 {
-                    bookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + book.Image4.FileName;
-                    _imageServices.UploadImage(book.Image4, bookImage.Image4);
+                    bookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.Image4.FileName;
+                    _imageServices.UploadImage(bookDTO.Image4, bookImage.Image4);
                 }
                 _context.BookImage.Add(bookImage);
                 await _context.SaveChangesAsync();
             }
 
-            return CreatedAtAction("GetBook", new { id = newBook.Id }, newBook);
+            return CreatedAtAction("GetBook", new { id = addNewBook.Id }, addNewBook);
         }
 
         // DELETE: api/Books/5

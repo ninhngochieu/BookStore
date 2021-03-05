@@ -16,11 +16,13 @@ namespace BookStore.View_Models.Book
         public int Price { get; set; }
         [Required]
         public int Quantity { get; set; }
-        public long? PublicationDate { get; set; }
+        public long PublicationDate { get; set; }
         [Required]
         public string SKU { get; set; }
-
+        [Required]
         public string Description { get; set; }
+        [Required]
+        public IFormFile MainImage { get; set; }
         [Required]
         public int CategoryId { get; set; }
         public IFormFile Image1 { get; set; }
