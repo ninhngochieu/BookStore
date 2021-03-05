@@ -1,0 +1,10 @@
+﻿using System;
+namespace BookStore.Models
+{
+    public class Invoice
+    {
+        public Invoice()
+        {
+        }
+    }
+}

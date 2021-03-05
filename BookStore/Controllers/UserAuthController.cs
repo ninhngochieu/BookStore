@@ -12,6 +12,7 @@ using BookStore.Token;
 using Microsoft.AspNetCore.Authorization;
 using BookStore.ViewModels.User;
 using AutoMapper;
+using BookStore.Modules.CustomAuthorization;
 
 namespace BookStore.Controllers
 {
@@ -47,7 +48,7 @@ namespace BookStore.Controllers
             User fromDb = await _userServices.DoLogin(user);
             if (fromDb is null)
             {
-                return Unauthorized("Failed to login");
+                return Ok(new { error_message = "Đăng nhập thất bại, vui lòng thử lại!" });
             }
 
             TokenPair tokenPair = new TokenPair()
@@ -72,7 +73,7 @@ namespace BookStore.Controllers
             //Validate from client
             if (token.Refresh is null)
             {
-                return BadRequest("Refresh token is null");
+                return BadRequest(new { error_message = "Refresh token is null" });
             }
 
             isValidToken = _refreshToken.Validate(token.Refresh);
@@ -86,13 +87,13 @@ namespace BookStore.Controllers
 
             if (user is null)
             {
-                return NotFound("Refresh token not found");
+                return NotFound(new { error_message = "Refresh token not found" });
             }
 
             isValidToken = _refreshToken.Validate(user.RefreshToken);
-            if (isValidToken)
+            if (!isValidToken)
             {
-                return Unauthorized("Refresh token has expired");
+                return Unauthorized("Token has expired");
             }
 
             //Create new token pair
@@ -114,7 +115,7 @@ namespace BookStore.Controllers
         {
             if (userVM.Avatar is not null)
             {
-                if (!_userServices.isValidImage(userVM.Avatar)) return BadRequest("Anh khong hop le");
+                if (!_userServices.isValidImage(userVM.Avatar)) return BadRequest(new { error_message = "Lỗi hình ảnh" });
             }
 
             UserInfoViewModel userInfoViewModel = await _userServices.UpdateInfoAsync(userVM, id);
@@ -124,7 +125,7 @@ namespace BookStore.Controllers
             }
             else
             {
-                return BadRequest("Cap nhat that bai, co loi xay ra");
+                return BadRequest(new { error_message = "Có lỗi xảy ra" });
             }
 
         }

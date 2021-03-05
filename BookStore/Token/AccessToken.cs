@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using BookStore.Models;
 using BookStore.Token;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookStore.TokenGenerators
 {
@@ -12,6 +14,10 @@ namespace BookStore.TokenGenerators
         private TokenGenerator _tokenGenerator;
         private AuthenConfig _configuration;
 
+        public AccessToken()
+        {
+
+        }
         public AccessToken(TokenGenerator tokenGenerator, AuthenConfig configuration)
         {
             _tokenGenerator = tokenGenerator;
@@ -36,6 +42,31 @@ namespace BookStore.TokenGenerators
                 _configuration.AccessTokenExpirationMinutes,
                 _claims
                 );
+        }
+        internal bool Validate(string accessToken)
+        {
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                TokenValidationParameters validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = _configuration.ValidIssuer,
+                    ValidAudience = _configuration.ValidAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.AccessTokenSecret)),
+                    RequireExpirationTime = false,
+                    ClockSkew = TimeSpan.Zero,
+                }; ;
+                tokenHandler.ValidateToken(accessToken, validationParameters, out SecurityToken validatedToken);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
