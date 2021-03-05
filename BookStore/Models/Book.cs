@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ namespace BookStore.Models
         public int Price { get; set; }
         [Required]
         public int Quantity { get; set; }
-        public string PublicationDate { get; set; }
+        public DateTime PublicationDate { get; set; }
         [Required]
         public string SKU { get; set; }
         [Required]
@@ -21,6 +22,7 @@ namespace BookStore.Models
         [Required]
         public string MainImage{ get; set; }
         //Navigation Properties
+        [Required]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         //
