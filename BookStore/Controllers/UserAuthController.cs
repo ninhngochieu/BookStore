@@ -73,13 +73,13 @@ namespace BookStore.Controllers
             //Validate from client
             if (token.Refresh is null)
             {
-                return BadRequest(new { error_message = "Refresh token is null" });
+                return Unauthorized(new { error_message = "Refresh token invalid" });
             }
 
             isValidToken = _refreshToken.Validate(token.Refresh);
             if (!isValidToken)
             {
-                return BadRequest("Refresh token has expired or invalid");
+                return Unauthorized(new { error_message = "Refresh token invalid" });
             }
 
             //Validate from server
@@ -87,13 +87,13 @@ namespace BookStore.Controllers
 
             if (user is null)
             {
-                return NotFound(new { error_message = "Refresh token not found" });
+                return Unauthorized(new { error_message = "Refresh token invalid" });
             }
 
             isValidToken = _refreshToken.Validate(user.RefreshToken);
             if (!isValidToken)
             {
-                return Unauthorized("Token has expired");
+                return Unauthorized(new { error_message = "Refresh token invalid" });
             }
 
             //Create new token pair
@@ -110,7 +110,7 @@ namespace BookStore.Controllers
             });
         }
         [HttpPut("profile/{id}")]
-        [Authorize]
+         [Authorize]
         public async Task<IActionResult> Update(int id,[FromForm]UserInfoPostModel userVM)
         {
             if (userVM.Avatar is not null)
@@ -121,7 +121,7 @@ namespace BookStore.Controllers
             UserInfoViewModel userInfoViewModel = await _userServices.UpdateInfoAsync(userVM, id);
             if(userInfoViewModel is not null)
             {
-                return Ok(new { data = userInfoViewModel, success = true });
+                return Ok(new { data = userInfoViewModel, success = true, message = "Cập nhật thông tin cá nhân thành công  "});
             }
             else
             {

@@ -46,7 +46,10 @@ namespace BookStore.Services
 
         internal async Task<User> GetByRefreshToken(string refresh)
         {
-            return await _bookstoreContext.Users.Where(u=>u.RefreshToken.Equals(refresh)).FirstOrDefaultAsync();
+            return await _bookstoreContext.Users
+                .Where(u=>u.RefreshToken.Equals(refresh))
+                .Include(r=>r.Role)
+                .FirstOrDefaultAsync();
         }
 
         internal async Task<UserInfoViewModel> UpdateInfoAsync(UserInfoPostModel userVM, int id)

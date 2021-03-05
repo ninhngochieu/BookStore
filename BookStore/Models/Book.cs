@@ -25,6 +25,9 @@ namespace BookStore.Models
         [Required]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public int AuthorId { get; set; }
+        public Author Author{ get; set; }
         //
         public IList<BookImage> Images { get; set; }
         //
