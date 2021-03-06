@@ -32,5 +32,22 @@ namespace BookStore.Services
                 return false;
             }
         }
+        
+        public async Task<IList<BookInfoViewModel>> SearchBook(SearchBookDTO model)
+        {
+            var book = await  _bookstoreContext.Book
+                .Include(c => c.Category)
+                .Include(c => c.Author)
+                .Where(c => c.Author.AuthorName.Contains(model.AuthorName) || model.AuthorName == null || model.AuthorName.Trim() == "")
+                .Where(c => c.Category.CategoryName.Contains(model.CategoryName) || model.CategoryName == null || model.CategoryName.Trim() == "")
+                .Where(c => c.SKU.Contains(model.SKU) || model.SKU == null || model.SKU.Trim() == "")
+                .Where(c => c.BookName.Contains(model.BookName) || model.BookName == null || model.BookName.Trim() == "").ToListAsync();
+
+
+
+            var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book);
+
+            return returnModel;
+        }
     }
 }

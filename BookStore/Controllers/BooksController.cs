@@ -153,5 +153,10 @@ namespace BookStore.Controllers
         {
             return _context.Book.Any(e => e.Id == id);
         }
+
+
+        [HttpPost]
+        [Route("SearchBook")]
+        public async Task<ActionResult> PostBook([FromBody] SearchBookDTO model) => Ok(await _bookServices.SearchBook(model));
     }
 }
