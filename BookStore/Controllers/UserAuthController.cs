@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using BookStore.Services;
 using BookStore.TokenGenerators;
@@ -12,7 +7,6 @@ using BookStore.Token;
 using Microsoft.AspNetCore.Authorization;
 using BookStore.ViewModels.User;
 using AutoMapper;
-using BookStore.Modules.CustomAuthorization;
 
 namespace BookStore.Controllers
 {
@@ -35,7 +29,6 @@ namespace BookStore.Controllers
             _refreshToken = refreshToken;
             _mapper = mapper;
         }
-
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult<User>> Login(LoginViewModel user)
@@ -110,7 +103,7 @@ namespace BookStore.Controllers
             });
         }
         [HttpPut("profile/{id}")]
-         [Authorize]
+        [Authorize]
         public async Task<IActionResult> Update(int id,[FromForm]UserInfoPostModel userVM)
         {
             if (userVM.Avatar is not null)
@@ -125,7 +118,7 @@ namespace BookStore.Controllers
             }
             else
             {
-                return BadRequest(new { error_message = "Có lỗi xảy ra" });
+                return Ok(new { error_message = "Có lỗi xảy ra" });
             }
 
         }
@@ -136,11 +129,31 @@ namespace BookStore.Controllers
             User user = await _userServices.GetUserById(id);
             if (user is null)
             {
-                return NotFound("Not found user");
+                return Ok(new { error_message = "Không tìm thấy user"});
             }
             UserInfoViewModel userInfo = _mapper.Map<User, UserInfoViewModel>(user);
             return Ok(new { data = userInfo, success = true });
         }
-        
+
+        [HttpPut("change-password/{id}")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(int id, ChangePasswordPostModel changePassword)
+        {
+            
+            User user = await _userServices.GetUserByIdAndPasswordAsync(id, changePassword.old_password);
+            if(user is null)
+            {
+                return Ok(new { error_message = "Mật khẩu cũ không hợp lệ"});
+            }
+            if (await _userServices.ChangePasswordAsync(user, changePassword.new_password))
+            {
+                return Ok(new {success = true});
+            }
+            else
+            {
+                return Ok(new { error_message = "Có lỗi xảy ra khi đổi mật khẩu, vui lòng thử lại"});
+            }
+
+        }
     }
 }

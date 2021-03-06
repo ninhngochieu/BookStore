@@ -174,5 +174,27 @@ namespace BookStore.Services
 
             return true;
         }
+
+        internal async Task<bool> ChangePasswordAsync(User user, string new_password)
+        {
+            user.Password = new_password;
+            _bookstoreContext.Entry(user).State = EntityState.Modified;
+            try
+            {
+                return await _bookstoreContext.SaveChangesAsync() != 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+                throw;
+            }
+        }
+
+        internal async Task<User> GetUserByIdAndPasswordAsync(int id, string old_password)
+        {
+            return await _bookstoreContext.Users
+                .Where(u => u.Id == id)
+                .Where(u => u.Password.Equals(old_password)).FirstOrDefaultAsync();
+        }
     }
 }

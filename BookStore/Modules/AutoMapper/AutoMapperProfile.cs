@@ -4,6 +4,7 @@ using BookStore.Models;
 using BookStore.View_Models.Book;
 using BookStore.View_Models.Category;
 using BookStore.ViewModels;
+using BookStore.ViewModels.Author;
 using BookStore.ViewModels.User;
 
 namespace BookStore.Modules.AutoMapper
@@ -38,6 +39,10 @@ namespace BookStore.Modules.AutoMapper
             CreateMap<Category, DeletedCategoryViewModel>()
                 .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<CreateNewCategoryDTO, Category>();
+            CreateMap<Author, AuthorPostModel>()
+            .ForSourceMember(s => s.Id, options => options.DoNotValidate())
+                        .ForSourceMember(s => s.Books, options => options.DoNotValidate());
+            CreateMap<AuthorPostModel, Author>();
         }   
     }
 }

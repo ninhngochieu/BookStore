@@ -22,5 +22,15 @@ namespace BookStore.Services
             return list;
         }
 
+        internal async Task<bool> AddNewBookAsync(Book addNewBook)
+        {
+            try
+            {
+                return await _bookstoreContext.SaveChangesAsync() != 0;
+            }catch(Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

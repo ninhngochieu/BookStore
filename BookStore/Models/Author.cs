@@ -9,8 +9,8 @@ namespace BookStore.Models
         {
         }
         public int Id { get; set; }
-        public int AuthorName { get; set; }
+        public string AuthorName { get; set; }
 
-        ICollection<Book> Books;
+        public ICollection<Book> Books;
     }
 }

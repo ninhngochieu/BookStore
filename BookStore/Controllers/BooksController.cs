@@ -94,7 +94,7 @@ namespace BookStore.Controllers
             Book addNewBook = _mapper.Map<Book>(bookDTO);
             addNewBook.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.MainImage.FileName;
             _context.Book.Add(addNewBook);
-            bool isSave = await _context.SaveChangesAsync()!=0;
+            bool isSave = await _bookServices.AddNewBookAsync(addNewBook);
 
             if (isSave)
             {
@@ -125,9 +125,12 @@ namespace BookStore.Controllers
                 }
                 _context.BookImage.Add(bookImage);
                 await _context.SaveChangesAsync();
+                return CreatedAtAction("GetBook", new { id = addNewBook.Id, success = true }, _mapper.Map<BookInfoViewModel>(addNewBook));
             }
-
-            return CreatedAtAction("GetBook", new { id = addNewBook.Id }, _mapper.Map<BookInfoViewModel>(addNewBook));
+            else
+            {
+                return Ok(new { error_message = "Thêm sách thất bại, có lỗi xảy ra"});
+            }
         }
 
         // DELETE: api/Books/5
