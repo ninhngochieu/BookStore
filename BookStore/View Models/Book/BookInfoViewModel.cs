@@ -17,6 +17,7 @@ namespace BookStore.View_Models.Book
         public string Description { get; set; }
         public string MainImage { get; set; }
         public int CategoryId{ get; set; }
+        public int AuthorId { get; set; }
         public ICollection<BookImage> Images{ get; set; }
 
     }

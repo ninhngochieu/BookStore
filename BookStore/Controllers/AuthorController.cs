@@ -84,6 +84,7 @@ namespace BookStore.Controllers
             Author author = _mapper.Map<Author>(authorPost);
             _context.Author.Add(author);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
         }
 

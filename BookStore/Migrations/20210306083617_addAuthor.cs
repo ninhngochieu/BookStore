@@ -2,7 +2,7 @@
 
 namespace BookStore.Migrations
 {
-    public partial class AddAuthor : Migration
+    public partial class addAuthor : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace BookStore.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AuthorName = table.Column<int>(type: "INTEGER", nullable: false)
+                    AuthorName = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

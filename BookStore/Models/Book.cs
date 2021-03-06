@@ -27,8 +27,8 @@ namespace BookStore.Models
         public Category Category { get; set; }
 
         public int AuthorId { get; set; }
-        public Author Author{ get; set; }
-        //
+        public Author Author { get; set; }
+
         public IList<BookImage> Images { get; set; }
         //
         public IList<BookComment> Comments { get; set; }
