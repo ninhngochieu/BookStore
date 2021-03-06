@@ -26,22 +26,24 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(u => u.Id, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Password, options => options.DoNotValidate());
 
-            CreateMap<Book, BookInfoViewModel>();
+            CreateMap<Book, BookInfoViewModel>()
+                .ForMember(d => d.AuthorName, options => options.MapFrom(s => s.Author.AuthorName))
+                .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName));
             CreateMap<CreateNewBookDTO, Book>()
-                                .ForSourceMember(s => s.MainImage, options => options.DoNotValidate())
+                .ForSourceMember(s => s.MainImage, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image4, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image1, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image2, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image3, options => options.DoNotValidate());
 
-                CreateMap<Category, CategoryViewModel>()
+            CreateMap<Category, CategoryViewModel>()
                 .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<Category, DeletedCategoryViewModel>()
                 .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<CreateNewCategoryDTO, Category>();
             CreateMap<Author, AuthorPostModel>()
-            .ForSourceMember(s => s.Id, options => options.DoNotValidate())
-                        .ForSourceMember(s => s.Books, options => options.DoNotValidate());
+                .ForSourceMember(s => s.Id, options => options.DoNotValidate())
+                .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<AuthorPostModel, Author>();
         }   
     }

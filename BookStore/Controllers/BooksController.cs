@@ -157,6 +157,14 @@ namespace BookStore.Controllers
 
         [HttpPost]
         [Route("SearchBook")]
-        public async Task<ActionResult> PostBook([FromBody] SearchBookDTO model) => Ok(await _bookServices.SearchBook(model));
+        public async Task<ActionResult> PostBook([FromBody] SearchBookDTO model)
+        {
+            if (model.StartPrice > model.EndPrice)
+            {
+                return NoContent();
+            }
+            return Ok(await _bookServices.SearchBook(model));
+        }
+        
     }
 }

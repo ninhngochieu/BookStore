@@ -32,18 +32,32 @@ namespace BookStore.Services
                 return false;
             }
         }
-        
+
         public async Task<IList<BookInfoViewModel>> SearchBook(SearchBookDTO model)
         {
-            var book = await  _bookstoreContext.Book
+            var book = _bookstoreContext.Book
                 .Include(c => c.Category)
-                .Include(c => c.Author)
-                .Where(c => c.Author.AuthorName.Contains(model.AuthorName) || model.AuthorName == null || model.AuthorName.Trim() == "")
-                .Where(c => c.Category.CategoryName.Contains(model.CategoryName) || model.CategoryName == null || model.CategoryName.Trim() == "")
-                .Where(c => c.SKU.Contains(model.SKU) || model.SKU == null || model.SKU.Trim() == "")
-                .Where(c => c.BookName.Contains(model.BookName) || model.BookName == null || model.BookName.Trim() == "").ToListAsync();
+                .Include(c => c.Author);
 
+            if (model.AuthorName != null || model.AuthorName != "")
+            {
+                book.Where(c => c.Author.AuthorName.Contains(model.AuthorName) || model.AuthorName == null || model.AuthorName.Trim() == "");
+            }
+            if (model.BookName != null || model.BookName != "")
+            {
+                book.Where(c => c.BookName.Contains(model.BookName) || model.BookName == null || model.BookName.Trim() == "");
+            }
+            if (model.CategoryName != null || model.CategoryName != "")
+            {
+                book.Where(c => c.Category.CategoryName.Contains(model.CategoryName) || model.CategoryName == null || model.CategoryName.Trim() == "");
+            }
+            if(model.SKU != null || model.SKU != "")
+            {
+                book.Where(c => c.SKU.Contains(model.SKU) || model.SKU == null || model.SKU.Trim() == "");
+            }
+            
 
+            await book.ToListAsync();
 
             var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book);
 
