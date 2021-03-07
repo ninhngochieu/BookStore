@@ -43,7 +43,7 @@ namespace BookStore.Services
                 .Where(c => c.SKU.Contains(model.SKU) || model.SKU == null || model.SKU.Trim() == "")
                 .Where(c => c.BookName.Contains(model.BookName) || model.BookName == null || model.BookName.Trim() == "").ToListAsync();
 
-
+                
 
             var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book);
 
