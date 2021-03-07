@@ -38,7 +38,7 @@ namespace BookStore.Controllers
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
             List<Book> books = await _context.Book.Include(c => c.Category).Include(a=>a.Author).ToListAsync();
-            return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books)});
+            return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books), success = true});
         }
 
         // GET: api/Books/5

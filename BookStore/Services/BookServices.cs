@@ -58,6 +58,7 @@ namespace BookStore.Services
             
 
             await book.ToListAsync();
+                
 
             var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book);
 
