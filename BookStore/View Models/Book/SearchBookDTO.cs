@@ -10,6 +10,11 @@
 
         public int? StartPrice { get; set; }
         public int? EndPrice { get; set; }
+
+        public string? SortByPriceAsc { get; set; }
+        public string? SortByPriceDesc { get; set; }
+        public string? SortByNameAsc{ get; set; }
+        public string? SortByNameDesc { get; set; }
 #nullable disable
     }
 }

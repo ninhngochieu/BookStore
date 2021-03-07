@@ -163,7 +163,7 @@ namespace BookStore.Controllers
             {
                 return NoContent();
             }
-            return Ok(await _bookServices.SearchBook(model));
+            return Ok(new {data = await _bookServices.SearchBook(model), success = true });
         }
         
     }
