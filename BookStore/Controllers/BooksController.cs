@@ -37,7 +37,7 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
-            List<Book> books = await _context.Book.Include(c => c.Category).Include(a=>a.Author).ToListAsync();
+            List<Book> books = await _context.Book.Include(c => c.Category).Include(a=>a.Author).Include(c=>c.Comments).Include(i=>i.Images).ToListAsync();
             return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books), success = true});
         }
 

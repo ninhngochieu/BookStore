@@ -7,6 +7,10 @@ namespace BookStore.Models
 {
     public class Book
     {
+        public Book()
+        {
+            Private = false;
+        }
         public int Id { get; set; }
         [Required]
         public string BookName { get; set; }
@@ -21,6 +25,7 @@ namespace BookStore.Models
         public string Description { get; set; }
         [Required]
         public string MainImage{ get; set; }
+        public bool? Private { get; set; }
         //Navigation Properties
         [Required]
         public int CategoryId { get; set; }
