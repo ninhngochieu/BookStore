@@ -160,6 +160,16 @@ namespace BookStore.Controllers
             }
             return Ok(new {data = await _bookServices.SearchBook(model), success = true });
         }
-        
+
+
+        [HttpGet]
+        [Route("TestPaging")]
+        public async Task<ActionResult> Paging(int size = 2, int page = 0)
+        {
+            return Ok(await _context.Book
+                                .AsNoTracking()
+                                .Paginate(size, page));
+        }
+
     }
 }
