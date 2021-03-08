@@ -23,7 +23,7 @@ namespace BookStore.Services
             public int Total { get; private set; }
             public int Limit { get; private set; }
             public int Page { get; private set; }
-            public List<T> Objects { get; private set; }
+            public List<T> Data { get; private set; }
 
             internal PaginatedResult(int pageNumber, int pageSize = defaultPageSize)
             {
@@ -57,7 +57,7 @@ namespace BookStore.Services
                     Page = Total / Limit - 1;
                 }
 
-                Objects = await queryable.Skip(skip).Take(Limit).ToListAsync();
+                Data = await queryable.Skip(skip).Take(Limit).ToListAsync();
                 return this;
             }
         }

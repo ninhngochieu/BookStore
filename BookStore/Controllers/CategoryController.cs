@@ -24,20 +24,33 @@ namespace BookStore.Controllers
 
         [HttpGet]
         [Route("GetAllCategories")]
-        public async Task<IList<CategoryViewModel>> GetAll() => await _categoryService.GetAllCategories();
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(new { data = await _categoryService.GetAllCategories(), success = true});
+        }
 
         [HttpGet]
         [Route("GetCategoryById")]
-        public async Task<CategoryViewModel> GetCategoryById(int id) => await _categoryService.GetCategoryById(id);
+        public async Task<IActionResult> GetCategoryById(int id)
+        {
+            return Ok(new { data = await _categoryService.GetCategoryById(id), success = true });
+
+        }
 
         [HttpGet]
         [Route("GetCategoryBooksById")]
-        public async Task<Category> GetCategoryBooksById(int id) => await _categoryService.GetCategoryBooksById(id);
+        public async Task<IActionResult> GetCategoryBooksById(int id)
+        {
+            return Ok(new { data =  await _categoryService.GetCategoryBooksById(id), success = true });
+
+        }
 
         [HttpPost]
         [Route("CreateNewCategory")]
-        public async Task<CategoryViewModel> CreateNewCategory([FromBody] CreateNewCategoryDTO model) => await _categoryService.CreateNewCategory(model);
-
+        public async Task<IActionResult> CreateNewCategory([FromBody] CreateNewCategoryDTO model)
+        {
+            return Ok(new { data = await _categoryService.CreateNewCategory(model), success = true });
+        }
         
         [HttpPut]
         [Route("ChangeCategoryName")]
@@ -48,7 +61,7 @@ namespace BookStore.Controllers
             {
                 return NotFound();
             }
-            return Ok(changedCategory) ;
+            return Ok(new { data = changedCategory, success = true}) ;
         }
 
         // DELETE api/<CategoryController>/5
@@ -59,7 +72,7 @@ namespace BookStore.Controllers
             var deletedCategory = await _categoryService.DeleteCategory(id); 
             if(deletedCategory.DeletedStatus)
             {
-                return Ok(deletedCategory);
+                return Ok(new { data = deletedCategory, success = true});
             }
             else
             {

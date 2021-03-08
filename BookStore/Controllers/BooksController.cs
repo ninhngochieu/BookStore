@@ -144,20 +144,10 @@ namespace BookStore.Controllers
             return NoContent();
         }
 
-        private bool BookExists(int id)
-        {
-            return _context.Book.Any(e => e.Id == id);
-        }
-
-
         [HttpPost]
         [Route("SearchBook")]
         public async Task<ActionResult> PostBook([FromBody] SearchBookDTO model)
         {
-            if (model.StartPrice > model.EndPrice)
-            {
-                return NoContent();
-            }
             return Ok(new {data = await _bookServices.SearchBook(model), success = true });
         }
 
@@ -166,9 +156,7 @@ namespace BookStore.Controllers
         [Route("TestPaging")]
         public async Task<ActionResult> Paging(int size = 2, int page = 0)
         {
-            return Ok(await _context.Book
-                                .AsNoTracking()
-                                .Paginate(size, page));
+            return Ok(await _context.Book.AsNoTracking().Paginate(size, page));
         }
 
     }
