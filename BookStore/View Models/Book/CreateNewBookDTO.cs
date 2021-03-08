@@ -27,6 +27,7 @@ namespace BookStore.View_Models.Book
         public int CategoryId { get; set; }
         [Required]
         public int AuthorId { get; set; }
+        public bool? Private{ get; set; }
         public IFormFile Image1 { get; set; }
         public IFormFile? Image2 { get; set; }
         public IFormFile? Image3 { get; set; }

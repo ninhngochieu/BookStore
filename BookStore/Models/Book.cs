@@ -10,6 +10,7 @@ namespace BookStore.Models
         public Book()
         {
             Private = false;
+            PublicationDate = DateTime.Now;
         }
         public int Id { get; set; }
         [Required]

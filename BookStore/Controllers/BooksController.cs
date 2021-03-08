@@ -37,7 +37,12 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
-            List<Book> books = await _context.Book.Include(c => c.Category).Include(a=>a.Author).Include(c=>c.Comments).Include(i=>i.Images).ToListAsync();
+            List<Book> books = await _context.Book
+                .Include(c => c.Category)
+                .Include(a=>a.Author)
+                .Include(c=>c.Comments)
+                .Include(i=>i.Images)
+                .ToListAsync();
             return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books), success = true});
         }
 
@@ -57,33 +62,22 @@ namespace BookStore.Controllers
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        [HttpPut()]
+        public async Task<IActionResult> PutBook(BookInfoViewModel bookVM)
         {
-            if (id != book.Id)
+            Book book = await _context.Book.FindAsync(bookVM.Id);
+            if(book is null)
             {
-                return BadRequest();
+                return Ok(new {error_message = "Khong tim thay sach" });
             }
-
-            _context.Entry(book).State = EntityState.Modified;
-
-            try
+            if (await _bookServices.UpdateBookAsync(book,bookVM))
             {
-                await _context.SaveChangesAsync();
+                return Ok(new { success = true, message = "Cap nhat thanh cong"});
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Ok(new { error_message = "Cap nhat that bai, co loi xay ra"});
             }
-
-            return NoContent();
         }
 
         // POST: api/Books

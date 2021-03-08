@@ -104,5 +104,48 @@ namespace BookStore.Services
 
             return returnModel;
         }
+
+        internal async Task<bool> UpdateBookAsync(Book book, BookInfoViewModel bookVM)
+        {
+            if(bookVM.AuthorId is not null)
+            {
+                book.AuthorId = bookVM.AuthorId??0;
+            }
+
+            if (bookVM.BookName is not null)
+            {
+                book.BookName = bookVM.BookName;
+            }
+            if (bookVM.CategoryId is not null)
+            {
+                book.CategoryId = bookVM.CategoryId??0;
+            }
+            if (bookVM.Description is not null)
+            {
+                book.Description = bookVM.Description;
+            }
+            if (bookVM.MainImage is not null)
+            {
+                book.MainImage = bookVM.MainImage;
+            }
+            if (bookVM.Price is not null)
+            {
+                book.Price = bookVM.Price??0;
+            }
+            if (bookVM.Private is not null)
+            {
+                book.Private = bookVM.Private;
+            }
+            _bookstoreContext.Entry(book).State = EntityState.Modified;
+
+            try
+            {
+                return await _bookstoreContext.SaveChangesAsync()!=0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            };
+        }
     }
 }

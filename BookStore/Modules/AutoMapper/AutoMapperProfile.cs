@@ -5,6 +5,7 @@ using BookStore.View_Models.Book;
 using BookStore.View_Models.Category;
 using BookStore.ViewModels;
 using BookStore.ViewModels.Author;
+using BookStore.ViewModels.Book;
 using BookStore.ViewModels.User;
 
 namespace BookStore.Modules.AutoMapper
@@ -45,6 +46,8 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(s => s.Id, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<AuthorPostModel, Author>();
-        }   
+            CreateMap<UpdateBookPutModel, Book>();
+        }
+        
     }
 }
