@@ -7,6 +7,7 @@ using BookStore.Token;
 using Microsoft.AspNetCore.Authorization;
 using BookStore.ViewModels.User;
 using AutoMapper;
+using System.Collections.Generic;
 
 namespace BookStore.Controllers
 {
@@ -154,6 +155,11 @@ namespace BookStore.Controllers
                 return Ok(new { error_message = "Có lỗi xảy ra khi đổi mật khẩu, vui lòng thử lại"});
             }
 
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        {
+            return await _userServices.GetAllUser();
         }
     }
 }
