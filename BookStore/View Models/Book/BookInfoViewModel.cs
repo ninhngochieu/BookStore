@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookStore.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BookStore.View_Models.Book
 {
@@ -24,6 +25,5 @@ namespace BookStore.View_Models.Book
         public string? AuthorName { get; set; }
         //public Author Author { get; set; }
         public ICollection<BookImage>? Images{ get; set; }
-
-    }
+     }
 }

@@ -9,6 +9,7 @@ using BookStore.Models;
 using BookStore.Services;
 using AutoMapper;
 using BookStore.View_Models.Book;
+using BookStore.ViewModels.Book;
 
 namespace BookStore.Controllers
 {
@@ -63,7 +64,7 @@ namespace BookStore.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut()]
-        public async Task<IActionResult> PutBook(BookInfoViewModel bookVM)
+        public async Task<IActionResult> PutBook([FromForm]UpdateBookPostModel bookVM)
         {
             Book book = await _context.Book.FindAsync(bookVM.Id);
             if(book is null)
@@ -99,7 +100,7 @@ namespace BookStore.Controllers
                 bookImage.BookId = addNewBook.Id;
                 if (bookDTO.Image1 is not null)
                 {
-                    bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() +'_'+bookDTO.Image1.FileName;
+                    bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookDTO.Image1.FileName;
                     _imageServices.UploadImage(bookDTO.Image1, bookImage.Image1);
                 }
                 if (bookDTO.Image2 is not null)

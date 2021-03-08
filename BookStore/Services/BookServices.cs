@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.Book;
+using BookStore.ViewModels.Book;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,8 +13,11 @@ namespace BookStore.Services
 {
     public class BookServices : Service
     {
-        public BookServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper) : base(bookstoreContext, webHostEnvironment, mapper)
+        private readonly ImageServices _imageServices;
+
+        public BookServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper, ImageServices imageServices) : base(bookstoreContext, webHostEnvironment, mapper)
         {
+            _imageServices = imageServices;
         }
 
         public async Task<IList<BookInfoViewModel>> GetAllBook()
@@ -105,7 +109,7 @@ namespace BookStore.Services
             return returnModel;
         }
 
-        internal async Task<bool> UpdateBookAsync(Book book, BookInfoViewModel bookVM)
+        internal async Task<bool> UpdateBookAsync(Book book, UpdateBookPostModel bookVM)
         {
             if(bookVM.AuthorId is not null)
             {
@@ -124,10 +128,6 @@ namespace BookStore.Services
             {
                 book.Description = bookVM.Description;
             }
-            if (bookVM.MainImage is not null)
-            {
-                book.MainImage = bookVM.MainImage;
-            }
             if (bookVM.Price is not null)
             {
                 book.Price = bookVM.Price??0;
@@ -136,6 +136,37 @@ namespace BookStore.Services
             {
                 book.Private = bookVM.Private;
             }
+            //Reup image
+            BookImage bookImage = new BookImage();
+            bookImage.BookId = book.Id;
+
+            if(bookVM.MainImage is not null)
+            {
+                book.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.MainImage.FileName;
+                _imageServices.UploadImage(bookVM.MainImage, book.MainImage);
+            }
+
+            if(bookVM.Image1 is not null)
+            {
+                bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image1.FileName;
+                _imageServices.UploadImage(bookVM.Image1, bookImage.Image1);
+            }
+            if (bookVM.Image2 is not null)
+            {
+                bookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image2.FileName;
+                _imageServices.UploadImage(bookVM.Image2, bookImage.Image2);
+            }
+            if (bookVM.Image3 is not null)
+            {
+                bookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image3.FileName;
+                _imageServices.UploadImage(bookVM.Image3, bookImage.Image3);
+            }
+            if (bookVM.Image4 is not null)
+            {
+                bookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image4.FileName;
+                _imageServices.UploadImage(bookVM.Image4, bookImage.Image4);
+            }
+
             _bookstoreContext.Entry(book).State = EntityState.Modified;
 
             try

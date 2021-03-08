@@ -46,7 +46,6 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(s => s.Id, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Books, options => options.DoNotValidate());
             CreateMap<AuthorPostModel, Author>();
-            CreateMap<UpdateBookPutModel, Book>();
         }
         
     }

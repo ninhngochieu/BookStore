@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace BookStore.ViewModels.Book
 {
-    public class UpdateBookPutModel
+    public class UpdateBookPostModel
     {
-        public UpdateBookPutModel()
+        public UpdateBookPostModel()
         {
         }
 
-        public int? id { get; set; }
+        public int Id { get; set; }
         public string? BookName { get; set; }
         
         public int? Price { get; set; }
@@ -27,5 +27,9 @@ namespace BookStore.ViewModels.Book
         
         public int? AuthorId { get; set; }
         public bool? Private { get; set; }
+        public IFormFile Image1 { get; set; }
+        public IFormFile? Image2 { get; set; }
+        public IFormFile? Image3 { get; set; }
+        public IFormFile? Image4 { get; set; }
     }
 }
