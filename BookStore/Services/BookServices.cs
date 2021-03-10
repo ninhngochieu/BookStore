@@ -37,32 +37,15 @@ namespace BookStore.Services
             }
         }
 
-        public async Task<IList<BookInfoViewModel>> SearchBook(SearchBookDTO model)
+        public IList<BookInfoViewModel> SearchBook(SearchBookDTO model)
         {
             IEnumerable<Book> book = _bookstoreContext.Book
                 .Include(c => c.Category)
                 .Include(c => c.Author)
-                .Include(c=>c.Images);
-
-            //if (model.AuthorName != null || model.AuthorName != "")
-            //{
-            //    book.Where(c => c.Author.AuthorName.Contains(model.AuthorName) || model.AuthorName == null || model.AuthorName.Trim() == "");
-            //}
-            //if (model.BookName != null || model.BookName != "")
-            //{
-            //    book.Where(c => c.BookName.Contains(model.BookName) || model.BookName == null || model.BookName.Trim() == "");
-            //}
-            //if (model.CategoryName != null || model.CategoryName != "")
-            //{
-            //    book.Where(c => c.Category.CategoryName.Contains(model.CategoryName) || model.CategoryName == null || model.CategoryName.Trim() == "");
-            //}
-            //if(model.SKU != null || model.SKU != "")
-            //{
-            //    book.Where(c => c.SKU.Contains(model.SKU) || model.SKU == null || model.SKU.Trim() == "");
-            //}
+                .Include(c => c.Images);
 
             //Author
-            if(model.AuthorName is not null)
+            if (model.AuthorName is not null)
             {
                 book = book.Where(x => x.Author.AuthorName.ToLower().Contains(model.AuthorName.ToLower())).ToList();
             }
@@ -77,7 +60,7 @@ namespace BookStore.Services
             }            //Start price
             if (model.StartPrice is not null)
             {
-                book = book.Where(x=>x.Price >=model.StartPrice).ToList();
+                book = book.Where(x => x.Price >= model.StartPrice).ToList();
             }            //End
             if (model.EndPrice is not null)
             {
@@ -85,10 +68,10 @@ namespace BookStore.Services
             }
             if (model.SKU is not null)
             {
-                book = book.Where(x=>x.SKU==model.SKU).ToList();
+                book = book.Where(x => x.SKU == model.SKU).ToList();
             }
             //Sort
-            if(model.SortByPriceAsc is not null)
+            if (model.SortByPriceAsc is not null)
             {
                 book = book.OrderBy(b => b.Price).ToList();
             }

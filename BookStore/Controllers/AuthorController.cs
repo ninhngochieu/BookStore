@@ -28,7 +28,7 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Author>>> GetAuthor()
         {
-            return await _context.Author.Include(b=>b.Books).ToListAsync();
+            return await _context.Author.ToListAsync();
         }
 
         // GET: api/Author/5

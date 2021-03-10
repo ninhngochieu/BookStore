@@ -37,14 +37,11 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(s => s.Image2, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image3, options => options.DoNotValidate());
 
-            CreateMap<Category, CategoryViewModel>()
-                .ForSourceMember(s => s.Books, options => options.DoNotValidate());
-            CreateMap<Category, DeletedCategoryViewModel>()
-                .ForSourceMember(s => s.Books, options => options.DoNotValidate());
+            CreateMap<Category, CategoryViewModel>();
+            CreateMap<Category, DeletedCategoryViewModel>();
             CreateMap<CreateNewCategoryDTO, Category>();
             CreateMap<Author, AuthorPostModel>()
-                .ForSourceMember(s => s.Id, options => options.DoNotValidate())
-                .ForSourceMember(s => s.Books, options => options.DoNotValidate());
+                .ForSourceMember(s => s.Id, options => options.DoNotValidate());
             CreateMap<AuthorPostModel, Author>();
         }
         
