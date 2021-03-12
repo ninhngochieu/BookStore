@@ -1,5 +1,4 @@
-﻿using System;
-namespace BookStore.ViewModels
+﻿namespace BookStore.View_Models
 {
     public class RoleViewModel
     {

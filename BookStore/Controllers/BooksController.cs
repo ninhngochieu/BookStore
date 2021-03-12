@@ -9,7 +9,6 @@ using BookStore.Models;
 using BookStore.Services;
 using AutoMapper;
 using BookStore.View_Models.Book;
-using BookStore.ViewModels.Book;
 
 namespace BookStore.Controllers
 {

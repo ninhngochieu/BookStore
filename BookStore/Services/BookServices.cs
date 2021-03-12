@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.Book;
-using BookStore.ViewModels.Book;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,5 +1,4 @@
-﻿using System;
-namespace BookStore.ViewModels.User
+﻿namespace BookStore.View_Models.User
 {
     public class LoginViewModel
     {

@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
-namespace BookStore.ViewModels.User
+namespace BookStore.View_Models.User
 {
     public class UserInfoPostModel
     {

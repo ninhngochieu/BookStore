@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BookStore.Token;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BookStore.TokenGenerators
+namespace BookStore.Token
 {
     public class TokenGenerator
     {

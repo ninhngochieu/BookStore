@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
-using BookStore.ViewModels.Author;
 using AutoMapper;
+using BookStore.View_Models.Author;
 
 namespace BookStore.Controllers
 {

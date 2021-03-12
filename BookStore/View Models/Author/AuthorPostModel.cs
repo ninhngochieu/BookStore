@@ -1,5 +1,4 @@
-﻿using System;
-namespace BookStore.ViewModels.Author
+﻿namespace BookStore.View_Models.Author
 {
     public class AuthorPostModel
     {

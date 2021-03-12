@@ -4,10 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BookStore.Models;
-using BookStore.Token;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BookStore.TokenGenerators
+namespace BookStore.Token
 {
     public class AccessToken
     {

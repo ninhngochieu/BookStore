@@ -2,12 +2,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Models;
 using BookStore.Services;
-using BookStore.TokenGenerators;
 using BookStore.Token;
 using Microsoft.AspNetCore.Authorization;
-using BookStore.ViewModels.User;
 using AutoMapper;
 using System.Collections.Generic;
+using BookStore.View_Models.User;
 
 namespace BookStore.Controllers
 {

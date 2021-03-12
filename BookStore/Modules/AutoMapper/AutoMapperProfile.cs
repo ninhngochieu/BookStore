@@ -1,12 +1,11 @@
 ﻿using System;
 using AutoMapper;
 using BookStore.Models;
+using BookStore.View_Models;
+using BookStore.View_Models.Author;
 using BookStore.View_Models.Book;
 using BookStore.View_Models.Category;
-using BookStore.ViewModels;
-using BookStore.ViewModels.Author;
-using BookStore.ViewModels.Book;
-using BookStore.ViewModels.User;
+using BookStore.View_Models.User;
 
 namespace BookStore.Modules.AutoMapper
 {

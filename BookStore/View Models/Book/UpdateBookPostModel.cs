@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 
-namespace BookStore.ViewModels.Book
+namespace BookStore.View_Models.Book
 {
     public class UpdateBookPostModel
     {
