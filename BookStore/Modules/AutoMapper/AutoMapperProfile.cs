@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models;
 using BookStore.View_Models.Author;
