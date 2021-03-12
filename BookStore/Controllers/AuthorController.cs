@@ -41,7 +41,6 @@ namespace BookStore.Controllers
             {
                 return NotFound();
             }
-
             return author;
         }
 

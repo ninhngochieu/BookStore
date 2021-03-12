@@ -25,6 +25,10 @@ namespace BookStore.Models
         public virtual DbSet<BookImage> BookImage{ get; set; }
         public virtual DbSet<BookComment> BookComment{ get; set; }
         public virtual DbSet<Author> Author{ get; set; }
+        public virtual DbSet<Status> Statuses { get; set; }
+        public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

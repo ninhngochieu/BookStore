@@ -6,5 +6,7 @@ namespace BookStore.Models
     {
         public int Id { get; set; }
         public string AuthorName { get; set; }
+
+        public IList<Book> Books { get; set; }
     }
 }

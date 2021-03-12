@@ -38,5 +38,7 @@ namespace BookStore.Models
         public IList<BookImage> Images { get; set; }
         //
         public IList<BookComment> Comments { get; set; }
+
+        public IList<InvoiceDetail> InvoiceDetails { get; set; }
     }
 }

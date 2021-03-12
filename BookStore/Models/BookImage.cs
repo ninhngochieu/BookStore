@@ -14,6 +14,7 @@ namespace BookStore.Models
         public string? Image4 { get; set; }
 
         public int BookId { get; set; }
+        public Book Book { get; set; }
 
     }
 }
