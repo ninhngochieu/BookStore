@@ -4,7 +4,6 @@
     {
 #nullable enable
         public string ?BookName { get; set; }
-        public string ?SKU { get; set; }
         public string ?CategoryName { get; set; }
         public string ?AuthorName { get; set; }
 

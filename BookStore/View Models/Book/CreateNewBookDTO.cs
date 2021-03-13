@@ -18,8 +18,6 @@ namespace BookStore.View_Models.Book
         public int Quantity { get; set; }
         public DateTime? PublicationDate { get; set; }
         [Required]
-        public string SKU { get; set; }
-        [Required]
         public string Description { get; set; }
         [Required]
         public IFormFile MainImage { get; set; }

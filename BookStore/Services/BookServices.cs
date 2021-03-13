@@ -65,10 +65,7 @@ namespace BookStore.Services
             {
                 book = book.Where(x => x.Price <= model.EndPrice).ToList();
             }
-            if (model.SKU is not null)
-            {
-                book = book.Where(x => x.SKU == model.SKU).ToList();
-            }
+           
             //Sort
             if (model.SortByPriceAsc is not null)
             {

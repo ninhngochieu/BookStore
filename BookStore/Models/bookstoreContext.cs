@@ -38,7 +38,6 @@ namespace BookStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>().HasIndex(e=>e.SKU).IsUnique();
             OnModelCreatingPartial(modelBuilder);
         }
 

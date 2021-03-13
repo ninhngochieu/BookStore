@@ -20,8 +20,6 @@ namespace BookStore.Models
         public int Quantity { get; set; }
         public DateTime PublicationDate { get; set; }
         [Required]
-        public string SKU { get; set; }
-        [Required]
         public string Description { get; set; }
         [Required]
         public string MainImage{ get; set; }
