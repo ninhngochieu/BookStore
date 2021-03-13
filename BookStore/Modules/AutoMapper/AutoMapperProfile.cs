@@ -27,7 +27,11 @@ namespace BookStore.Modules.AutoMapper
 
             CreateMap<Book, BookInfoViewModel>()
                 .ForMember(d => d.AuthorName, options => options.MapFrom(s => s.Author.AuthorName))
-                .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName));
+                .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName))
+                            .ForMember(d => d.Image1, options => options.MapFrom(s => s.BookImage.Image1))
+                            .ForMember(d => d.Image2, options => options.MapFrom(s => s.BookImage.Image2))
+                            .ForMember(d => d.Image3, options => options.MapFrom(s => s.BookImage.Image3))
+                            .ForMember(d => d.Image4, options => options.MapFrom(s => s.BookImage.Image4));
             CreateMap<CreateNewBookDTO, Book>()
                 .ForSourceMember(s => s.MainImage, options => options.DoNotValidate())
                 .ForSourceMember(s => s.Image4, options => options.DoNotValidate())

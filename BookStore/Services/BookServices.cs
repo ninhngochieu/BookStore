@@ -41,7 +41,7 @@ namespace BookStore.Services
             IEnumerable<Book> book = _bookstoreContext.Book
                 .Include(c => c.Category)
                 .Include(c => c.Author)
-                .Include(c => c.Images);
+                .Include(b=>b.BookImage);
 
             //Author
             if (model.AuthorName is not null)

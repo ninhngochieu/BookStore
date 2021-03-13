@@ -41,7 +41,7 @@ namespace BookStore.Controllers
                 .Include(c => c.Category)
                 .Include(a=>a.Author)
                 .Include(c=>c.Comments)
-                .Include(i=>i.Images)
+                .Include(i=>i.BookImage)
                 .ToListAsync();
             return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books), success = true});
         }
@@ -50,14 +50,17 @@ namespace BookStore.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await _context.Book.Include(c => c.Category).Where(b=>b.Id==id).FirstAsync();
+            var book = await _context.Book
+                .Include(c => c.Category)
+                .Include(i => i.BookImage)
+                .Include(a=>a.Author).Where(b=>b.Id==id).FirstAsync();
 
             if (book == null)
             {
-                return NotFound();
+                return Ok(new { error_message = "Khong tim thay san pham"});
             }
 
-            return Ok(new { data = _mapper.Map<BookInfoViewModel>(book) });
+            return Ok(new { data = _mapper.Map<BookInfoViewModel>(book),success = true });
         }
 
         // PUT: api/Books/5
@@ -119,7 +122,7 @@ namespace BookStore.Controllers
                 }
                 _context.BookImage.Add(bookImage);
                 await _context.SaveChangesAsync();
-                return CreatedAtAction("GetBook", new { id = addNewBook.Id, success = true }, _mapper.Map<BookInfoViewModel>(addNewBook));
+                return Ok(new { data = addNewBook, success = true });
             }
             else
             {

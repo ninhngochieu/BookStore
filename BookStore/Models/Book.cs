@@ -32,7 +32,8 @@ namespace BookStore.Models
         public int AuthorId { get; set; }
         public Author Author { get; set; }
 
-        public IList<BookImage> Images { get; set; }
+        public BookImage BookImage { get; set; }
+
         //
         public IList<BookComment> Comments { get; set; }
 
