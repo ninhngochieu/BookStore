@@ -22,13 +22,18 @@ namespace BookStore.Services
 
             public int Total { get; private set; }
             public int Limit { get; private set; }
-            public int Page { get; private set; }
+            public int Current_Page { get; private set; }
+            public List<int> List_Page { get; private set; } = new List<int>();
+#nullable enable
+            public int? Next_Page { get; private set; }
+            public int? Prev_Page { get; private set; }
+#nullable disable
             public List<T> Data { get; private set; }
 
             internal PaginatedResult(int pageNumber, int pageSize = defaultPageSize)
             {
                 Limit = pageSize;
-                Page = pageNumber;
+                Current_Page = pageNumber;
 
                 if (Limit < 0 || Limit > maxPageSize)
                 {
@@ -36,26 +41,54 @@ namespace BookStore.Services
                 }
                 if (pageNumber < 0)
                 {
-                    Page = 0;
+                    Current_Page = 0;
                 }
             }
 
             internal async Task<PaginatedResult<T>> Paginate(IQueryable<T> queryable)
             {
                 Total = queryable.Count();
+                
+                int totalPage = Total / Limit;
+                
+                for (int i = 0; i <= totalPage; i++)
+                {
+                    if ((Current_Page - 2 + i) >= 0 && (Current_Page - 2 + i) <= totalPage)
+                    {
+                        List_Page.Add(Current_Page - 2 + i);
+                    }
+                }
+
+                Next_Page = Current_Page + 1;
+                Prev_Page = Current_Page - 1;
+
+                //if (Curren)
+                if (Current_Page >= totalPage )
+                {
+                    Next_Page = null;
+                }
+
+                if (Prev_Page <= 0)
+                {
+                    Prev_Page = null;
+                }
+
+                if (Prev_Page < 0)
 
                 if (Limit > Total)
                 {
                     Limit = Total;
-                    Page = 0;
+                    Current_Page = 0;
                 }
 
-                int skip = Page * Limit;
+                int skip = Current_Page * Limit;
                 if (skip + Limit > Total)
                 {
                     skip = Total - Limit;
-                    Page = Total / Limit - 1;
+                    Current_Page = Total / Limit - 1;
                 }
+
+                
 
                 Data = await queryable.Skip(skip).Take(Limit).ToListAsync();
                 return this;
