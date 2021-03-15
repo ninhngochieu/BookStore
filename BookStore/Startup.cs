@@ -51,6 +51,7 @@ namespace BookStore
             services.AddScoped<BookServices>();
             services.AddScoped<CategoryService>();
             services.AddScoped<ImageServices>();
+            services.AddScoped<BookCommentServices>();
 
             //services.AddScoped<UserTokenServices>();
             services.AddCors(c => {
