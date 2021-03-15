@@ -1,0 +1,30 @@
+@import "../../../variables.scss";
+
+ul {
+  list-style: none;
+  justify-content: center;
+
+  li {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: $orange;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 10px;
+    margin: 5px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #4b1214;
+    }
+  }
+
+  li.active {
+    background-color: #4b1214;
+  }
+}

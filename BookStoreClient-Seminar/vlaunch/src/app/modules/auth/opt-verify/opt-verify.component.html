@@ -1,0 +1,101 @@
+<bread-crumb [data]="[{ name: 'Xác thực otp' }]"></bread-crumb>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 mb-4">
+      <h3 class="text-center" *ngIf="type != 'resetPassword'">
+        Đăng ký tài khoản
+      </h3>
+      <h3 class="text-center" *ngIf="type === 'resetPassword'">
+        Khôi phục mật khẩu
+      </h3>
+    </div>
+    <div class="col-12">
+      <form (ngSubmit)="register()" [formGroup]="registerForm">
+        <div class="form-group">
+          <label for="username">Tài khoản* </label>
+          <input formControlName="username"
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Nhập tài khoản"
+            required
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="username.invalid&&username.touched"
+            role="alert"
+          >
+          Username không hợp lệ
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu* </label>
+          <input formControlName="password"
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Nhập mật khẩu"
+            required
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="password.invalid&&password.touched"
+            role="alert"
+          >
+            {{ "Mật khẩu không hợp lệ" }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Nhập lại mật khẩu* </label>
+          <input formControlName="confirmPassword"
+            type="password"
+            class="form-control"
+            id="confirm-password"
+            name="confirm-password"
+            placeholder="Nhập mật khẩu"
+            required
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="confirmPassword.invalid&&confirmPassword.touched"
+            role="alert"
+          >
+            {{ "Mật khẩu không hợp lệ"}}
+          </div>
+          <div
+            class="alert alert-danger"
+            *ngIf="registerForm.hasError('notSame')&&confirmPassword.invalid"
+            role="alert"
+          >
+            {{ "Mật khẩu không không khớp"}}
+          </div>
+        </div>
+        <div
+          class="alert alert-danger"
+          *ngIf="authService.errorMess"
+          role="alert"
+        >
+          {{ authService.errorMess }}
+        </div>
+        <div class="mt-4">
+          <div id="recaptcha-container"></div>
+        </div>
+        <div class="text-center mt-4">
+          <button
+            [disabled]="registerForm.invalid"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Đăng kí
+          </button>
+        </div>
+      </form>
+      <div class="text-center mt-4">
+        <a [routerLink]="['/login']">Đã có tài khoản ?</a>
+      </div>
+    </div>
+  </div>
+</div>

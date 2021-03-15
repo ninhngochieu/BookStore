@@ -1,0 +1,58 @@
+<nav class="header-top">
+  <!-- Contact info -->
+  <div class="container">
+    <div class="row justify-content-between">
+      <section class="header-top__info">
+        <!-- <ul class="top-info__list">
+          <li class="top-info__item">
+            <a href="tel:0123456789" class="top-info__link"
+              >hotline: 0123 456 789</a
+            >
+          </li>
+
+          <li class="top-info__item">
+            <a href="" class="top-info__link">tìm cửa hàng</a>
+          </li>
+
+          <li class="top-info__item">
+            <a href="" class="top-info__link">liên hệ hợp tác</a>
+          </li>
+        </ul> -->
+      </section>
+      <!-- /Contact info -->
+
+      <!-- Header action -->
+      <section class="header-top__info">
+        <ul class="top-info__list">
+          <li *ngIf="authService.isLogin === true" class="top-info__item">
+            <a [routerLink]="['/user/order']" class="top-info__link checked">
+              <i class="icon-check-square-regular"></i>
+              <span class="info-link__order-check">kiểm tra đơn hàng</span>
+            </a>
+          </li>
+
+          <li *ngIf="authService.isLogin === true" class="top-info__item">
+            <a [routerLink]="['/user', 'profile']" class="top-info__link"
+              >trang cá nhân</a
+            >
+          </li>
+
+          <li *ngIf="authService.isLogin === true" class="top-info__item">
+            <a (click)="authService.logout()" class="top-info__link"
+              >đăng xuất</a
+            >
+          </li>
+
+          <li *ngIf="authService.isLogin === false" class="top-info__item">
+            <a [routerLink]="['/login']" class="top-info__link">đăng nhập</a>
+          </li>
+
+          <li *ngIf="authService.isLogin === false" class="top-info__item">
+            <a (click)="register()" class="top-info__link">đăng ký</a>
+          </li>
+        </ul>
+      </section>
+      <!-- /Header action -->
+    </div>
+  </div>
+</nav>

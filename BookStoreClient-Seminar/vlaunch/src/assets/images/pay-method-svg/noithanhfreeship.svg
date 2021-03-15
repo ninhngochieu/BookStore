@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000px" height="1000px" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Artboard</title>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" opacity="0" x="0" y="0" width="1000" height="1000"></rect>
+        <polygon id="Rectangle" fill="#0165B9" points="113.322303 320 936.419411 320.474777 874.451447 500 45.4194107 500.474777"></polygon>
+        <text id="FREESHIP" font-family="SVN-HemiHead, SVN-Hemi Head" font-size="108" font-weight="normal" letter-spacing="3" fill="#FFFFFF">
+            <tspan x="340.97227" y="440.474777">FREESHIP</tspan>
+        </text>
+        <polygon id="Rectangle" fill="#DD583B" points="45 320 341 320 265.571429 500 45 500"></polygon>
+        <text id="NỘI" font-family="Arial-BoldMT, Arial" font-size="57" font-weight="bold" letter-spacing="1.58333333" fill="#FFFFFF">
+            <tspan x="64" y="383">  NỘI</tspan>
+            <tspan x="64" y="447"></tspan>
+        </text>
+        <text id="THÀNH" font-family="Arial-BoldMT, Arial" font-size="57" font-weight="bold" letter-spacing="1.58333333" fill="#FFFFFF">
+            <tspan x="64" y="463">THÀNH</tspan>
+        </text>
+    </g>
+</svg>

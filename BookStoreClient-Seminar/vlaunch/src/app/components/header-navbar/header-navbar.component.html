@@ -1,0 +1,74 @@
+<div class="container">
+  <nav class="header-navbar row">
+    <label class="navbar-menu__icon" id="navbar-menu__icon-close" (click)="showMenu = true">
+      <i class="icon-menu"></i>
+    </label>
+
+    <label class="navbar-overlay" [class.show]="showMenu" (click)="showMenu = false"></label>
+
+    <app-navbar-mobile (closeMenu)="closeMenu($event)" [showMenu]="showMenu"></app-navbar-mobile>
+
+    <!-- Logo -->
+    <section class="header-navbar__logo">
+      <a [routerLink]="['/']" class="navbar-logo__link">
+        <img src="assets\images\adivietlogowebstie.svg" alt="Logo" />
+      </a>
+    </section>
+    <!-- /Logo -->
+
+    <!-- Search -->
+    <section class="header-navbar__search">
+      <div class="navbar-search__form">
+        <div class="form-groups">
+          <input type="text" placeholder="Tìm kiếm sản phẩm..." (keyup.enter)="search()" name="keyword"
+            [(ngModel)]="keyword" />
+
+          <button type="button" (click)="search()">
+            <i class="icon-search"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- /Search -->
+
+    <!-- Right navbar -->
+    <section class="header-navbar__right">
+      <!-- Product viewed list -->
+      <section class="navbar-right__viewed">
+        <span class="right-viewed__title">sản phẩm đã xem</span>
+        <i class="icon-chevron-down-solid"></i>
+
+        <div class="product-viewed__list">
+          <span *ngIf="authService.isLogin && !productViewed">Bạn chưa xem sản phẩm nào.</span>
+          <ul class="container" *ngIf="productViewed && authService.isLogin">
+            <li *ngFor="let item of productViewed">
+              <a [routerLink]="[
+                  '/' + item.product.slug + '-p' + item.product.id
+                ]">
+                <img src="{{ item.product.default_image }}" [alt]="item.product" />
+              </a>
+            </li>
+          </ul>
+          <span *ngIf="!authService.isLogin">Hãy <a [routerLink]="['/login']">đăng nhập</a> để xem những sản phẩm bạn đã
+            xem</span>
+          <span *ngIf="!productViewed">
+            Hãy tiếp tục khám phá Adiviet, các sản phẩm bạn đã xem sẽ hiển thị ở
+            đây!
+          </span>
+        </div>
+      </section>
+      <!-- /Product viewed list -->
+
+      <!-- Cart -->
+      <section class="navbar-right__cart">
+        <a [routerLink]="['/cart']" class="right-cart__link">
+          <i class="icon-cart-plus-solid"></i>
+          <span class="right-cart__title">giỏ hàng</span>
+          <span class="my-badge">{{ count }}</span>
+        </a>
+      </section>
+      <!-- /Cart -->
+    </section>
+    <!-- /Right navbar -->
+  </nav>
+</div>

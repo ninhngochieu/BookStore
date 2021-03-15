@@ -1,0 +1,68 @@
+<ul class="rating" *ngIf="ratingData">
+  <li class="rating-item" *ngFor="let item of ratingData.results">
+    <div class="avatar">
+      <img src="{{ item?.user?.avatar | defaultImage: 'user' }}" alt="" />
+    </div>
+    <div class="content">
+      <div class="name">{{ item?.user?.full_name }}</div>
+      <ul class="star d-flex mb-2">
+        <li>
+          <img
+            src="{{
+              item.rating >= 1
+                ? 'assets/images/star.svg'
+                : 'assets/images/un-star.png'
+            }}"
+            alt="ratting"
+          />
+        </li>
+        <li>
+          <img
+            src="{{
+              item.rating >= 2
+                ? 'assets/images/star.svg'
+                : 'assets/images/un-star.png'
+            }}"
+            alt="ratting"
+          />
+        </li>
+        <li>
+          <img
+            src="{{
+              item.rating >= 3
+                ? 'assets/images/star.svg'
+                : 'assets/images/un-star.png'
+            }}"
+            alt="ratting"
+          />
+        </li>
+        <li>
+          <img
+            src="{{
+              item.rating >= 4
+                ? 'assets/images/star.svg'
+                : 'assets/images/un-star.png'
+            }}"
+            alt="ratting"
+          />
+        </li>
+        <li>
+          <img
+            src="{{
+              item.rating == 5
+                ? 'assets/images/star.svg'
+                : 'assets/images/un-star.png'
+            }}"
+            alt="ratting"
+          />
+        </li>
+      </ul>
+      <div class="mb-1">
+        {{ item.reason }}
+      </div>
+    </div>
+  </li>
+</ul>
+<div class="text-center" *ngIf="ratingData.next_page">
+  <button class="btn see-more" (click)="changePage(ratingData.next_page)">Xem thêm</button>
+</div>

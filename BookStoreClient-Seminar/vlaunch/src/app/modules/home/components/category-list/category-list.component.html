@@ -1,0 +1,28 @@
+<section class="container">
+  <div class="row">
+    <ul
+      class="category-list col-xl-12 d-flex justify-content-between align-items-center"
+    >
+      <li
+        class="category-item d-flex flex-xl-column"
+        *ngFor="let category of categories | async"
+      >
+        <a
+          [routerLink]="[category.slug + '-c' + category.id]"
+          class="category-link d-flex flex-column justify-content-between align-items-center"
+        >
+          <div class="link-img">
+            <img
+              src="{{ category.avatar_sm | defaultImage }}"
+              [alt]="category.name"
+            />
+          </div>
+
+          <div class="link-title">
+            <span>{{ category.name }}</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>

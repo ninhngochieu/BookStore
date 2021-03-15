@@ -1,0 +1,119 @@
+@import "../../../variables.scss";
+
+ul {
+  list-style: none;
+}
+
+.navbar {
+  background-color: $orange;
+  padding: 0;
+
+  .navbar-menu__list {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0;
+    position: relative;
+    width: 100%;
+
+    .navbar-menu__item {
+      .navbar-menu__link {
+        display: block;
+        padding: 14px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: $white;
+
+        &:hover {
+          background-color: $orange-active;
+          transition: all linear 0.14s;
+        }
+      }
+    }
+
+    .has-mega {
+      &:hover {
+        .mega-content {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    .mega-content {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      top: 50px;
+      left: 0;
+      z-index: 10;
+      box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.15);
+      border: 1px solid $orange;
+      border-top: none;
+      background: #fff none repeat scroll 0 0;
+      border-radius: 0;
+      margin: 0;
+      padding: 10px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: 0.3s ease;
+
+      h2 {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        &:hover {
+          a {
+            span {
+              color: $orange;
+            }
+          }
+        }
+
+        a {
+          text-decoration: none;
+        }
+      }
+
+      .level0 {
+        width: 100%;
+      }
+
+      .level1 {
+        flex: 1;
+        padding: 10px;
+
+        li {
+          padding-top: 5px;
+
+          &:hover {
+            a {
+              color: $orange;
+            }
+          }
+        }
+
+        a {
+          line-height: 1.3;
+          text-decoration: none;
+          color: $black;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 739px) {
+  .navbar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 740px) and (max-width: 1023px) {
+  .navbar {
+    display: none;
+  }
+}

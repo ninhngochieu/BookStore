@@ -1,0 +1,193 @@
+@import "../../../../variables.scss";
+
+.main {
+  margin-top: 40px;
+
+  .container-main__row {
+    .content-row__main {
+      .title-post {
+        font-size: 22px;
+        padding-bottom: 8px;
+        font-weight: normal;
+        color: $text-color;
+
+        &::first-letter {
+          text-transform: capitalize;
+        }
+
+        .capitalize {
+          display: inline-block;
+          font-size: 22px;
+          padding-bottom: 8px;
+          font-weight: normal;
+          text-transform: capitalize;
+          color: $text-color;
+        }
+      }
+
+      .created {
+        .created-title {
+          display: inline-block;
+          color: $text-color;
+          font-size: 13px;
+          opacity: 0.4;
+          padding-bottom: 8px;
+
+          &::first-letter {
+            text-transform: capitalize;
+          }
+
+          .created-author__link {
+            display: inline-block;
+            color: $text-color;
+            padding-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: capitalize;
+
+            &:hover {
+              color: $orange;
+            }
+          }
+        }
+      }
+
+      .related-post__list {
+        list-style: none;
+
+        .related-post__item {
+          margin-bottom: 4px;
+
+          .related-post__link {
+            display: block;
+            text-decoration: none;
+            font-size: 14px;
+            color: $orange;
+            letter-spacing: 0.4px;
+
+            .uppercase {
+              display: inline-block;
+              color: $orange;
+              font-size: 14px;
+              letter-spacing: 0.4px;
+              text-transform: uppercase;
+            }
+
+            .capitalize {
+              display: inline-block;
+              color: $orange;
+              font-size: 14px;
+              letter-spacing: 0.4px;
+              text-transform: capitalize;
+            }
+
+            &:hover {
+              color: $orange-active;
+              text-decoration: underline;
+
+              .capitalize,
+              .uppercase {
+                color: $orange-active;
+                text-decoration: underline;
+              }
+            }
+
+            &::first-letter {
+              text-transform: capitalize;
+            }
+          }
+        }
+      }
+
+      .content {
+        display: block;
+        font-size: 14px;
+        color: $text-color;
+        line-height: 24px;
+        margin-bottom: 26px;
+        letter-spacing: 0.4px;
+
+        h2 {
+          a {
+            font-size: inherit;
+          }
+        }
+
+        p {
+          font-size: 15px;
+          line-height: 130%;
+        }
+      }
+
+      .social-reference {
+        .social-list {
+          list-style: none;
+          display: flex;
+
+          .social-item {
+            position: relative;
+
+            .social-link {
+              display: block;
+              padding: 2px 12px;
+              font-size: 12px;
+              color: $white;
+              text-decoration: none;
+              text-align: center;
+              border-radius: 4px;
+              background-color: #1677f2;
+              display: flex;
+              align-items: center;
+
+              &.share-more {
+                position: relative;
+                background-color: #e75a3a;
+
+                &::after {
+                  content: "";
+                  display: block;
+                  position: absolute;
+                  top: -30px;
+                  left: 0;
+                  right: 0;
+                  height: 40px;
+                }
+              }
+
+              &.share-more:hover ~ .share-with {
+                display: block;
+              }
+
+              &:hover {
+                opacity: 0.8;
+              }
+
+              i {
+                color: $white;
+                font-size: 12px;
+              }
+
+              .social-link__title {
+                display: inline-block;
+                color: $white;
+                font-size: 12px;
+                padding: 0 6px;
+
+                &::first-letter {
+                  text-transform: capitalize;
+                }
+              }
+
+              .sum-count {
+                display: inline-block;
+                color: $white;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

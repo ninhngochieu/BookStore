@@ -1,0 +1,364 @@
+<bread-crumb [data]="breadcrumbData"></bread-crumb>
+
+<section class="product mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-5">
+        <div class="product-image d-none d-md-block">
+          <div
+            class="large-image"
+            data-toggle="modal"
+            data-target="#imageModel"
+          >
+            <img
+              src="{{ mainImage?.image_large | defaultImage }}"
+              alt="{{ product.name }}"
+            />
+          </div>
+          <div class="image-list mb-3">
+            <ng-container *ngIf="product.images?.length">
+              <owl-carousel-o class="carousel" [options]="customOptions">
+                <ng-container *ngFor="let image of product.images">
+                  <ng-template carouselSlide [id]="image.id" [width]="85">
+                    <div
+                      class="image-content"
+                      (click)="selectImage(image)"
+                      style="
+                        cursor: pointer;
+                        max-width: 100px;
+                        max-height: 80px;
+                      "
+                    >
+                      <img [src]="image.image" alt="{{ product.name }}" />
+                    </div>
+                  </ng-template>
+                </ng-container>
+              </owl-carousel-o>
+            </ng-container>
+          </div>
+        </div>
+        <div class="mb-4 d-md-none big-image-carousel">
+          <ng-container *ngIf="product.images?.length">
+            <owl-carousel-o class="carousel" [options]="customOptions2">
+              <ng-container *ngFor="let image of product.images">
+                <ng-template carouselSlide [id]="image.id">
+                  <div class="image-content">
+                    <img [src]="image.image_large" alt="{{ product.name }}" />
+                  </div>
+                </ng-template>
+              </ng-container>
+            </owl-carousel-o>
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-7 pl-4">
+        <div class="product-detail">
+          <h4 class="mb-3">{{ product.name }}</h4>
+          <p class="mb-0" *ngIf="!product.code">
+            Mã sản phẩm: (Đang cập nhật...)
+          </p>
+          <p class="mb-0" *ngIf="product.code">
+            Mã sản phẩm: {{ product.code }}
+          </p>
+          <hr />
+          <h3 class="mb-3">
+            <span class="price mr-4"
+              >{{
+                (selectedVariant?.price_discount
+                  ? selectedVariant?.price_discount
+                  : selectedVariant?.price_override
+                  ? selectedVariant?.price_override
+                  : product?.price_discount
+                  ? product?.price_discount
+                  : product?.price
+                ) | formatPrice
+              }}₫</span
+            >
+            <span *ngIf="product?.price_discount" class="old-price"
+              >{{ product?.price | formatPrice }}₫</span
+            >
+          </h3>
+          <p class="mb-3">
+            <strong class="mr-3">Tình trạng:</strong>
+            <span class="green ml-1">Còn hàng</span>
+          </p>
+          <div class="brief mb-3">
+            {{
+              product.brief ? product.brief : "Chưa có mô tả cho sản phẩm này"
+            }}
+          </div>
+          <div class="rating mb-3">
+            <strong class="mr-4">Đánh giá:</strong>
+            <ul class="star d-flex">
+              <li>
+                <img
+                  src="{{
+                    product.rating_avg >= 1
+                      ? 'assets/images/star.svg'
+                      : 'assets/images/un-star.png'
+                  }}"
+                  alt="ratting"
+                />
+              </li>
+              <li>
+                <img
+                  src="{{
+                    product.rating_avg >= 2
+                      ? 'assets/images/star.svg'
+                      : 'assets/images/un-star.png'
+                  }}"
+                  alt="ratting"
+                />
+              </li>
+              <li>
+                <img
+                  src="{{
+                    product.rating_avg >= 3
+                      ? 'assets/images/star.svg'
+                      : 'assets/images/un-star.png'
+                  }}"
+                  alt="ratting"
+                />
+              </li>
+              <li>
+                <img
+                  src="{{
+                    product.rating_avg >= 4
+                      ? 'assets/images/star.svg'
+                      : 'assets/images/un-star.png'
+                  }}"
+                  alt="ratting"
+                />
+              </li>
+              <li>
+                <img
+                  src="{{
+                    product.rating_avg == 5
+                      ? 'assets/images/star.svg'
+                      : 'assets/images/un-star.png'
+                  }}"
+                  alt="ratting"
+                />
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="variant"
+            *ngIf="product.product_type?.has_variant && product.variants"
+          >
+            <div class="variant__item mb-4"
+              *ngIf="isEmptyVariants == false"
+            >
+              <strong class="mb-1 d-block">Chọn sản phẩm</strong>
+              <div class="variant__attr_items mt-2" *ngIf="variantMappingList.length > 0">
+                <div 
+                  class="variant__attr_item" 
+                  *ngFor="let variantMapping of variantMappingList; let mappingIndex = index"
+                >
+                  <label *ngIf="variantMapping.items.length > 0">
+                    {{ variantMapping.attr_name }}:
+                  </label>
+                  <ul *ngIf="variantMapping.items.length > 0">
+                    <li 
+                      *ngFor="let mappingItem of variantMapping.items"
+                      [class.d-none]="mappingIndex != 0 && selectedVariant.attribute_item_keys[mappingIndex - 1] != mappingItem.variant.attribute_item_keys[mappingIndex-1]"
+                      (click)="selectedVariant = mappingItem.variant" 
+                      [class.active]="selectedVariant.attribute_item_keys.indexOf(mappingItem.attr_item_key) > -1 && selectedVariant.quantity_available > 0"
+                      [class.disabled]="mappingItem.variant.quantity_available == 0"
+                    >
+                      {{ mappingItem.attr_item.attribute_item.name }}
+                      <img src="assets/images/select-pro.png" alt="" />
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="d-flex align-items-center">
+            <div class="custom-number-btn">
+              <button class="btn-minus" (click)="updateNumber('minus')">
+                -
+              </button>
+              <input type="text" [(ngModel)]="number" />
+              <button class="btn-add" (click)="updateNumber('add')">+</button>
+            </div>
+            <div class="btn-buy">
+              <button
+                *ngIf="product?.variants?.length > 0"
+                (click)="addProductToCart()"
+              >
+                Mua ngay
+              </button>
+              <span
+                class="mr-2"
+                *ngIf="product?.variants?.length === 0"
+                class="unready"
+                >HÀNG ORDER</span
+              >
+            </div>
+          </div>
+
+          <!-- <a class="size-tour-link"> Hướng dẫn chọn size </a> -->
+          <hr />
+          <p>
+            Kết bạn Zalo để được tư vấn:
+            
+            <a class="phone-number" target="_blank" href="https://zalo.me/0973697933">0973697933</a>
+          </p>
+          <!-- <p class="payment">
+            Chấp nhận thanh toán bằng:
+            <img src="assets/images/payment-1.svg" alt="" />
+          </p> -->
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-lg-8">
+        <div class="left-module">
+          <ul class="tabs tabs-title">
+            <li
+              class="mr-1"
+              (click)="tab = 'content'"
+              [class.active]="tab == 'content'"
+            >
+              Mô tả
+            </li>
+            <li
+              class="mr-1"
+              (click)="tab = 'comment'"
+              [class.active]="tab == 'comment'"
+            >
+              Bình luận
+            </li>
+            <li
+              class="mr-1"
+              (click)="tab = 'rating'"
+              [class.active]="tab == 'rating'"
+            >
+              Đánh giá
+            </li>
+          </ul>
+          <div class="tab-content pt-4" *ngIf="tab == 'content'">
+            <div class="content" [innerHtml]="product.content"></div>
+          </div>
+          <app-comment
+            class="d-block pt-4"
+            *ngIf="tab == 'comment'"
+            [id]="id"
+          ></app-comment>
+          <app-rating
+            [ratingData]="ratingData"
+            (onChangePage)="onChangePageRating($event)"
+            class="d-block p-4"
+            *ngIf="tab == 'rating' && ratingData"
+          ></app-rating>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="right-module">
+          <div class="right-bestsell" *ngIf="newestProduct$">
+            <h2><a [routerLink]="['/search']">Mới ra mắt</a></h2>
+            <div class="list__bestsell">
+              <div
+                *ngFor="let item of newestProduct$ | async"
+                class="list__bestsell--item"
+              >
+                <div class="thumbnail-container">
+                  <div class="product-image">
+                    <a [routerLink]="['/' + item.slug + '-p' + item.id]">
+                      <img
+                        src="{{ item.default_image | defaultImage: 'product' }}"
+                        alt="{{ item.name }}"
+                      />
+                    </a>
+                  </div>
+                  <div class="product-meta">
+                    <a [routerLink]="['/' + item.slug + '-p' + item.id]">
+                      {{ item.name }}
+                    </a>
+                    <div class="mt-1">
+                      <span class="price mr-3">
+                        {{
+                          (item.price_discount
+                            ? item.price_discount
+                            : item.price
+                          ) | formatPrice
+                        }}₫
+                      </span>
+                      <span
+                        *ngIf="item.price_discount"
+                        style="font-size: 12px"
+                        class="old-price"
+                        >{{ item.price | formatPrice }}₫</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-product-list
+  *ngIf="product.category"
+  [category]="product.category"
+  class="mb-5 mt-5 d-block"
+></app-product-list>
+
+<!-- model -->
+<div
+  class="modal fade"
+  id="imageModel"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="imageModelLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModelLabel">
+          {{ product.name }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="big-image">
+          <img
+            src="{{ mainImage?.image_large | defaultImage }}"
+            [alt]="product?.name"
+          />
+        </div>
+        <div class="slide-image">
+          <ul>
+            <li
+              (click)="selectImage(image)"
+              *ngFor="let image of product.images"
+            >
+              <img src="{{ image.image_small }}" [alt]="product?.name" />
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

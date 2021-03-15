@@ -1,0 +1,51 @@
+@import "../../../variables.scss";
+
+:host {
+  display: block;
+  text-align: center;
+
+  .page-not-found {
+    margin-bottom: 40px;
+    padding-top: 40px;
+
+    img {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    p {
+      color: #888;
+    }
+
+    a {
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      background-color: $orange;
+      border-color: $orange;
+      color: #fff;
+      border-radius: 2px;
+      text-transform: uppercase;
+      display: inline-block;
+      height: 40px;
+      line-height: 39px;
+      padding: 0 20px;
+      text-align: center;
+      white-space: nowrap;
+      outline: none !important;
+      cursor: pointer;
+      border: none;
+      font-weight: 400;
+      border-radius: 0;
+      letter-spacing: 0;
+      -webkit-transition: background-color 0.1s ease-in;
+      -moz-transition: background-color 0.1s ease-in;
+      -ms-transition: background-color 0.1s ease-in;
+      -o-transition: background-color 0.1s ease-in;
+      transition: background-color 0.1s ease-in;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      text-decoration: none;
+    }
+  }
+}

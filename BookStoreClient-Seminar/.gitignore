@@ -1,0 +1,13 @@
+# Directory deployment script
+bash/test
+bash/prod
+environment.prod.ts
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+bash/htapple.vn

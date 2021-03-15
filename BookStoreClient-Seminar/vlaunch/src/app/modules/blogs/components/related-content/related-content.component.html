@@ -1,0 +1,69 @@
+<div class="col-12">
+  <app-category-tree></app-category-tree>
+</div>
+
+<div *ngIf="(mostView$ | async)?.length > 0" class="related-most-view col-12">
+  <a class="most-view__title">xem nhiều nhất</a>
+
+  <ul class="most-view__list">
+    <li
+      *ngFor="let article of mostView$ | async"
+      class="most-view__item row justify-content-between"
+    >
+      <a
+        [routerLink]="['/blog', article.slug + '-' + article.id]"
+        class="most-view__link col-3 col-md-2 col-xl-4"
+      >
+        <img
+          src="{{ article.image | defaultImage }}"
+          alt="{{ article.title }}"
+        />
+      </a>
+
+      <div class="most-view__description col-9 col-md-10 col-xl-8">
+        <a
+          [routerLink]="['/blog', article.slug + '-' + article.id]"
+          class="most-view__description-link"
+        >
+          {{ article.title }}
+        </a>
+
+        <span class="most-view__created">{{
+          article.created | date: "dd/MM/yyyy"
+        }}</span>
+      </div>
+    </li>
+  </ul>
+
+  <a [routerLink]="['/blog']" class="most-view__load-more">xem thêm</a>
+</div>
+
+<div
+  *ngIf="(discounts$ | async)?.length > 0"
+  class="related-promotion row justify-content-md-start justify-content-xl-center justify-content-center"
+>
+  <a class="promotion-title__link col-12 col-md-12 col-xl-11">khuyến mãi</a>
+  <ul class="promotion-news__list col-12 col-md-8 col-xl-11">
+    <li
+      class="promotion-news__item row"
+      *ngFor="let article of discounts$ | async"
+    >
+      <a
+        [routerLink]="['/blog', article.slug + '-' + article.id]"
+        class="promotion-news__item-link col-3 col-md-3 col-xl-4"
+      >
+        <img
+          src="{{ article.image | defaultImage }}"
+          alt="{{ article.title }}"
+        />
+      </a>
+
+      <a
+        [routerLink]="['/blog', article.slug + '-' + article.id]"
+        class="promotion-news__item-title-link col-9 col-md-9 col-xl-8"
+      >
+        {{ article.title }}
+      </a>
+    </li>
+  </ul>
+</div>

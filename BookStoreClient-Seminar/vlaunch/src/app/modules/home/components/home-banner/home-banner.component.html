@@ -1,0 +1,20 @@
+<owl-carousel-o
+  [options]="customOptions"
+  *ngIf="service.slider$"
+  (dragging)="isDragging = $event.dragging"
+>
+  <ng-container *ngFor="let slider of (service.slider$ | async)?.items">
+    <ng-template carouselSlide
+      ><a
+        [owlRouterLink]="getRouterUrl(slider)"
+        [stopLink]="isDragging"
+        class="banner-link"
+      >
+        <img
+          src="{{ slider?.image_xl | defaultImage: 'slider'}}"
+          class="banner-link__img"
+          alt="{{ slider?.description }}"
+        /> </a
+    ></ng-template>
+  </ng-container>
+</owl-carousel-o>

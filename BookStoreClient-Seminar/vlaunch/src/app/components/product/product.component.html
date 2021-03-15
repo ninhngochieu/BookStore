@@ -1,0 +1,36 @@
+<div class="product">
+  <div class="discount" *ngIf="product.discount_percent > 0">
+    <p class="number">{{ product.discount_percent }}%</p>
+    <p class="text">Giảm</p>
+  </div>
+
+  <div class="product_image">
+    <img *ngIf="product.free_ship" class="freeship" src="assets\images\freeshipadiviet.svg" alt="free ship">
+    <a [routerLink]="['/' + product.slug + '-p' + product.id]">
+      <img class="loading pos-center" *ngIf="loading" src="/assets/images/loading.gif" alt="loading" />
+      <img [hidden]="loading" (load)="onLoad()" src="{{ product.default_image_sm | defaultImage }}"
+        alt="{{ product.name }}" />
+    </a>
+  </div>
+  <div class="product_desc">
+    <a [routerLink]="['/' + product.slug + '-p' + product.id]" class="product_name" title="{{ product.name }}">
+      {{ product.name }}
+    </a>
+    <div class="product_prices">
+      <span class="special_price">
+        {{
+        (product.price_discount ? product.price_discount : product.price)
+        | formatPrice
+        }}₫
+      </span>
+      <span class="old-price ml-3" *ngIf="product.price_discount">
+        {{ product.price | formatPrice }}₫
+      </span>
+    </div>
+  </div>
+  <div class="product_action">
+    <button (click)="addProductToCart(product)">
+      đặt mua ngay <i class="icon-shopping-cart-solid d-lg-block d-none"></i>
+    </button>
+  </div>
+</div>

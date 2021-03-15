@@ -1,0 +1,47 @@
+<nav class="navbar d-none d-lg-block">
+  <section class="container">
+    <div class="col-12">
+      <ul class="navbar-menu__list" *ngIf="menu">
+        <li
+          class="navbar-menu__item"
+          [class.has-mega]="item.children.length > 0"
+          *ngFor="let item of menu"
+        >
+          <a [routerLink]="getRouterUrl(item)" class="navbar-menu__link">{{
+            item.name
+          }}</a>
+          <div class="mega-content" *ngIf="item.children.length > 0">
+            <div class="container">
+              <div class="col-md-12">
+                <ul class="level0 d-flex">
+                  <li class="level1" *ngFor="let child of item.children">
+                    <h2>
+                      <a
+                        [routerLink]="getRouterUrl(child)"
+                        routerLinkActive="router-link-active"
+                      >
+                        <span>{{ child.name }}</span>
+                      </a>
+                    </h2>
+                    <ul class="level1-parent">
+                      <li
+                        class="level2"
+                        *ngFor="let grandChild of child.children"
+                      >
+                        <a
+                          [routerLink]="getRouterUrl(grandChild)"
+                          routerLinkActive="router-link-active"
+                          >{{ grandChild.name }}</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</nav>

@@ -1,0 +1,86 @@
+@import "../../../variables.scss";
+
+.header-top {
+  background-color: $black;
+
+  .header-top__info {
+    .top-info__list {
+      display: flex;
+      list-style: none;
+      margin-bottom: 0;
+
+      .top-info__item {
+        display: inline-block;
+        cursor: pointer;
+        &:nth-child(2) {
+          --border: 1px solid rgba(255, 255, 255, 0.1);
+          border-left: var(--border);
+          border-right: var(--border);
+        }
+
+        .top-info__link {
+          padding: 7px 12px;
+          display: block;
+          font-size: 13px;
+          letter-spacing: 0.3px;
+          text-decoration: none;
+          color: $white;
+          height: 100%;
+
+          i {
+            color: $white;
+          }
+          span {
+            color: $white;
+          }
+
+          &::first-letter {
+            text-transform: capitalize;
+          }
+
+          &:hover {
+            background-color: $white;
+            color: $text-color;
+
+            i {
+              color: $black;
+            }
+            span {
+              color: $black;
+            }
+          }
+
+          .info-link__order-check {
+            display: inline-block;
+
+            &::first-letter {
+              text-transform: capitalize;
+            }
+          }
+
+          .icon-check-square-regular {
+            padding-right: 10px;
+            font-size: 14px;
+          }
+
+          &.checked {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 739px) {
+  .header-top {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 740px) and (max-width: 1023px) {
+  .header-top {
+    display: none;
+  }
+}

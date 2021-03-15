@@ -1,0 +1,14 @@
+<app-home-banner class="mb-4 d-block"></app-home-banner>
+
+<app-category-list [categories]="service.categories$" class="mb-4 d-block"></app-category-list>
+
+<app-categories-banner class="mb-4 d-block"></app-categories-banner>
+
+<app-product-list-suggestion class="mb-4 d-block"></app-product-list-suggestion>
+
+<app-trending-banner class="mb-4 d-block"></app-trending-banner>
+
+<div *ngFor="let category of service.categoryRoot$ | async">
+  <app-product-list [category]="category" class="mb-5 d-block" *ngIf="category">
+  </app-product-list>
+</div>

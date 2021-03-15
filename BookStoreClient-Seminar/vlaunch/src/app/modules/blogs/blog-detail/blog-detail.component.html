@@ -1,0 +1,66 @@
+<bread-crumb [data]="breadcrumbData"></bread-crumb>
+
+<section class="container main">
+  <div class="container-main__row row flex-wrap-reverse">
+    <div class="content-row__related col-12 col-md-12 col-xl-4">
+      <app-related-content></app-related-content>
+    </div>
+
+    <div *ngIf="!article" class="content-row__main col-12 col-md-12 col-xl-8">
+      <app-spinner></app-spinner>
+    </div>
+
+    <div *ngIf="article" class="content-row__main col-12 col-md-12 col-xl-8">
+      <h3 class="title-post">
+        {{ article.title }}
+      </h3>
+
+      <div class="created">
+        <span class="created-title">
+          đăng bởi
+          <a class="created-author__link">{{ article.user.full_name }}</a>
+          vào lúc {{ article.created | date: "dd/MM/yyyy" }}
+        </span>
+      </div>
+
+      <ul class="related-post__list">
+        <li class="related-post__item" *ngFor="let article of newestArticles">
+          <a
+            [routerLink]="['/blog', article.slug + '-' + article.id]"
+            class="related-post__link"
+          >
+            {{ article.title }}
+          </a>
+        </li>
+      </ul>
+
+      <div class="content" [innerHTML]="article.content"></div>
+
+      <div class="social-reference">
+        <ul class="social-list">
+          <!-- <li class="social-item mr-2">
+            <a href="" class="social-link">
+              <i class="icon-fb-like"></i>
+              <span class="social-link__title">thích</span>
+              <span class="sum-count">0</span>
+            </a>
+          </li> -->
+
+          <li class="social-item">
+            <a
+              target="_blank"
+              [attr.href]="
+                'https://www.facebook.com/sharer.php?u=' + pageUrlEncode()
+              "
+              class="social-link"
+            >
+              <i class="icon-fb-circle"></i>
+              <span class="social-link__title">chia sẻ</span>
+              <!-- <span class="sum-count">0</span> -->
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

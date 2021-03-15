@@ -1,0 +1,42 @@
+@import "../../../variables.scss";
+
+.bread-crumb {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 50px 0;
+  text-align: center;
+  margin-bottom: 30px !important;
+  min-height: 140px;
+
+  h4 {
+    margin-top: 0;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 0;
+    background: transparent;
+    color: black;
+    padding: 0;
+    list-style: none;
+    li {
+      display: inline;
+      a {
+        text-decoration: none;
+        &:hover {
+          span {
+            color: $orange;
+          }
+        }
+        span {
+          color: black;
+        }
+      }
+    }
+  }
+}

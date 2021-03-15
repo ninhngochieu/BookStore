@@ -1,0 +1,9 @@
+<ul class="d-flex" *ngIf="data.page_list.length > 1">
+  <li
+    [class.active]="data.current_page === page"
+    *ngFor="let page of data.page_list"
+    (click)="changePage(page)"
+  >
+    {{ page }}
+  </li>
+</ul>

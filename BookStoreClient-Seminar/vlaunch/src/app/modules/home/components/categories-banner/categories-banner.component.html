@@ -1,0 +1,56 @@
+<div class="container" *ngIf="banners">
+  <div class="row">
+    <div class="col-12">
+      <div class="main-content__category">
+        <div class="content-category__left">
+          <a [routerLink]="getRouterUrl(banners[0])" class="category-left__img">
+            <img
+              src="{{ banners[0].image_lg | defaultImage: 'banner' }}"
+              alt="{{ banners[0].description }}"
+            />
+          </a>
+        </div>
+
+        <div class="content-category__right">
+          <div class="category-right__top">
+            <div class="category-right__top-left">
+              <a
+                [routerLink]="getRouterUrl(banners[1])"
+                class="right-top__left-link"
+              >
+                <img
+                  src="{{ banners[1].image_lg | defaultImage: 'banner' }}"
+                  alt="{{ banners[1].description }}"
+                />
+              </a>
+            </div>
+
+            <div class="category-right__top-right">
+              <a
+                [routerLink]="getRouterUrl(banners[2])"
+                class="right-top__right-link"
+              >
+                <img
+                  src="{{ banners[2].image_lg | defaultImage: 'banner' }}"
+                  alt="{{ banners[2].description }}"
+                />
+              </a>
+            </div>
+          </div>
+
+          <div class="category-right__bottom">
+            <a
+              [routerLink]="getRouterUrl(banners[3])"
+              class="right-bottom__link"
+            >
+              <img
+                src="{{ banners[3].image_lg | defaultImage: 'banner' }}"
+                alt="{{ banners[3].description }}"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

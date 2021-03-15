@@ -1,0 +1,385 @@
+@import "../../../../variables.scss";
+
+.main {
+  .main-row {
+    .filter {
+      padding: 0 12px;
+      --border-color: #dbdbdb;
+      border: 1px dashed var(--border-color);
+
+      .filter-title {
+        h3 {
+          font-size: 14px;
+          color: $orange;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+          padding: 12px 0;
+          border-bottom: 1px dashed var(--border-color);
+        }
+      }
+
+      .filter-trademark {
+        .trademark-title {
+          h3 {
+            font-size: 14px;
+            color: $text-color;
+            font-weight: 600;
+            padding: 12px 0;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+          }
+        }
+
+        form {
+          .input-group {
+            input.form-control {
+              border-radius: 0;
+              color: $text-color;
+              font-size: 14px;
+              padding: 16px;
+              letter-spacing: 0.4px;
+              font-weight: normal;
+              outline: none;
+
+              &:focus {
+                box-shadow: none;
+                border-color: $orange;
+              }
+            }
+          }
+
+          .btn.btn-outline-secondary {
+            border-radius: 0;
+            border: none;
+            background-color: $orange;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            i {
+              color: $white;
+              font-size: 16px;
+            }
+
+            &:focus {
+              box-shadow: none;
+            }
+
+            &:hover,
+            &:active {
+              opacity: 0.8;
+            }
+          }
+        }
+
+        .trademark-list {
+          list-style: none;
+          margin-top: 20px;
+
+          .trademark-item {
+            .trademark-choose {
+              display: flex;
+              align-items: center;
+              cursor: pointer;
+
+              #trademark-checkbox {
+                --size: 16px;
+                width: var(--size);
+                height: var(--size);
+                margin-right: 12px;
+              }
+
+              span {
+                line-height: 100%;
+                display: inline-block;
+                color: #6f6f6f;
+                font-size: 14px;
+                font-weight: normal;
+                text-transform: capitalize;
+              }
+
+              &:hover {
+                span {
+                  color: $orange;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .filter-price {
+        margin-top: 30px;
+
+        .filter-price__title {
+          h3 {
+            font-size: 14px;
+            color: $text-color;
+            font-weight: bold;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+          }
+        }
+
+        .price-list {
+          list-style: none;
+          height: auto;
+          overflow-y: scroll;
+
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          &::-webkit-scrollbar-track {
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.1);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.14);
+            border-radius: 4px;
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.2);
+          }
+
+          .price-item {
+            margin: 20px 0;
+            padding: 0 10px;
+
+            .price-choose {
+              display: flex;
+              align-items: center;
+              cursor: pointer;
+
+              input[type="radio"] {
+                --size: 16px;
+                width: var(--size);
+                height: var(--size);
+                margin-right: 12px;
+              }
+
+              span {
+                line-height: 100%;
+                display: inline-block;
+                color: #6f6f6f;
+                letter-spacing: 0.4px;
+                font-size: 14px;
+                font-weight: normal;
+
+                &::first-letter {
+                  text-transform: capitalize;
+                }
+              }
+
+              &:hover {
+                span {
+                  color: $orange;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .discount {
+        h3 {
+          font-size: 14px;
+          color: $text-color;
+          font-weight: bold;
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .sort {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ebebeb;
+    border-top: 1px solid #ebebeb;
+
+    span {
+      font-size: inherit;
+    }
+
+    ul {
+      list-style: none;
+      margin-bottom: 0;
+
+      li {
+        label {
+          margin: 0;
+          margin-right: 20px;
+          font-size: inherit;
+          cursor: pointer;
+
+          i {
+            height: 16px;
+            width: 16px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
+            margin: -3px 5px 0 0;
+            position: relative;
+
+            &::before {
+              content: "";
+              display: none;
+              width: 8px;
+              height: 8px;
+              background-color: $orange;
+              position: absolute;
+              border-radius: 50%;
+              margin: 2px;
+            }
+          }
+
+          input:checked + i {
+            border-color: $orange;
+            &::before {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    select {
+      width: 120px;
+      padding: 5px;
+    }
+  }
+
+  .categories {
+    &__item {
+      cursor: pointer;
+
+      &:hover {
+        color: $orange;
+      }
+
+      .image {
+        img {
+          background: #fff;
+          border-radius: 10px;
+          margin: 1px 0 8px;
+          object-fit: scale-down;
+          padding: 7px;
+          transform: scale(1);
+          transition-duration: 0.4s;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          border: 7px solid #f5f5f5;
+          max-height: 100px;
+        }
+      }
+
+      h6 {
+        color: inherit;
+        font-size: 13px;
+        text-align: center;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      a {
+        text-decoration: none;
+        color: $black;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .filter-mobile-tablet {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    bottom: 0;
+    width: 280px;
+    background-color: $white;
+    z-index: 11;
+    border-left: 1px solid #dbdbdb;
+    padding: 0 16px;
+    animation: slideOut ease-in 0.1s;
+
+    .close-btn {
+      position: absolute;
+      z-index: 11;
+      background-color: $orange;
+      top: 50%;
+      transform: translateY(-50%);
+      --size: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: var(--size);
+      height: var(--size);
+      left: -36px;
+      cursor: pointer;
+
+      i {
+        color: white;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+      }
+
+      &:hover,
+      &:active {
+        opacity: 0.8;
+      }
+    }
+
+    &.show {
+      right: 0;
+      opacity: 1;
+      animation: slideIn ease-in 0.14s;
+    }
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    right: -340px;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    right: 0;
+  }
+  to {
+    right: -340px;
+  }
+}
+
+.products {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .products {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .products {
+    grid-template-columns: 1fr 1fr;
+  }
+}

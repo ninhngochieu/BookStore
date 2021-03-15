@@ -1,0 +1,54 @@
+@import "../../../variables.scss";
+
+h2 {
+  text-transform: uppercase;
+  color: #333;
+  font-size: 22px;
+  display: inline-block;
+  height: 39px;
+  line-height: 39px;
+  position: relative;
+  font-weight: 500;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .product-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .hide-1200 {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .product-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .hide-1200 {
+    display: block;
+  }
+  .hide-768 {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .product-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hide-1200 {
+    display: block;
+  }
+  .hide-768 {
+    display: block;
+  }
+}

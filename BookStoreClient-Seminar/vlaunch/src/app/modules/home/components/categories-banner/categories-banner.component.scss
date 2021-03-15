@@ -1,0 +1,117 @@
+@import "../../../../../variables.scss";
+
+.main-content__category {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0 40px;
+
+  .content-category__left {
+    height: 450px;
+    .category-left__img {
+      display: block;
+      position: relative;
+      height: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .content-category__right {
+    display: grid;
+    gap: 20px 0;
+    grid-template-columns: 1fr;
+    height: 450px;
+
+    .category-right__top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 20px;
+
+      .category-right__top-left,
+      .category-right__top-right {
+        height: 215px;
+        .right-top__left-link,
+        .right-top__right-link {
+          position: relative;
+          display: block;
+          text-decoration: none;
+          height: 100%;
+          width: 100%;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    .category-right__bottom {
+      .right-bottom__link {
+        height: 215px;
+        display: block;
+        position: relative;
+        overflow-y: hidden;
+        text-decoration: none;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .main-content__category {
+    margin: 0;
+    //   --size: 30px;
+    //   padding-left: var(--size);
+    //   padding-right: var(--size);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-content__category {
+    display: block;
+
+    .content-category__left {
+      display: none;
+    }
+    --margin: 16px;
+    // padding: var(--margin);
+    gap: var(--margin);
+
+    .content-category__right {
+      --gap: 10px;
+      gap: var(--gap) 0;
+      height: auto;
+
+     
+    }
+
+    .right-bottom__link {
+      img {
+        max-height: 200px !important;
+      }
+    }
+
+    .category-right__top-left {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .category-right__top {
+    display: block !important;
+  }
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1211px" height="466px" viewBox="0 0 1211 466" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Artboard</title>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <circle id="Oval-Copy-2" fill="#257B18" cx="511" cy="65" r="22"></circle>
+            <circle id="Oval-Copy-4" fill="#257B18" cx="808" cy="65" r="22"></circle>
+            <circle id="Oval" stroke="#247A16" stroke-width="177" cx="109.5" cy="213.5" r="21"></circle>
+            <path d="M181,104 L188,104 C208.434536,104 225,120.565464 225,141 L225,323 L225,323 L181,323 L181,104 Z" id="Rectangle" fill="#247A16"></path>
+            <rect id="Rectangle-Copy-2" fill="#247A16" x="489" y="104" width="44" height="219" rx="6"></rect>
+            <rect id="Rectangle-Copy-3" fill="#247A16" x="786" y="104" width="44" height="219" rx="6"></rect>
+            <circle id="Oval-Copy" stroke="#247A16" stroke-width="177" cx="353.5" cy="210.5" r="21"></circle>
+            <rect id="Rectangle-Copy" fill="#247A16" x="421" y="0" width="44" height="323" rx="6"></rect>
+        </g>
+        <text id="v" fill="#257B18" fill-rule="nonzero" font-family="AppleSDGothicNeo-Bold, Apple SD Gothic Neo" font-size="422" font-weight="bold">
+            <tspan x="546.748" y="339">v</tspan>
+        </text>
+        <text id="et" fill="#257B18" fill-rule="nonzero" font-family="AppleSDGothicNeo-Bold, Apple SD Gothic Neo" font-size="422" font-weight="bold">
+            <tspan x="840.412" y="339">et</tspan>
+        </text>
+        <text id="Mua-sắm-thể-thao-trự" fill="#E87026" fill-rule="nonzero" font-family="ArialMT, Arial" font-size="95" font-weight="normal">
+            <tspan x="0" y="435">Mua sắm thể thao trực tuyến</tspan>
+        </text>
+    </g>
+</svg>

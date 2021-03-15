@@ -1,0 +1,135 @@
+@import "../../../../variables.scss";
+
+.main {
+  --border-color: #dbdbdb;
+  margin-top: 40px;
+  overflow-x: hidden;
+
+  .main-content__row {
+    .content-row__news {
+      .news-list {
+        list-style: none;
+        margin-bottom: 0;
+
+        .news-item {
+          .news-link {
+            padding-left: 0;
+            display: block;
+            text-decoration: none;
+
+            img {
+              width: 100%;
+              height: auto;
+              max-height: 160px;
+
+              border-radius: 4px;
+            }
+          }
+
+          .news-description {
+            padding-left: 0;
+
+            .description-title__link {
+              display: block;
+              text-decoration: none;
+              color: $text-color;
+              font-size: 16px;
+              font-weight: 600;
+              letter-spacing: 1px;
+
+              &::first-letter {
+                text-transform: capitalize;
+              }
+
+              &:hover {
+                color: $orange;
+                .capitalize {
+                  color: $orange;
+                }
+              }
+
+              .capitalize {
+                display: inline-block;
+                text-transform: capitalize;
+                color: $text-color;
+                font-size: 16px;
+              }
+            }
+
+            .description-created {
+              display: inline-block;
+              color: $text-color;
+              opacity: 0.6;
+              font-size: 13px;
+              padding: 6px 0;
+              text-transform: capitalize;
+            }
+
+            .description-main {
+              font-size: 14px;
+              color: $text-color;
+              letter-spacing: 1px;
+              line-height: 22px;
+              opacity: 0.9;
+              height: 62px;
+              overflow: hidden;
+              display: block;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 3;
+
+              &::first-letter {
+                text-transform: capitalize;
+              }
+            }
+          }
+
+          &:not(:first-child) {
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1025px) {
+  .main {
+    .main-content__row {
+      .content-row__related {
+        margin-top: 20px;
+        padding: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main {
+    .main-content__row {
+      .content-row__news {
+        .news-list {
+          .news-item {
+            .news-link {
+              img {
+                width: 100%;
+              }
+            }
+
+            .news-description {
+              padding-right: 0;
+
+              .description-title__link {
+                padding-top: 12px;
+              }
+
+              .description-main {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

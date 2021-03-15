@@ -1,0 +1,56 @@
+<bread-crumb [data]="[{ name: 'Tin tức' }]"></bread-crumb>
+
+<section class="container main">
+  <div class="main-content__row row">
+    <div
+      class="content-row__news col-12 col-md-12 col-xl-8"
+      *ngIf="articleData != null"
+    >
+      <ul class="news-list col-12">
+        <li
+          class="news-item row justify-content-between"
+          *ngFor="let article of articleData.results"
+        >
+          <a
+            [routerLink]="['/blog', article.slug + '-' + article.id]"
+            class="news-link col-12 col-md-4 col-xl-4"
+          >
+            <img
+              src="{{ article.image_xs | defaultImage: 'article' }}"
+              alt="{{ article.image_alt }}"
+              loading="lazy"
+            />
+          </a>
+
+          <div class="news-description col-12 col-md-8 col-xl-8">
+            <a
+              class="description-title__link"
+              [routerLink]="['/blog', article.slug + '-' + article.id]"
+            >
+              {{ article.title }}
+            </a>
+
+            <span class="description-created">
+              {{ article.created | date: "dd/MM/yyyy" }} -
+              {{ article.user.full_name }}
+            </span>
+
+            <p class="description-main">
+              {{ article.brief | shortBrief }}
+            </p>
+          </div>
+        </li>
+      </ul>
+      <div class="pagination mt-4 col-12 justify-content-end">
+        <app-pagination
+          [data]="articleData"
+          (onPageChange)="changePage($event)"
+        ></app-pagination>
+      </div>
+    </div>
+
+    <div class="content-row__related col-12 col-md-12 col-xl-4">
+      <app-related-content></app-related-content>
+    </div>
+  </div>
+</section>

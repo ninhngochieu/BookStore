@@ -1,0 +1,69 @@
+<div class="comment">
+  <div class="comment-title mb-4">
+    <h3>Thảo luận về sản phẩm này</h3>
+  </div>
+  <form
+    class="comment-input mb-4"
+    *ngIf="authService.isLogin"
+    (ngSubmit)="submitForm()"
+  >
+    <input
+      type="text"
+      name="content"
+      id=""
+      placeholder="Bạn có thắc mắc gì về sản phẩm này?"
+      [(ngModel)]="content"
+    />
+    <button type="submit" [disabled]="submitted">Gửi ý kiến</button>
+  </form>
+  <div class="suggest-login mb-4" *ngIf="!authService.isLogin">
+    Bạn vui lòng <a [routerLink]="['/login']">đăng nhập</a> hoặc
+    <a [routerLink]="['/register']">đăng ký</a> để tham gia thảo luận.
+  </div>
+  <div class="comment-list">
+    <ul *ngIf="commentData">
+      <li
+        class="comment-list--item mb-4"
+        *ngFor="let comment of commentData.results"
+      >
+        <div class="comment-list--item--container mb-4">
+          <img
+            class="mr-3"
+            src="{{ comment.user?.avatar | defaultImage: 'user' }}"
+          />
+          <div class="content">
+            <div class="mb-1 user">
+              <h3>{{ comment.user.full_name }}</h3>
+            </div>
+            <div class="replays">{{ comment.content }}</div>
+          </div>
+        </div>
+        <ul class="comment-list--item--children">
+          <li class="comment-list--item" *ngFor="let replay of comment.replies">
+            <div class="comment-list--item--container">
+              <img
+                class="mr-3"
+                src="{{ replay.user?.avatar | defaultImage: 'user' }}"
+              />
+              <div class="content">
+                <div class="mb-1 user">
+                  <h3 class="mr-1"></h3>
+                  <span class="mr-1">Chủ gian hàng</span>
+                </div>
+                <div class="replays">{{ replay.content }}</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="comment-loadmore"
+    *ngIf="authService.isLogin && commentData?.next_page"
+  >
+    <button (click)="loadMore(commentData.next_page)">
+      Xem thêm bình luận
+    </button>
+  </div>
+</div>

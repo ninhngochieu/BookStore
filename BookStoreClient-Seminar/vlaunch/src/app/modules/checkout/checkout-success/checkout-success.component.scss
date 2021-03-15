@@ -1,0 +1,48 @@
+@import "../../../../variables.scss";
+
+:host {
+  height: 500px;
+  display: block;
+}
+.order {
+  padding-top: 100px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  .notify-status-order {
+    text-align: left;
+    p.notify-title {
+      font-size: 24px;
+      line-height: 30px;
+      color: $green;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    a {
+      font-size: 16px;
+    }
+  }
+
+  i {
+    font-size: 65px;
+    color: $green;
+    margin-right: 30px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .order {
+    flex-direction: column;
+
+    i {
+        margin: 0;
+        margin-bottom: 20px;
+    }
+  }
+}

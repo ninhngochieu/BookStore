@@ -1,0 +1,28 @@
+<a [routerLink]="['/search']" class="related-img__link">
+  <!-- <img *ngIf="!homeService.categoryBanner$" src="../../../assets/images/cate-1-banner.jpg" />
+  <img *ngIf="homeService.categoryBanner$" [src]="(homeService.categoryBanner$ | async)?.items[0].image_sm" /> -->
+  
+  <img 
+    onerror="this.src='../../../assets/images/cate-1-banner.jpg'"
+    [src]="(homeService.categoryBanner$ | async)?.items[0].image_sm"
+  > 
+</a>
+
+<div class="related-category">
+  <h3 class="category-title">danh mục</h3>
+
+  <ul class="category-list pl-3 pr-3">
+    <li class="category-item" *ngFor="let category of categoryTree$ | async">
+      <h4 class="item-title">
+        <a [routerLink]="['/' + category.slug + '-c' + category.id]" class="item-title__link">{{ category.name }}</a>
+        <i *ngIf="category.children.length > 0" class="icon-chevron-down-solid" (click)="onSelect($event)"></i>
+      </h4>
+
+      <ul class="sub-category__list">
+        <li class="sub-category__item" *ngFor="let child of category.children">
+          <a [routerLink]="['/' + child.slug + '-c' + child.id]" class="sub-category__link">{{ child.name }}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

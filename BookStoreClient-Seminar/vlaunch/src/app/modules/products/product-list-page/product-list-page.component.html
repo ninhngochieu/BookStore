@@ -1,0 +1,174 @@
+<bread-crumb [data]="[{ name: 'Sản phẩm' }]"></bread-crumb>
+
+<section class="container main pt-4">
+  <div class="main-row row">
+    <div class="filter col-lg-3 filter-mobile-tablet">
+      <div class="filter-title">
+        <h3>bộ lọc</h3>
+      </div>
+
+      <!-- <div class="filter-trademark">
+        <div class="trademark-title">
+          <h3>thương hiệu</h3>
+        </div>
+
+        <ul class="trademark-list">
+          <li class="trademark-item">
+            <label for="trademark-checkbox" class="trademark-choose">
+              <input type="checkbox" name="" id="trademark-checkbox" />
+              <span>ant shoe</span>
+            </label>
+          </li>
+        </ul>
+      </div> -->
+
+      <app-category-tree class="mb-5"></app-category-tree>
+      <div class="filter-price">
+        <div class="filter-price__title">
+          <h3>giá sản phẩm</h3>
+        </div>
+
+        <ul class="price-list">
+          <li class="price-item">
+            <label for="price-checkbox-0" class="price-choose">
+              <input type="radio" name="price" id="price-checkbox-0" [value]="0" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 0" />
+              <span>Tất cả giá</span>
+            </label>
+          </li>
+
+          <li class="price-item">
+            <label for="price-checkbox-1" class="price-choose">
+              <input type="radio" name="price" id="price-checkbox-1" [value]="1" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 1" />
+              <span>giá dưới 100000đ</span>
+            </label>
+          </li>
+
+          <li class="price-item">
+            <label for="price-checkbox-2" class="price-choose">
+              <input type="radio" name="price" [value]="2" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 2" id="price-checkbox-2" />
+              <span>100000đ - 200000đ</span>
+            </label>
+          </li>
+
+          <li class="price-item">
+            <label for="price-checkbox-3" class="price-choose">
+              <input type="radio" name="price" [value]="3" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 3" id="price-checkbox-3" />
+              <span>200000đ - 300000đ</span>
+            </label>
+          </li>
+
+          <li class="price-item">
+            <label for="price-checkbox-4" class="price-choose">
+              <input type="radio" name="price" [value]="4" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 4" id="price-checkbox-4" />
+              <span>300000đ - 500000đ</span>
+            </label>
+          </li>
+
+          <li class="price-item">
+            <label for="price-checkbox-5" class="price-choose">
+              <input type="radio" name="price" [value]="5" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 5" id="price-checkbox-5" />
+              <span>500000đ - 1000000đ</span>
+            </label>
+          </li>
+
+          <li class="price-item">
+            <label for="price-checkbox-6" class="price-choose">
+              <input type="radio" name="price" [value]="6" (change)="filterPrice($event.target)"
+                [checked]="filterRadioValue == 6" id="price-checkbox-6" />
+              <span>giá trên 1000000đ</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="close-btn d-lg-none d-flex" (click)="slideIn($event)">
+        <i class="bi bi-arrow-left"></i>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-9">
+      <div class="banner mb-5" *ngIf="discountBanner">
+        <a class="d-block" [routerLink]="bannerLink(discountBanner.items[0])">
+          <img style="width: 100%; height: auto; max-height: 250px;" src="{{ discountBanner?.items[0].image_lg }}"
+            alt="Khuyến mãi" />
+        </a>
+      </div>
+      <div class="categories mb-3">
+        <owl-carousel-o class="carousel" [options]="customOptions" (dragging)="isDragging = $event.dragging">
+          <ng-container *ngFor="let category of childCategory ? childCategory : categoryRoots">
+            <ng-template carouselSlide>
+              <div class="categories__item">
+                <a [owlRouterLink]="filterCategory(category)" [stopLink]="isDragging">
+                  <div class="image">
+                    <img src="{{
+                        category.avatar_sm
+                          ? category.avatar_sm
+                          : 'assets/images/no-image.jpg'
+                      }}" [alt]="category.name" />
+                  </div>
+                  <h6>{{ category.name }}</h6>
+                </a>
+              </div>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+
+      <!-- <div class="sort mb-3">
+        <span class="mr-3">Ưu tiên theo: </span>
+        <ul class="d-none d-md-flex">
+          <li>
+            <label for="input1">
+              <input type="radio" name="input1" hidden id="input1" /><i></i> Tên
+              A-Z
+            </label>
+          </li>
+          <li>
+            <label for="input1">
+              <input type="radio" name="input1" hidden id="input1" /><i></i> Tên
+              A-Z
+            </label>
+          </li>
+          <li>
+            <label for="input1">
+              <input type="radio" name="input1" hidden id="input1" /><i></i> Tên
+              A-Z
+            </label>
+          </li>
+          <li>
+            <label for="input1">
+              <input type="radio" name="input1" hidden id="input1" /><i></i> Tên
+              A-Z
+            </label>
+          </li>
+        </ul>
+        <select name="" id="" class="d-block d-md-none">
+          <option value="">Tên A-Z</option>
+          <option value="">Tên A-Z</option>
+          <option value="">Tên A-Z</option>
+          <option value="">Tên A-Z</option>
+        </select>
+      </div> -->
+
+      <div class="products pt-4" *ngIf="productData && productData?.results?.length > 0">
+        <app-product *ngFor="let product of productData.results" [product]="product"></app-product>
+      </div>
+      <div class="text-center mt-4">
+        <app-pagination *ngIf="productData && productData?.results?.length > 0" [data]="productData"
+          (onPageChange)="changePage($event)"></app-pagination>
+      </div>
+      <div class="row pt-5" *ngIf="!productData || productData?.results?.length === 0">
+        <div class="text-center col-12">
+          <h4>Không tìm thấy bất kỳ kêt quả nào với từ khóa trên</h4>
+          <p>Vui lòng nhập từ khóa tìm kiếm khác</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

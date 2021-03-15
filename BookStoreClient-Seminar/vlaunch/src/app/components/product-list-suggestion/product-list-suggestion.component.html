@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>{{ title }}</h2>
+    </div>
+  </div>
+  <div class="row" *ngIf="products">
+    <div class="col-12">
+      <div class="product-list">
+        <app-product
+          [class.hide-1200]="i > 7"
+          [class.hide-768]="i > 8"
+          *ngFor="let product of products; let i = index"
+          [product]="product"
+        ></app-product>
+      </div>
+    </div>
+  </div>
+</div>

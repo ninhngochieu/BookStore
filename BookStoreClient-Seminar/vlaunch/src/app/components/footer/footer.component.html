@@ -1,0 +1,138 @@
+<footer class="footer">
+  <section class="container">
+    <section class="footer-menu row">
+      <div class="category-menu col-12 mb-2 col-md-6 col-lg-6 col-xl-3">
+        <h3 class="category-menu__title" (click)="onSelect($event)">
+          <span>Adiviet</span>
+          <i class="icon-chevron-down-solid"></i>
+        </h3>
+
+        <ul class="footer-list">
+          <li class="footer-item" *ngFor="let menuItem of menu">
+            <a [routerLink]="getRouterUrl(menuItem)" class="footer-link">{{menuItem.name}}</a>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="category-menu col-12 mb-2 col-md-6 col-lg-6 col-xl-3">
+        <h3 class="category-menu__title" (click)="onSelect($event)">
+          <span>dành cho khách hàng</span>
+          <i class="icon-chevron-down-solid"></i>
+        </h3>
+
+        <ul class="footer-list">
+          <li class="footer-item" *ngFor="let item of categories$ | async">
+            <a [routerLink]="['/' + item.slug + '-c' + item.id]" class="footer-link">{{ item.name }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="category-menu more-info col-12 col-md-6 col-lg-6 col-xl-3">
+        <div class="contact">
+          <h3 class="category-menu__title" (click)="onSelect($event)">
+            <span>liên hệ với chúng tôi</span>
+            <i class="icon-chevron-down-solid"></i>
+          </h3>
+
+          <ul class="contact-list">
+            <li class="contact-item">
+
+            </li>
+
+            <li class="contact-item">
+              <a href="" class="contact-link">
+
+              </a>
+            </li>
+
+            <li class="contact-item">
+              <a href="tel:" class="contact-link">
+
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="transport">
+          <h3 class="category-menu__title" (click)="onSelect($event)">
+            <span>đơn vị vận chuyển</span>
+            <i class="icon-chevron-down-solid"></i>
+          </h3>
+
+          <div class="transport-list">
+            <img src="assets/images/footer_logistic/ghtk.svg" alt="Gia hàng tiết kiệm" />
+            <img src="assets/images/footer_logistic/ghn.svg" alt="" />
+            <img src="assets/images/footer_logistic/ems-buu-dien.svg" alt="" />
+            <img src="assets/images/footer_logistic/ahamove.svg" alt="" />
+            <img src="assets/images/footer_logistic/grap-express.svg" alt="" />
+            <img src="assets/images/footer_logistic/dhl-express.svg" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="category-menu col-12 mb-2 col-md-6 col-lg-6 col-xl-3">
+        <h3 class="category-menu__title" (click)="onSelect($event)">
+          <span>chấp nhận thanh toán</span>
+          <i class="icon-chevron-down-solid"></i>
+        </h3>
+
+        <div class="payment row">
+          <img src="assets\images\pay-method-svg\visa_icon_adiviet.svg" alt="visa" />
+          <img src="assets\images\pay-method-svg\master card_adiviet.svg" alt="master card" />
+          <img src="assets\images\pay-method-svg\jcb_card_adiviet.svg" alt="jbc" />
+          <img src="assets\images\pay-method-svg\COD_payment_adiviet.svg" alt="cod" />
+          <img src="assets\images\pay-method-svg\bank_transfer_adiviet.svg" alt="bank transfer" />
+          <img src="assets\images\pay-method-svg\tra-gop.svg" alt="tra gop" />
+        </div>
+
+        <ul class="social-list">
+          <li class="social-item">
+            <a href="https://www.facebook.com/" target="_blank" class="social-link facebook">
+              <i class="icon-facebook"></i>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://www.instagram.com//" target="_blank" class="social-link twitter">
+              <img src="assets/images/instagram.svg" alt="instagram" />
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://www.youtube.com//" target="_blank"
+              class="social-link youtube">
+              <i class="icon-youtube"></i>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://zalo.me/" target="_blank" class="social-link twitter">
+              <img src="assets\images\zalo.svg" alt="zalo" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </section>
+
+  <section class="footer-bottom pt-4">
+    <div class="certificate">
+      <img class="certificate-img" src="assets/images/certifications/da-dang-ky-BCT.png" alt="" />
+    </div>
+
+    <h3>CÔNG TY CỔ PHẦN</h3>
+
+    <div class="copyright row">
+      <span class="col-xl-12">
+      </span>
+
+
+      <span class="col-xl-12">
+        &copy;
+        {{ currentYear }}
+        - Bản quyền thuộc về CÔNG TY CỔ PHẦN
+      </span>
+    </div>
+  </section>
+</footer>

@@ -1,0 +1,107 @@
+<nav class="navbar-mobile" [class.show]="showMenu">
+  <section class="navbar-mobile__container">
+    <header class="navbar-mobile__header">
+      <a [routerLink]="['/user', 'profile']" class="mobile-header__link">
+        <img src="{{
+            profile?.avatar | defaultImage: 'user'
+          }}" alt="User Avatar" />
+      </a>
+
+      <div class="mobile-header__content" *ngIf="!profile">
+        <a [routerLink]="['/login']" class="header-content__action">đăng nhập</a>
+        <span class="header-content__brief">nhận nhiều ưu đãi hơn</span>
+      </div>
+
+      <div class="mobile-header__content" *ngIf="profile">
+        <a class="header-content__action">{{
+          profile?.full_name ? profile?.full_name :
+          profile?.username
+          }}</a>
+        <a [routerLink]="['/user', 'profile']" class="header-content__action auth-edit">Thiết lập tài khoản</a>
+      </div>
+
+      <div class="mobile-header__close">
+        <label for="navbar-checkbox" class="header-close__icon" (click)="closeNavbarMobile()">
+          <i class="icon-cross"></i>
+        </label>
+      </div>
+    </header>
+
+    <section class="navbar-mobile__auth">
+      <div *ngIf="!authService.isLogin">
+        <a [routerLink]="['/login']" class="mobile-auth__action">
+          <i class="icon-sign-in-alt-solid"></i>
+          <span class="mobile-auth__title">đăng nhập</span>
+        </a>
+      </div>
+
+      <div *ngIf="authService.isLogin">
+        <a (click)="authService.logout()" class="mobile-auth__action">
+          <i class="icon-sign-in-alt-solid"></i>
+          <span class="mobile-auth__title">đăng xuất</span>
+        </a>
+      </div>
+
+      <div *ngIf="!authService.isLogin">
+        <a [routerLink]="['/otp']" class="mobile-auth__action">
+          <i class="icon-user-plus-solid"></i>
+          <span class="mobile-auth__title">đăng ký</span>
+        </a>
+      </div>
+    </section>
+
+    <nav class="navbar-mobile__menu">
+      <h3>danh mục</h3>
+
+      <ul class="menu" *ngIf="homeService.menu$">
+        <li class="menu__item" [class.has-child]="item.children.length > 0"
+          *ngFor="let item of homeService.menu$ | async">
+          <a [routerLink]="getLinkUrl(item)">{{ item.name }}</a>
+          <ul class="child" *ngIf="item.children.length > 0">
+            <li class="menu__item" [class.has-child]="child.children.length > 0" *ngFor="let child of item.children">
+              <a [routerLink]="getLinkUrl(child)">
+                {{ child.name }}
+              </a>
+              <ul class="child" *ngIf="child.children.length > 0">
+                <li class="menu__item" [class.has-child]="child.children.length > 0"
+                  *ngFor="let grandChild of child.children">
+                  <a [routerLink]="getLinkUrl(grandChild)">{{
+                    grandChild.name
+                    }}</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <footer class="navbar-mobile__footer">
+      <ul>
+        <li>hỗ trợ</li>
+
+        <li>
+          <a href="" class="contact-link">
+            <span class="footer-navbar__mobile-title">
+              <i class="icon-phone-alt-solid"></i>
+              <span>hotline: </span>
+            </span>
+
+            <span class="footer-navbar__mobile-link">0973697933</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="" class="contact-link">
+            <span class="footer-navbar__mobile-title">
+              <i class="icon-envelope-solid"></i>
+              <span>email: </span>
+            </span>
+
+            <span class="footer-navbar__mobile-link">support@adiviet.vn</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </section>
+</nav>
