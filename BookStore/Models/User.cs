@@ -5,6 +5,10 @@ namespace BookStore.Models
 {
     public class User
     {
+        public User()
+        {
+            RoleId = 3;
+        }
         public int Id { get; set; }
         [Required]
         public string Username { get; set; }

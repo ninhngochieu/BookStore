@@ -18,16 +18,19 @@ namespace BookStore.Controllers
         private readonly AccessToken _accessToken;
         private readonly RefreshToken _refreshToken;
         private readonly IMapper _mapper;
+        private readonly bookstoreContext _bookstoreContext;
 
         public UserAuthController(UserServices userServices,
             AccessToken accessToken,
             RefreshToken refreshToken,
-            IMapper mapper)
+            IMapper mapper,
+            bookstoreContext bookstoreContext)
         {
             _userServices = userServices;
             _accessToken = accessToken;
             _refreshToken = refreshToken;
             _mapper = mapper;
+            _bookstoreContext = bookstoreContext;
         }
         [HttpPost]
         [Route("login")]
@@ -35,7 +38,7 @@ namespace BookStore.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid User");
+                return Ok(new { data = "Invalid User", error_message = "Tai khoan hoac mat khau khong hop le" });
             }
 
             User fromDb = await _userServices.DoLogin(user);
@@ -159,6 +162,33 @@ namespace BookStore.Controllers
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
             return await _userServices.GetAllUser();
+        }
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<User>> Register(LoginViewModel registerUser)
+        {
+            if(registerUser.Username is null)
+            {
+                return Ok(new { error_message = "Tai khoan khong duoc de trong" });
+            }
+            if (registerUser.Password is null)
+            {
+                return Ok(new { error_message = "Mat khau khong duoc de trong" });
+            }
+            User user = new User
+            {
+                Username = registerUser.Username,
+                Password = registerUser.Password
+            };
+            bool isSave = await _userServices.AddNewUser(user);
+            if (isSave)
+            {
+                return Ok(new { success = true, data = "Them User thanh cong" });
+            }
+            else
+            {
+                return Ok(new { error_message = "Them User that bai, co loi xay ra" });
+            }
         }
     }
 }

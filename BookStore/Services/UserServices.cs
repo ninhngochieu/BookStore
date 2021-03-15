@@ -175,6 +175,19 @@ namespace BookStore.Services
             return true;
         }
 
+        internal async Task<bool> AddNewUser(User user)
+        {
+            _bookstoreContext.Users.Add(user);
+            try
+            {
+                return await _bookstoreContext.SaveChangesAsync() != 0;
+            }catch(Exception e)
+            {
+                return false;
+                throw;
+            }
+        }
+
         internal async Task<bool> ChangePasswordAsync(User user, string new_password)
         {
             user.Password = new_password;
