@@ -3,6 +3,7 @@ using BookStore.Models;
 using BookStore.View_Models;
 using BookStore.View_Models.Author;
 using BookStore.View_Models.Book;
+using BookStore.View_Models.BookComment;
 using BookStore.View_Models.Category;
 using BookStore.View_Models.User;
 
@@ -45,6 +46,11 @@ namespace BookStore.Modules.AutoMapper
             CreateMap<Author, AuthorPostModel>()
                 .ForSourceMember(s => s.Id, options => options.DoNotValidate());
             CreateMap<AuthorPostModel, Author>();
+
+            CreateMap<BookCommentDTO, BookComment>();
+            CreateMap<BookComment, BookCommentViewModel>()
+                .ForSourceMember(s => s.Book, options => options.DoNotValidate())
+                .ForSourceMember(s => s.User, options => options.DoNotValidate());
         }
         
     }

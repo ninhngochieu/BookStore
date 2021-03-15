@@ -20,34 +20,30 @@ namespace BookStore.Controllers
             _bookCommentServices = bookCommentServices;
         }
 
-        // GET: api/<BookCommentsController>
         [HttpGet]
         [Route("GetCommentsInBook")]
         public async Task<IActionResult> GetCommentsInBook(int bookId) => Ok(await _bookCommentServices.GetCommentsInBook(bookId));
 
-        // GET api/<BookCommentsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<BookCommentsController>
         [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        [Route("AddNewComment")]
+        public async Task<IActionResult> AddNewComment([FromBody] View_Models.BookComment.BookCommentDTO model) => Ok(await _bookCommentServices.AddNewComment(model));
 
-        // PUT api/<BookCommentsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<BookCommentsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
