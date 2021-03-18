@@ -53,7 +53,6 @@ namespace BookStore
             services.AddScoped<ImageServices>();
             services.AddScoped<BookCommentServices>();
 
-            //services.AddScoped<UserTokenServices>();
             services.AddCors(c => {
                 c.AddPolicy("TCAPolicy", builder => {
                     builder.AllowAnyOrigin()
