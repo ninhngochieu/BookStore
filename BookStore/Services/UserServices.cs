@@ -66,7 +66,11 @@ namespace BookStore.Services
             {
                 user.Email = userVM.Email;
             }
-            if(userVM.Avatar is not null)
+            if (userVM.Phone is not null)
+            {
+                user.Phone = userVM.Phone;
+            }
+            if (userVM.Avatar is not null)
             {
                 user.Avatar = DateTimeOffset.Now.ToUnixTimeSeconds()+"_"+userVM.Avatar.FileName;
             }
