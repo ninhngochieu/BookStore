@@ -20,6 +20,7 @@ namespace BookStore.Models
         public string? RefreshToken { get; set; }
         public string? Avatar { get; set; }
         public string? Phone { get; set; }
+        public string? Street_Address { get; set; }
         public DateTime? TokenCreateAt { get; set; }
 
         //User - Role: 1 - 1
