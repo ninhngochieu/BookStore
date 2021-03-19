@@ -13,10 +13,12 @@ namespace BookStore.Services
     public class BookServices : Service
     {
         private readonly ImageServices _imageServices;
+        private readonly BookCommentServices _bookCommentServices;
 
-        public BookServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper, ImageServices imageServices) : base(bookstoreContext, webHostEnvironment, mapper)
+        public BookServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper, ImageServices imageServices, BookCommentServices bookCommentServices) : base(bookstoreContext, webHostEnvironment, mapper)
         {
             _imageServices = imageServices;
+            _bookCommentServices = bookCommentServices;
         }
 
         public async Task<IList<BookInfoViewModel>> GetAllBook()
@@ -30,13 +32,13 @@ namespace BookStore.Services
             try
             {
                 return await _bookstoreContext.SaveChangesAsync() != 0;
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return false;
             }
         }
 
-        public IList<BookInfoViewModel> SearchBook(SearchBookDTO model)
+        public async Task<IList<BookInfoViewModel>> SearchBook(SearchBookDTO model)
         {
             IEnumerable<Book> book = _bookstoreContext.Book
                 .Include(c => c.Category)
@@ -84,6 +86,11 @@ namespace BookStore.Services
                 book = book.OrderByDescending(b => b.BookName).ToList();
             }
             var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book.ToList());
+
+            foreach (var item in returnModel)
+            {
+                item.Comments = await _bookCommentServices.GetCommentsInBook(item.Id);
+            }
 
             return returnModel;
         }

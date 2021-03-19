@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BookStore.Models;
+using BookStore.View_Models.BookComment;
 
 namespace BookStore.View_Models.Book
 {
@@ -20,6 +21,7 @@ namespace BookStore.View_Models.Book
         public int? AuthorId { get; set; }
         public string? AuthorName { get; set; }
         //public Author Author { get; set; }
+        public IList<BookCommentViewModel> Comments { get; set; }
         public string Image1 { get; set; }
         public string Image2 { get; set; }
         public string Image3 { get; set; }

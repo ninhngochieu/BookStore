@@ -150,7 +150,7 @@ namespace BookStore.Controllers
         [Route("SearchBook")]
         public async Task<ActionResult> PostBook([FromBody] SearchBookDTO model)
         {
-            return Ok(new {data = _bookServices.SearchBook(model), success = true });
+            return Ok(new {data = await _bookServices.SearchBook(model), success = true });
         }
 
 
