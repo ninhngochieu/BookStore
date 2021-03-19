@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.Models
@@ -20,13 +21,14 @@ namespace BookStore.Models
         public string? RefreshToken { get; set; }
         public string? Avatar { get; set; }
         public string? Phone { get; set; }
-        public string? Street_Address { get; set; }
         public DateTime? TokenCreateAt { get; set; }
 
         //User - Role: 1 - 1
         [Required]
         public int RoleId { get; set; }
         public Role? Role { get; set; }
+
+        public IList<UserAddress> Addresses { get; set; }
 
     }
 }

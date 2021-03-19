@@ -3,14 +3,16 @@ using System;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookStore.Migrations
 {
     [DbContext(typeof(bookstoreContext))]
-    partial class bookstoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210319030251_CityAndDistrictAddress")]
+    partial class CityAndDistrictAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,9 +176,6 @@ namespace BookStore.Migrations
                     b.Property<string>("DistrictName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Prefix")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityAddressId");
@@ -295,6 +294,9 @@ namespace BookStore.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Street_Address")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("TokenCreateAt")
                         .HasColumnType("TEXT");
 
@@ -310,35 +312,6 @@ namespace BookStore.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BookStore.Models.UserAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CityAddressId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DistrictAddressId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Street_Address")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityAddressId");
-
-                    b.HasIndex("DistrictAddressId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserAddress");
                 });
 
             modelBuilder.Entity("BookStore.Models.Book", b =>
@@ -450,33 +423,6 @@ namespace BookStore.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BookStore.Models.UserAddress", b =>
-                {
-                    b.HasOne("BookStore.Models.CityAddress", "CityAddress")
-                        .WithMany()
-                        .HasForeignKey("CityAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookStore.Models.DistrictAddress", "DistrictAddress")
-                        .WithMany()
-                        .HasForeignKey("DistrictAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookStore.Models.User", "User")
-                        .WithMany("Addresses")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CityAddress");
-
-                    b.Navigation("DistrictAddress");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("BookStore.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -514,11 +460,6 @@ namespace BookStore.Migrations
             modelBuilder.Entity("BookStore.Models.Status", b =>
                 {
                     b.Navigation("MyProperty");
-                });
-
-            modelBuilder.Entity("BookStore.Models.User", b =>
-                {
-                    b.Navigation("Addresses");
                 });
 #pragma warning restore 612, 618
         }
