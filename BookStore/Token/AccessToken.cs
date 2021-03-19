@@ -61,7 +61,7 @@ namespace BookStore.Token
                 }; ;
                 tokenHandler.ValidateToken(accessToken, validationParameters, out SecurityToken validatedToken);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

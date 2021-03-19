@@ -32,7 +32,7 @@ namespace BookStore.Services
             try
             {
                 return await _bookstoreContext.SaveChangesAsync() != 0;
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return false;
             }

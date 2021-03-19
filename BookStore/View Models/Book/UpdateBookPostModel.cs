@@ -10,6 +10,7 @@ namespace BookStore.View_Models.Book
         }
 
         public int Id { get; set; }
+#nullable enable
         public string? BookName { get; set; }
         
         public int? Price { get; set; }
@@ -25,9 +26,12 @@ namespace BookStore.View_Models.Book
         
         public int? AuthorId { get; set; }
         public bool? Private { get; set; }
+
         public IFormFile Image1 { get; set; }
         public IFormFile? Image2 { get; set; }
         public IFormFile? Image3 { get; set; }
         public IFormFile? Image4 { get; set; }
+#nullable disable
+
     }
 }
