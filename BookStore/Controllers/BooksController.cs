@@ -33,6 +33,11 @@ namespace BookStore.Controllers
             _imageServices = imageServices;
         }
 
+        [HttpGet("GetNewBook")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetNewBookAsync()
+        {
+            return Ok(new { data = await _context.Book.OrderByDescending(c=>c.PublicationDate).ToArrayAsync() , success = true});
+        }
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()

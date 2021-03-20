@@ -4,7 +4,8 @@
     {
         public int Id { get; set; }
         public string? Street_Address { get; set; }
-
+        public string? Phone { get; set; }
+        public string? Name { get; set; }
         //
         public int UserId { get; set; }
         public User User { get; set; }
@@ -14,5 +15,7 @@
         //
         public int DistrictAddressId { get; set; }
         public DistrictAddress DistrictAddress { get; set; }
+
+        public bool IsDefault { get; set; }
     }
 }

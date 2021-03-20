@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using System.Linq;
+using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models;
 using BookStore.View_Models.Author;
@@ -25,7 +27,15 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(u => u.TokenCreateAt, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Id, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Password, options => options.DoNotValidate());
-
+                //.ForMember(c=>c.CityAddressId, options => options.MapFrom(a=>a.Addresses.FirstOrDefault().CityAddressId))
+                //.ForMember(c => c.StreetAddress, options => options.MapFrom(a => a.Addresses.FirstOrDefault().Street_Address))
+                //.ForMember(c => c.DistrictAddressId, options => options.MapFrom(a => a.Addresses.FirstOrDefault().DistrictAddressId))
+                //.ForMember(c => c.DistrictName, options => options.MapFrom(a => a.Addresses.FirstOrDefault().DistrictAddress.DistrictName))
+                //.ForMember(c => c.CityName, options => options.MapFrom(a => a.Addresses.FirstOrDefault().CityAddress.CityName))
+                //.ForSourceMember(u => u.Addresses., options => options.DoNotValidate())
+                //.ForSourceMember(u => u.Addresses.FirstOrDefault().DistrictAddress, options => options.DoNotValidate())
+                //.ForSourceMember(u => u.Addresses.FirstOrDefault().User, options => options.DoNotValidate());
+          
             CreateMap<Book, BookInfoViewModel>()
                 .ForMember(d => d.AuthorName, options => options.MapFrom(s => s.Author.AuthorName))
                 .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName))

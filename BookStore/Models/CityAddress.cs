@@ -12,6 +12,7 @@ namespace BookStore.Models
         public string CityName { get; set; }
         public string CityCode{ get; set; }
 
+
         public IList<DistrictAddress> DistrictAddresses { get; set; }
     }
 }

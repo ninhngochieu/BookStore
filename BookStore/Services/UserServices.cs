@@ -70,6 +70,7 @@ namespace BookStore.Services
             {
                 user.Phone = userVM.Phone;
             }
+
             if (userVM.Avatar is not null)
             {
                 user.Avatar = DateTimeOffset.Now.ToUnixTimeSeconds()+"_"+userVM.Avatar.FileName;
@@ -77,8 +78,8 @@ namespace BookStore.Services
             _bookstoreContext.Entry(user).State = EntityState.Modified;
             try
             {
-                bool isUpdateSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
-                if (isUpdateSuccess&&userVM is not null)
+                bool isUpdateUserSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
+                if (isUpdateUserSuccess&&userVM is not null)
                 {
                     if(userVM.Avatar is not null)
                     {
@@ -86,6 +87,60 @@ namespace BookStore.Services
                     }
                     userInfoViewModel = _mapper.Map<UserInfoViewModel>(user);
                 }
+
+                UserAddress userAddress = await _bookstoreContext.UserAddress
+                    .Where(u => u.UserId == user.Id)
+                    .Where(u=>u.IsDefault==true)
+                    .FirstOrDefaultAsync();
+                if(userAddress is not null)
+                {
+                    //Update
+                    if(userVM.CityAddressId is not null)
+                    {
+                        userAddress.CityAddressId = userVM.CityAddressId??0;
+                    }
+                    if(userVM.DistrictAddressId is not null)
+                    {
+                        userAddress.DistrictAddressId = userVM.DistrictAddressId??0;
+                    }
+                    if (userVM.Name is not null)
+                    {
+                        userAddress.Name = userVM.Name;
+                    }
+                    if (userVM.Phone is not null)
+                    {
+                        userAddress.Phone = userVM.Phone;
+                    }
+                    _bookstoreContext.Entry(userAddress).State = EntityState.Modified;
+
+                }
+                else
+                {
+                    //Create
+                    UserAddress newUserAddress = new UserAddress
+                    {
+                        UserId = user.Id,
+                        IsDefault = true
+                    };
+                    if (userVM.CityAddressId is not null)
+                    {
+                        newUserAddress.CityAddressId = userVM.CityAddressId ?? 0;
+                    }
+                    if (userVM.DistrictAddressId is not null)
+                    {
+                        newUserAddress.DistrictAddressId = userVM.DistrictAddressId??0;
+                    }
+                    if(userVM.Name is not null)
+                    {
+                        newUserAddress.Name= userVM.Name;
+                    }
+                    if (userVM.Phone is not null)
+                    {
+                        newUserAddress.Phone = userVM.Phone;
+                    }
+                    _bookstoreContext.Add(newUserAddress);
+                }
+                isUpdateUserSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
 
             }
             catch (DbUpdateConcurrencyException)
@@ -98,7 +153,18 @@ namespace BookStore.Services
 
         internal async Task<User> GetUserById(int id)
         {
-            return await _bookstoreContext.Users.FindAsync(id);
+            //var address =  _bookstoreContext.UserAddress
+            //    .Include(c => c.CityAddress)
+            //    .Include(d => d.DistrictAddress)
+            //    .Where(p => p.IsDefault == true)
+            //    .Where(u=>u.UserId==id)
+            //    .FirstOrDefaultAsync;
+            return await _bookstoreContext.Users
+                .Where(u=>u.Id==id)
+                .Include(a=>a.Addresses)
+                    .ThenInclude(c=>c.CityAddress)
+                    .ThenInclude(d=>d.DistrictAddresses)
+                .FirstOrDefaultAsync();
         }
 
         internal bool isValidImage(IFormFile postedFile)
