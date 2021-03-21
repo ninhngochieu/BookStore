@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStore.Migrations
 {
     [DbContext(typeof(bookstoreContext))]
-    [Migration("20210308145903_Cart")]
-    partial class Cart
+    [Migration("20210321074232_FixCart")]
+    partial class FixCart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,18 +68,11 @@ namespace BookStore.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("SKU")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("SKU")
-                        .IsUnique();
 
                     b.ToTable("Book");
                 });
@@ -134,7 +127,8 @@ namespace BookStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BookId")
+                        .IsUnique();
 
                     b.ToTable("BookImage");
                 });
@@ -145,15 +139,23 @@ namespace BookStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Cart");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("BookStore.Models.Category", b =>
@@ -168,6 +170,99 @@ namespace BookStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BookStore.Models.CityAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CityCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CityName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CityAddresses");
+                });
+
+            modelBuilder.Entity("BookStore.Models.DistrictAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CityAddressId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DistrictName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Prefix")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityAddressId");
+
+                    b.ToTable("DistrictAddresses");
+                });
+
+            modelBuilder.Entity("BookStore.Models.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TotalMoney")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("BookStore.Models.InvoiceDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SubTotal")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("InvoiceDetails");
                 });
 
             modelBuilder.Entity("BookStore.Models.Role", b =>
@@ -185,9 +280,23 @@ namespace BookStore.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("BookStore.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("StatusName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+                });
+
             modelBuilder.Entity("BookStore.Models.User", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -202,6 +311,9 @@ namespace BookStore.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RefreshToken")
@@ -221,7 +333,48 @@ namespace BookStore.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BookStore.Models.UserAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CityAddressId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DistrictAddressId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Street_Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityAddressId");
+
+                    b.HasIndex("DistrictAddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddress");
                 });
 
             modelBuilder.Entity("BookStore.Models.Book", b =>
@@ -265,8 +418,8 @@ namespace BookStore.Migrations
             modelBuilder.Entity("BookStore.Models.BookImage", b =>
                 {
                     b.HasOne("BookStore.Models.Book", "Book")
-                        .WithMany("Images")
-                        .HasForeignKey("BookId")
+                        .WithOne("BookImage")
+                        .HasForeignKey("BookStore.Models.BookImage", "BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -275,13 +428,70 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Models.Cart", b =>
                 {
+                    b.HasOne("BookStore.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BookStore.Models.User", "User")
                         .WithOne("Cart")
                         .HasForeignKey("BookStore.Models.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Book");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookStore.Models.DistrictAddress", b =>
+                {
+                    b.HasOne("BookStore.Models.CityAddress", "CityAddress")
+                        .WithMany("DistrictAddresses")
+                        .HasForeignKey("CityAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CityAddress");
+                });
+
+            modelBuilder.Entity("BookStore.Models.Invoice", b =>
+                {
+                    b.HasOne("BookStore.Models.Status", "Status")
+                        .WithMany("MyProperty")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookStore.Models.InvoiceDetail", b =>
+                {
+                    b.HasOne("BookStore.Models.Book", "Book")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Models.Invoice", "Invoice")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("BookStore.Models.User", b =>
@@ -295,6 +505,33 @@ namespace BookStore.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("BookStore.Models.UserAddress", b =>
+                {
+                    b.HasOne("BookStore.Models.CityAddress", "CityAddress")
+                        .WithMany()
+                        .HasForeignKey("CityAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Models.DistrictAddress", "DistrictAddress")
+                        .WithMany()
+                        .HasForeignKey("DistrictAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Models.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CityAddress");
+
+                    b.Navigation("DistrictAddress");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BookStore.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -302,9 +539,11 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Models.Book", b =>
                 {
+                    b.Navigation("BookImage");
+
                     b.Navigation("Comments");
 
-                    b.Navigation("Images");
+                    b.Navigation("InvoiceDetails");
                 });
 
             modelBuilder.Entity("BookStore.Models.Category", b =>
@@ -312,13 +551,30 @@ namespace BookStore.Migrations
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("BookStore.Models.CityAddress", b =>
+                {
+                    b.Navigation("DistrictAddresses");
+                });
+
+            modelBuilder.Entity("BookStore.Models.Invoice", b =>
+                {
+                    b.Navigation("InvoiceDetails");
+                });
+
             modelBuilder.Entity("BookStore.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("BookStore.Models.Status", b =>
+                {
+                    b.Navigation("MyProperty");
+                });
+
             modelBuilder.Entity("BookStore.Models.User", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Cart")
                         .IsRequired();
                 });

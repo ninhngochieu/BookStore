@@ -52,6 +52,7 @@ namespace BookStore
             services.AddScoped<CategoryService>();
             services.AddScoped<ImageServices>();
             services.AddScoped<BookCommentServices>();
+            services.AddScoped<CartServices>();
 
             services.AddCors(c => {
                 c.AddPolicy("TCAPolicy", builder => {
