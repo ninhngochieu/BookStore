@@ -2,8 +2,10 @@
 using BookStore.Models;
 using BookStore.View_Models.Book;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,61 +40,72 @@ namespace BookStore.Services
             }
         }
 
-        public async Task<IList<BookInfoViewModel>> SearchBook(SearchBookDTO model)
+        public async Task<ActionResult> SearchBook(SearchBookDTO model)
         {
-            IEnumerable<Book> book = _bookstoreContext.Book
+            IQueryable<Book> book = _bookstoreContext.Book
                 .Include(c => c.Category)
                 .Include(c => c.Author)
-                .Include(b=>b.BookImage);
-
+                .Include(b => b.BookImage);
+            if (model.CategoryId is not null)
+            {
+                book = book.Where(b => b.CategoryId == model.CategoryId);
+            }
             //Author
             if (model.AuthorName is not null)
             {
-                book = book.Where(x => x.Author.AuthorName.ToLower().Contains(model.AuthorName.ToLower())).ToList();
+                book = book.Where(x => x.Author.AuthorName.ToLower().Contains(model.AuthorName.ToLower()));
             }
             //Book Name
             if (model.BookName is not null)
             {
-                book = book.Where(x => x.BookName.ToLower().Contains(model.BookName.ToLower())).ToList();
+                book = book.Where(x => x.BookName.ToLower().Contains(model.BookName.ToLower()));
             }            //Category
             if (model.CategoryName is not null)
             {
-                book = book.Where(x => x.Category.CategoryName.ToLower().Contains(model.CategoryName.ToLower())).ToList();
+                book = book.Where(x => x.Category.CategoryName.ToLower().Contains(model.CategoryName.ToLower()));
             }            //Start price
             if (model.StartPrice is not null)
             {
-                book = book.Where(x => x.Price >= model.StartPrice).ToList();
+                book = book.Where(x => x.Price >= model.StartPrice);
             }            //End
             if (model.EndPrice is not null)
             {
-                book = book.Where(x => x.Price <= model.EndPrice).ToList();
+                book = book.Where(x => x.Price <= model.EndPrice);
             }
            
             //Sort
             if (model.SortByPriceAsc is not null)
             {
-                book = book.OrderBy(b => b.Price).ToList();
+                book = book.OrderBy(b => b.Price);
             }
             if (model.SortByPriceDesc is not null)
             {
-                book = book.OrderByDescending(b => b.Price).ToList();
+                book = book.OrderByDescending(b => b.Price);
             }
             if (model.SortByNameAsc is not null)
             {
-                book = book.OrderBy(b => b.BookName).ToList();
+                book = book.OrderBy(b => b.BookName);
             }
             if (model.SortByNameDesc is not null)
             {
-                book = book.OrderByDescending(b => b.BookName).ToList();
+                book = book.OrderByDescending(b => b.BookName);
             }
-            var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book.ToList());
-
-            foreach (var item in returnModel)
+            if(model.SortByTimeAsc is not null)
             {
-                item.Comments = await _bookCommentServices.GetCommentsInBook(item.Id);
+                book = book.OrderBy(b => b.PublicationDate);
             }
+            if (model.SortByTimeDesc is not null)
+            {
+                book = book.OrderByDescending(b => b.PublicationDate);
+            }
+            return await book.AsNoTracking().Paginate(model.TotalPerPage??8, model.CurrentPage??0);
+            //var returnModel = _mapper.Map<IList<BookInfoViewModel>>(book.ToList());
 
-            return returnModel;
+            //foreach (var item in returnModel)
+            //{
+            //    item.Comments = await _bookCommentServices.GetCommentsInBook(item.Id);
+            //}
+
         }
 
         internal async Task<bool> UpdateBookAsync(Book book, UpdateBookPostModel bookVM)

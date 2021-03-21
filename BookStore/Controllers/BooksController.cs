@@ -32,12 +32,6 @@ namespace BookStore.Controllers
             _mapper = mapper;
             _imageServices = imageServices;
         }
-
-        [HttpGet("GetNewBook")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetNewBookAsync()
-        {
-            return Ok(new { data = await _context.Book.OrderByDescending(c=>c.PublicationDate).ToArrayAsync() , success = true});
-        }
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
@@ -47,6 +41,7 @@ namespace BookStore.Controllers
                 .Include(a=>a.Author)
                 .Include(c=>c.Comments)
                 .Include(i=>i.BookImage)
+                .AsNoTracking()
                 .ToListAsync();
             return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books), success = true});
         }
@@ -58,6 +53,7 @@ namespace BookStore.Controllers
             var book = await _context.Book
                 .Include(c => c.Category)
                 .Include(i => i.BookImage)
+                .Include(c=>c.Comments)
                 .Include(a=>a.Author).Where(b=>b.Id==id).FirstAsync();
 
             if (book == null)
@@ -153,7 +149,7 @@ namespace BookStore.Controllers
 
         [HttpPost]
         [Route("SearchBook")]
-        public async Task<ActionResult> PostBook([FromBody] SearchBookDTO model)
+        public async Task<ActionResult> SearchBook([FromBody] SearchBookDTO model)
         {
             return Ok(new {data = await _bookServices.SearchBook(model), success = true });
         }
@@ -161,9 +157,9 @@ namespace BookStore.Controllers
 
         [HttpGet]
         [Route("TestPaging")]
-        public async Task<ActionResult> Paging(int size = 2, int page = 0)
+        public async Task<ActionResult> Paging(int TotalPerPage = 8, int CurrentPage = 0)
         {
-            return Ok(await _context.Book.AsNoTracking().Paginate(size, page));
+            return Ok(await _context.Book.AsNoTracking().Paginate(TotalPerPage, CurrentPage));
         }
 
     }
