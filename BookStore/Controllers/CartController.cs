@@ -91,7 +91,7 @@ namespace BookStore.Controllers
             if (CurrentCart is not null)
             {
                 //Cap nhat lai gio hang
-                CurrentCart.Amount = NewItem.Amount;
+                CurrentCart.Amount += NewItem.Amount;
                 if(await _cartServices.UpdateAsync(CurrentCart))
                 {
                     return Ok(new { data = CurrentCart, success = true});
@@ -142,5 +142,7 @@ namespace BookStore.Controllers
         {
             return _context.Carts.Any(e => e.Id == id);
         }
-    }
-}
+
+
+
+        IActionResult{ Muj0

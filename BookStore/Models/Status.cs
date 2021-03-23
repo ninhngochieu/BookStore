@@ -7,6 +7,6 @@ namespace BookStore.Models
         public int Id { get; set; }
         public string StatusName { get; set; }
 
-        public IList<Invoice> MyProperty { get; set; }
+        public IList<Invoice> Invoices { get; set; }
     }
 }

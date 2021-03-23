@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using BookStore.Models;
 
-namespace BookStore.Models
+namespace BookStore.ViewModels.Invoice
 {
-    public class Invoice
+    public class InvoiceViewModel
     {
-        public Invoice()
-        {
-        }
         public int Id { get; set; }
         public DateTime CreateAt { get; set; }
         public int TotalMoney { get; set; }
@@ -17,7 +15,7 @@ namespace BookStore.Models
 
         public IList<InvoiceDetail> InvoiceDetails { get; set; }
 
-        public int StatusId { get; set; } = 1;
+        public int StatusId { get; set; }
         public Status Status { get; set; }
     }
 }

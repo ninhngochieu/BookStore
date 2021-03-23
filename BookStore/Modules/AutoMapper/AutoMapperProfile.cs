@@ -8,6 +8,7 @@ using BookStore.View_Models.Book;
 using BookStore.View_Models.BookComment;
 using BookStore.View_Models.Category;
 using BookStore.View_Models.User;
+using BookStore.ViewModels.Invoice;
 
 namespace BookStore.Modules.AutoMapper
 {
@@ -61,6 +62,8 @@ namespace BookStore.Modules.AutoMapper
             CreateMap<BookComment, BookCommentViewModel>()
                 .ForSourceMember(s => s.Book, options => options.DoNotValidate())
                 .ForSourceMember(s => s.User, options => options.DoNotValidate());
+
+            CreateMap<InvoicePostModel, Invoice>();
         }
         
     }
