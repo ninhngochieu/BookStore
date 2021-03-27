@@ -110,6 +110,7 @@ namespace BookStore.Controllers
             return _context.Invoices.Any(e => e.Id == id);
         }
 
+        [HttpGet("InvoiceStatus")]
         public async Task<bool> SetStatus(int invoiceId, int statusId)
         {
             var invoice = await _context.Invoices.FindAsync(invoiceId);

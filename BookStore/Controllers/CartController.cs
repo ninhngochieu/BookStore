@@ -33,10 +33,10 @@ namespace BookStore.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IList>> GetCart(int id)
         {
-            var cart = await  _context.Carts
+            var cart = await _context.Carts
                 .Where(c => c.UserId == id)
-                .Include(u=>u.User)
-                .Include(b=>b.Book)
+                .Include(u => u.User)
+                .Include(b => b.Book)
                 .ToListAsync();
 
             if (cart == null)
@@ -92,13 +92,13 @@ namespace BookStore.Controllers
             {
                 //Cap nhat lai gio hang
                 CurrentCart.Amount += NewItem.Amount;
-                if(await _cartServices.UpdateAsync(CurrentCart))
+                if (await _cartServices.UpdateAsync(CurrentCart))
                 {
-                    return Ok(new { data = CurrentCart, success = true});
+                    return Ok(new { data = CurrentCart, success = true });
                 }
                 else
                 {
-                    return Ok(new { error_message = "Co loi khi cap nhat gio hang"});
+                    return Ok(new { error_message = "Co loi khi cap nhat gio hang" });
                 }
             }
             else
@@ -142,7 +142,5 @@ namespace BookStore.Controllers
         {
             return _context.Carts.Any(e => e.Id == id);
         }
-
-
-
-        IActionResult{ Muj0
+    }
+}
