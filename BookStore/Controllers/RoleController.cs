@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using AutoMapper;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -24,14 +25,17 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-            return await _context.Roles.ToListAsync();
+            return await _context.Roles.Include(u=>u.Users).ToListAsync();
         }
 
         // GET: api/Role/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Role>> GetRole(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
+            var role = await _context.Roles
+                .Include(u=>u.Users)
+                .Where(u=>u.Id==id)
+                .FirstOrDefaultAsync();
 
             if (role == null)
             {

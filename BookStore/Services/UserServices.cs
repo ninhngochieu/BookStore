@@ -31,9 +31,12 @@ namespace BookStore.Services
                 .FirstOrDefaultAsync();
         }
 
-        internal async Task<ActionResult<IEnumerable<User>>> GetAllUser()
+        internal async Task<object> GetAllUser()
         {
-            return await _bookstoreContext.Users.Include(r => r.Role).ToListAsync();
+            var users = await _bookstoreContext.Users
+                .Include(u=>u.Addresses)
+                .ToListAsync();
+            return  users;
         }
 
         internal async Task createUserTokenAsync(User user, string refresh)

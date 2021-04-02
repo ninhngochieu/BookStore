@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using System.Collections;
+using BookStore.Services;
 
 namespace BookStore.Controllers
 {
@@ -15,26 +16,26 @@ namespace BookStore.Controllers
     public class AddressController : ControllerBase
     {
         private readonly bookstoreContext _context;
+        private readonly CityServices _cityServices;
 
-        public AddressController(bookstoreContext context)
+        public AddressController(bookstoreContext context, CityServices cityServices)
         {
             _context = context;
+            _cityServices = cityServices;
         }
 
         [HttpGet]
         [Route("GetCity")]
         public async Task<ActionResult<IEnumerable>> GetCityAddressAsync()
         {
-            return Ok(new { data = await _context.CityAddresses.ToListAsync(), success = true});
+            return Ok(new { data = await _cityServices.GetAllCityAndDistrictAsync(), success = true }); ;
         }
 
         [HttpGet]
         [Route("GetDistrict/{id}")]
-        public async Task<ActionResult<IEnumerable>> GetDistrictAddressAsync(int id)
+        public async Task<ActionResult<IEnumerable>> GetDistrictAddressByCityIdAsync(int id)
         {
-            return Ok(new { data = await _context.DistrictAddresses
-                .Where(d => d.CityAddressId == id).ToListAsync()
-            , success = true});
+            return Ok(new { data = await _cityServices.GetDistrictByCityIdAsync(id), success = true });
         }
     }
 }

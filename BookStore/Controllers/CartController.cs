@@ -2,10 +2,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Models;
-using BookStore.ViewModels.CartViewModel;
 using BookStore.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
+using AutoMapper;
+using BookStore.ViewModels.Cart;
+using System.Collections.Generic;
 
 namespace BookStore.Controllers
 {
@@ -15,71 +16,30 @@ namespace BookStore.Controllers
     {
         private readonly bookstoreContext _context;
         private readonly CartServices _cartServices;
+        private readonly IMapper _mapper;
 
-        public CartController(bookstoreContext context, CartServices cartServices)
+        public CartController(bookstoreContext context, CartServices cartServices, IMapper mapper)
         {
             _context = context;
             _cartServices = cartServices;
+            _mapper = mapper;
         }
 
-        //// GET: api/Cart
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Cart>>> GetCarts()
-        //{
-        //    return await _context.Carts.ToListAsync();
-        //}
-
-        // GET: api/Cart/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IList>> GetCart(int id)
+        public async Task<ActionResult> GetCartByUser(int id)
         {
             var cart = await _context.Carts
-                .Where(c => c.UserId == id)
-                .Include(u => u.User)
-                .Include(b => b.Book)
-                .ToListAsync();
-
-            if (cart == null)
+               .Where(c => c.UserId == id)
+               .Include(u => u.User)
+               .Include(b => b.Book)
+               .ToListAsync();
+            if (cart is null)
             {
-                return NotFound();
+                return NotFound(new {data = "Empty cart", success = true});
             }
 
-            return cart;
+            return Ok(new {data = _mapper.Map<List<CartViewModel>>(cart), success = true });
         }
-
-        // PUT: api/Cart/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCart(int id, Cart cart)
-        //{
-        //    if (id != cart.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(cart).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!CartExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Cart
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Cart>> PostCart(CartPostModel NewItem)
         {
@@ -125,17 +85,15 @@ namespace BookStore.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCart(int id)
         {
-            //var cart = await _context.Carts.FindAsync(id);
-            //if (cart == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //_context.Carts.Remove(cart);
-            //await _context.SaveChangesAsync();
-
-            //return NoContent();
-            return NoContent();
+            bool IsDelete = await _cartServices.DeleteCartAsync(id);
+            if (IsDelete)
+            {
+                return Ok(new { data = "Xoa thanh cong", success = true });
+            }
+            else
+            {
+                return Ok(new { data = "Gio hang khong ton tai", success = true });
+            }
         }
 
         private bool CartExists(int id)

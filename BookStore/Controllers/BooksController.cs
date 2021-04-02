@@ -36,32 +36,22 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
-            List<Book> books = await _context.Book
-                .Include(c => c.Category)
-                .Include(a=>a.Author)
-                .Include(c=>c.Comments)
-                .Include(i=>i.BookImage)
-                .AsNoTracking()
-                .ToListAsync();
-            return Ok(new { data = _mapper.Map<List<BookInfoViewModel>>(books), success = true});
+            var books = _bookServices.GetAllBook();
+            return Ok(new { data = await books, success = true });
         }
 
         // GET: api/Books/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<ActionResult<Book>> GetBookAsync(int id)
         {
-            var book = await _context.Book
-                .Include(c => c.Category)
-                .Include(i => i.BookImage)
-                .Include(c=>c.Comments)
-                .Include(a=>a.Author).Where(b=>b.Id==id).FirstAsync();
+            var book = _bookServices.FindBookAsync(id);
 
-            if (book == null)
+            if (book is null)
             {
-                return Ok(new { error_message = "Khong tim thay san pham"});
+                return Ok(new { error_message = "Khong tim thay san pham" });
             }
 
-            return Ok(new { data = _mapper.Map<BookInfoViewModel>(book),success = true });
+            return Ok(new { data = await book, success = true });
         }
 
         // PUT: api/Books/5

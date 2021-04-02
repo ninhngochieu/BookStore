@@ -40,9 +40,8 @@
     <Folder Include="View Models\User\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="Modules\CustomAuthorization\" />
     <Folder Include="View Models\Author\" />
-    <Folder Include="View Models\CartViewModel\" />
     <Folder Include="View Models\Invoice\" />
+    <Folder Include="View Models\Cart\" />
   </ItemGroup>
 </Project>

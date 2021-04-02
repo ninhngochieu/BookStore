@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookStore.Models;
-using BookStore.ViewModels.CartViewModel;
+using BookStore.ViewModels.Cart;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,18 @@ namespace BookStore.Services
             return await _bookstoreContext.Carts
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
+        }
+
+        internal async Task<bool> DeleteCartAsync(int id)
+        {
+            var cart = await _bookstoreContext.Carts.Where(x => x.UserId == id).ToListAsync();
+            if (cart is null)
+            {
+                return false;
+            }
+
+            _bookstoreContext.Carts.RemoveRange(cart);
+            return await _bookstoreContext.SaveChangesAsync()!=0;
         }
     }
 }

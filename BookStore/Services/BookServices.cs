@@ -25,8 +25,15 @@ namespace BookStore.Services
 
         public async Task<IList<BookInfoViewModel>> GetAllBook()
         {
-            var list = _mapper.Map<IList<BookInfoViewModel>>(await _bookstoreContext.Book.ToListAsync());
-            return list;
+        var books = await _bookstoreContext.Book
+                .Where(p=>p.Private == false)
+                .Include(c => c.Category)
+                .Include(a=>a.Author)
+                .Include(c=>c.Comments)
+                .Include(i=>i.BookImage)
+                .AsNoTracking()
+                .ToListAsync();
+            return _mapper.Map<IList<BookInfoViewModel>>(books);
         }
 
         internal async Task<bool> AddNewBookAsync(Book addNewBook)
@@ -37,6 +44,26 @@ namespace BookStore.Services
             }catch(Exception)
             {
                 return false;
+            }
+        }
+
+        internal async Task<BookInfoViewModel> FindBookAsync(int id)
+        {
+            try
+            {
+                var book = await _bookstoreContext.Book
+                    .Where(p => p.Private == false)
+                    .Include(c => c.Category)
+                    .Include(i => i.BookImage)
+                    .Include(c => c.Comments)
+                    .Include(a => a.Author)
+                    .Where(b => b.Id == id)
+                    .FirstAsync();
+                return _mapper.Map<BookInfoViewModel>(book);
+            }
+            catch
+            {
+                return null;
             }
         }
 

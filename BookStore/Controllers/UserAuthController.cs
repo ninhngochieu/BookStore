@@ -158,9 +158,9 @@ namespace BookStore.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult> GetUser()
         {
-            return await _userServices.GetAllUser();
+            return Ok(new { data = await _userServices.GetAllUser(), success = true});
         }
         [HttpPost]
         [Route("register")]

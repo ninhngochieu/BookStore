@@ -55,6 +55,8 @@ namespace BookStore
             services.AddScoped<CartServices>();
             services.AddScoped<InvoiceService>();
             services.AddScoped<InvoiceDetailsService>();
+            services.AddScoped<CityServices>();
+            services.AddScoped<AuthorServices>();
             services.AddCors(c => {
                 c.AddPolicy("TCAPolicy", builder => {
                     builder.AllowAnyOrigin()

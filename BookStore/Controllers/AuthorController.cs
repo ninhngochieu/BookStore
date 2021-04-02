@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using AutoMapper;
 using BookStore.View_Models.Author;
+using BookStore.Services;
 
 namespace BookStore.Controllers
 {
@@ -15,62 +14,53 @@ namespace BookStore.Controllers
     {
         private readonly bookstoreContext _context;
         private readonly IMapper _mapper;
+        private readonly AuthorServices _authorServices;
 
-        public AuthorController(bookstoreContext context, IMapper mapper)
+        public AuthorController(bookstoreContext context, IMapper mapper, AuthorServices authorServices)
         {
             _context = context;
             _mapper = mapper;
+            _authorServices = authorServices;
         }
 
         // GET: api/Author
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Author>>> GetAuthor()
         {
-            return Ok(new { data = await _context.Author.ToListAsync(), success = true});
+            return Ok(new { data = await _authorServices.GetAllAuthor(), success = true});
         }
 
         // GET: api/Author/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Author>> GetAuthor(int id)
         {
-            var author = await _context.Author.FindAsync(id);
-
-            if (author == null)
-            {
-                return NotFound();
-            }
-            return author;
+            return Ok(new { data = await _authorServices.GetAuthorById(id), success = true });
         }
 
         // PUT: api/Author/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
+        [HttpPut]
+        public async Task<IActionResult> PutAuthor(AuthorPostModel authorPostModel)
         {
-            if (id != author.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(new { error_message = "Loi cu phap"});
             }
-
-            _context.Entry(author).State = EntityState.Modified;
-
-            try
+            Author author = await _authorServices.FindAuthorAsync(authorPostModel.Id);
+            if (author is null)
             {
-                await _context.SaveChangesAsync();
+                return Ok(new { error_message= "Khong tim thay tac gia"});
             }
-            catch (DbUpdateConcurrencyException)
+            bool IsUpdateAuthor = await _authorServices.UpdateAuthorAsync(author, authorPostModel);
+            if (IsUpdateAuthor)
             {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Ok(new { data = author, success = true });
             }
-
-            return NoContent();
+            else
+            {
+                return Ok(new { error_message = "Khong co gi thay doi" });
+            }
+          
         }
 
         // POST: api/Author
@@ -80,30 +70,36 @@ namespace BookStore.Controllers
         {
             Author author = _mapper.Map<Author>(authorPost);
             _context.Author.Add(author);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            bool IsSaveAuthor = await _authorServices.AddNewBook(author);
+            if (IsSaveAuthor)
+            {
+                return Ok(new { data = author, success = true });
+            }
+            else
+            {
+                return Ok(new { error_message = "Co loi khi luu tac gia"});
+            }
         }
 
         // DELETE: api/Author/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
-            var author = await _context.Author.FindAsync(id);
-            if (author == null)
+            var author = await _authorServices.FindAuthorAsync(id);
+            if (author is null)
             {
-                return NotFound();
+                return Ok(new { error_message = "Khong tim thay tac gia" });
             }
-
-            _context.Author.Remove(author);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            bool IsDeleteAuthor = await _authorServices.DeleteAuthorAsync(author);
+            if (IsDeleteAuthor)
+            {
+                return Ok(new { data = "Xoa tac gia thanh cong", success = true });
+            }
+            else
+            {
+                return Ok(new { error_message = "Xoa that bai, co loi xay ra" });
+            }
         }
 
-        private bool AuthorExists(int id)
-        {
-            return _context.Author.Any(e => e.Id == id);
-        }
     }
 }

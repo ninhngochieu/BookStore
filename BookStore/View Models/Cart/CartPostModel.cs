@@ -1,7 +1,5 @@
 ﻿using System;
-using BookStore.Models;
-
-namespace BookStore.ViewModels.CartViewModel
+namespace BookStore.ViewModels.Cart
 {
     public class CartPostModel
     {
