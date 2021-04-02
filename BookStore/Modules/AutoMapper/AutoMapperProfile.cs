@@ -64,6 +64,13 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(s => s.User, options => options.DoNotValidate());
 
             CreateMap<InvoicePostModel, Invoice>();
+
+            CreateMap<Cart, InvoiceDetail>()
+                .ForSourceMember(s => s.UserId, options => options.DoNotValidate())
+                .ForSourceMember(s => s.User, options => options.DoNotValidate())
+                .ForSourceMember(s => s.Id, options => options.DoNotValidate())
+                .ForMember(d => d.Quantity, options => options.MapFrom(s => s.Amount));
+
         }
         
     }

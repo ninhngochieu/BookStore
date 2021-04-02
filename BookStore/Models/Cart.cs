@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BookStore.Models
+﻿namespace BookStore.Models
 {
     public class Cart
     {

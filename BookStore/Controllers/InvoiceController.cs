@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using BookStore.Services;
 using BookStore.ViewModels.Invoice;
+using AutoMapper;
 
 namespace BookStore.Controllers
 {
@@ -17,11 +18,17 @@ namespace BookStore.Controllers
     {
         private readonly bookstoreContext _context;
         private readonly InvoiceService _invoiceService;
+        private readonly IMapper _mapper;
+        private readonly CartServices _cartServices;
+        private readonly InvoiceDetailsService _invoiceDetailsService;
 
-        public InvoiceController(bookstoreContext context, InvoiceService invoiceService)
+        public InvoiceController(bookstoreContext context, InvoiceService invoiceService, IMapper mapper, CartServices cartServices, InvoiceDetailsService invoiceDetailsService)
         {
             _context = context;
             _invoiceService = invoiceService;
+            _mapper = mapper;
+            _cartServices = cartServices;
+            _invoiceDetailsService = invoiceDetailsService;
         }
 
         // GET: api/Invoice
@@ -79,14 +86,43 @@ namespace BookStore.Controllers
         // POST: api/Invoice
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Invoice>> PostInvoice(InvoicePostModel invoice)
+        public async Task<IActionResult> PostInvoice(InvoicePostModel model)
         {
             //_context.Invoices.Add(invoice);
             //await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetInvoice", new { id = invoice.Id }, invoice);
+
+
+            //Tạo ra 1 invoice cho user khi nhấn thanh toán
+            var invoice = _mapper.Map<Invoice>(model);
+
+            await _context.Invoices.AddAsync(invoice);
             bool isSave = await _invoiceService.AddNewInvoiceAsync(invoice);
-            return null;
+
+            if(!isSave)
+            {
+                return NotFound();
+            }
+
+            //Lấy món hàng trong cart rồi thêm vào InvoiceDetail
+            var cartItems = await _cartServices.GetCartFromUser(model.UserId);
+            var invoiceDetails = _mapper.Map<IList<InvoiceDetail>>(cartItems);
+
+            //Gán id Invoice vào InvoiceDetail
+            foreach (var item in invoiceDetails)
+            {
+                item.InvoiceId = invoice.Id;
+            }
+
+            //Lưu vào db
+            isSave = await _invoiceDetailsService.SaveToDatabase(invoiceDetails);
+
+            if(!isSave)
+            {
+                return NotFound();
+            }
+            return Ok(invoiceDetails);
         }
 
         // DELETE: api/Invoice/5
