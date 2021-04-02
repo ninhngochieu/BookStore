@@ -2,6 +2,10 @@
 {
     public class UserAddress
     {
+        public UserAddress()
+        {
+            IsDefault = false;
+        }
         public int Id { get; set; }
         public string? Street_Address { get; set; }
         public string? Phone { get; set; }

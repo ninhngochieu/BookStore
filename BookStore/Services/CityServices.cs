@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookStore.Models;
+using BookStore.ViewModels.UserAddress;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +26,13 @@ namespace BookStore.Services
             return await _bookstoreContext.DistrictAddresses
                 .Where(d => d.CityAddressId == id)
                    .ToListAsync();
+        }
+
+        internal async Task<DistrictAddress> GetCityAndDistrictAsync(UserAddressPostModel userAddressPostModel)
+        {
+            return await _bookstoreContext.DistrictAddresses.Where(c => c.CityAddressId == userAddressPostModel.CityAddressId)
+                .Where(d => d.Id == userAddressPostModel.DistrictAddressId)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -164,9 +164,7 @@ namespace BookStore.Services
             //    .FirstOrDefaultAsync;
             return await _bookstoreContext.Users
                 .Where(u=>u.Id==id)
-                .Include(a=>a.Addresses)
-                    .ThenInclude(c=>c.CityAddress)
-                    .ThenInclude(d=>d.DistrictAddresses)
+                //.Include(a=>a.Addresses)
                 .FirstOrDefaultAsync();
         }
 

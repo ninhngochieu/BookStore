@@ -8,6 +8,7 @@ using BookStore.View_Models.Category;
 using BookStore.View_Models.User;
 using BookStore.ViewModels.Cart;
 using BookStore.ViewModels.Invoice;
+using BookStore.ViewModels.UserAddress;
 
 namespace BookStore.Modules.AutoMapper
 {
@@ -15,11 +16,7 @@ namespace BookStore.Modules.AutoMapper
     {
         public AutoMapperProfile()
         {
-            //role
-            CreateMap<Role, RoleViewModel>()
-                .ForSourceMember(u => u.Users, options => options.DoNotValidate());
-            CreateMap<RoleViewModel, Role>();
-
+            
             //user
             CreateMap<User, UserInfoViewModel>()
                 .ForSourceMember(u => u.RefreshToken, options => options.DoNotValidate())
@@ -80,7 +77,10 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(s => s.Id, options => options.DoNotValidate())
                 .ForMember(d => d.Quantity, options => options.MapFrom(s => s.Amount));
             CreateMap<Cart, CartViewModel>();
+
+            //Address
+            CreateMap<UserAddressPostModel, UserAddress>();
         }
-        
+
     }
 }

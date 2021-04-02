@@ -10,8 +10,6 @@ using BookStore.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -57,6 +55,7 @@ namespace BookStore
             services.AddScoped<InvoiceDetailsService>();
             services.AddScoped<CityServices>();
             services.AddScoped<AuthorServices>();
+            services.AddScoped<UserAddressService>();
             services.AddCors(c => {
                 c.AddPolicy("TCAPolicy", builder => {
                     builder.AllowAnyOrigin()
