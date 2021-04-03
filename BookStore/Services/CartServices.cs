@@ -55,5 +55,10 @@ namespace BookStore.Services
             _bookstoreContext.Carts.RemoveRange(cart);
             return await _bookstoreContext.SaveChangesAsync()!=0;
         }
+
+        internal async Task<object> GetCartByIdAsync(int id)
+        {
+            return await _bookstoreContext.Carts.FindAsync(id);
+        }
     }
 }

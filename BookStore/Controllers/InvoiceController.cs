@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
@@ -22,7 +20,11 @@ namespace BookStore.Controllers
         private readonly CartServices _cartServices;
         private readonly InvoiceDetailsService _invoiceDetailsService;
 
-        public InvoiceController(bookstoreContext context, InvoiceService invoiceService, IMapper mapper, CartServices cartServices, InvoiceDetailsService invoiceDetailsService)
+        public InvoiceController(bookstoreContext context,
+                                 InvoiceService invoiceService,
+                                 IMapper mapper,
+                                 CartServices cartServices,
+                                 InvoiceDetailsService invoiceDetailsService)
         {
             _context = context;
             _invoiceService = invoiceService;
@@ -98,15 +100,21 @@ namespace BookStore.Controllers
             var invoice = _mapper.Map<Invoice>(model);
 
             await _context.Invoices.AddAsync(invoice);
-            bool isSave = await _invoiceService.AddNewInvoiceAsync(invoice);
+            bool isSave = await _invoiceService.SaveInvoiceAsync(invoice);
 
             if(!isSave)
             {
-                return NotFound();
+                return Ok(new { error_message = "Khong the luu don hang do co loi xay ra" });
             }
 
             //Lấy món hàng trong cart rồi thêm vào InvoiceDetail
             var cartItems = await _cartServices.GetCartFromUser(model.UserId);
+
+            if (cartItems.Count == 0)
+            {
+                return Ok(new {error_message = "Gio hang rong, xin vui long mua hang"});
+            }
+
             var invoiceDetails = _mapper.Map<IList<InvoiceDetail>>(cartItems);
 
             //Gán id Invoice vào InvoiceDetail
@@ -120,9 +128,13 @@ namespace BookStore.Controllers
 
             if(!isSave)
             {
-                return NotFound();
+                return Ok(new { error_message = "Khong the luu chi tiet don hang do co loi xay ra" });
+
             }
-            return Ok(invoiceDetails);
+            await _cartServices.DeleteCartAsync(model.UserId);
+            invoice.TotalMoney = invoiceDetails.Sum(i => i.SubTotal);
+            isSave = await _invoiceService.SaveInvoiceAsync(invoice);
+            return Ok(new { data = invoiceDetails , success = true});
         }
 
         // DELETE: api/Invoice/5

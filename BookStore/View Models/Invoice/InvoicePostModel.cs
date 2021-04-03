@@ -12,7 +12,7 @@ namespace BookStore.ViewModels.Invoice
         }
 
         public DateTime CreateAt { get; set; } = DateTime.Now;
-        public int TotalMoney { get; set; } = 0;
+        public int ?TotalMoney { get; set; } = 0;
         public int UserId { get; set; }
         public int StatusId { get; set; } = 1;
     }

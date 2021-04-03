@@ -17,12 +17,17 @@ namespace BookStore.Controllers
         private readonly bookstoreContext _context;
         private readonly CartServices _cartServices;
         private readonly IMapper _mapper;
+        private readonly BookServices _bookServices;
 
-        public CartController(bookstoreContext context, CartServices cartServices, IMapper mapper)
+        public CartController(bookstoreContext context,
+                              CartServices cartServices,
+                              IMapper mapper,
+                              BookServices bookServices)
         {
             _context = context;
             _cartServices = cartServices;
             _mapper = mapper;
+            _bookServices = bookServices;
         }
 
         [HttpGet("{id}")]
@@ -43,18 +48,46 @@ namespace BookStore.Controllers
         [HttpPost]
         public async Task<ActionResult<Cart>> PostCart(CartPostModel NewItem)
         {
+            //Kiem tra hop le
             if (!ModelState.IsValid)
             {
                 return Ok(new { error_message = "Loi gio hang" });
             }
+
+            if (NewItem.Amount <= 0)
+            {
+                return Ok(new { error_message = "So luong sach khong hop le" });
+            }
+
+            //Kiem tra sach co ton tai
+            Book book = await _bookServices.GetBookById(NewItem.BookId);
+            if(book is null)
+            {
+                return Ok(new { error_message = "Sach khong ton tai" });
+            }
+
+            //Kiem tra so luong
+            if(book.Quantity <= 0)
+            {
+                return Ok(new { error_message = "Sach da het so luong" });
+            }
+
+            //Kiem tra so luong ton
+            if(book.Quantity - NewItem.Amount <= 0)
+            {
+                return Ok(new { error_message = "So luong sach con lai trong kho chi con "+NewItem.Amount});
+            }
+
+
             Cart CurrentCart = await _cartServices.FindAsync(NewItem);
             if (CurrentCart is not null)
             {
                 //Cap nhat lai gio hang
                 CurrentCart.Amount += NewItem.Amount;
+                CurrentCart.SubTotal = CurrentCart.Amount * book.Price;
                 if (await _cartServices.UpdateAsync(CurrentCart))
                 {
-                    return Ok(new { data = CurrentCart, success = true });
+                    return Ok(new { data = await _cartServices.GetCartByIdAsync(CurrentCart.Id), success = true });
                 }
                 else
                 {
@@ -68,6 +101,7 @@ namespace BookStore.Controllers
                     UserId = NewItem.UserId,
                     BookId = NewItem.BookId,
                     Amount = NewItem.Amount,
+                    SubTotal = NewItem.Amount*book.Price
                 };
                 if (await _cartServices.AddNewCartAsync(cart))
                 {
@@ -96,9 +130,5 @@ namespace BookStore.Controllers
             }
         }
 
-        private bool CartExists(int id)
-        {
-            return _context.Carts.Any(e => e.Id == id);
-        }
     }
 }

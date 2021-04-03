@@ -10,7 +10,7 @@ namespace BookStore.Models
         }
         public int Id { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
-        public int TotalMoney { get; set; }
+        public int ?TotalMoney { get; set; }
 
         public int UserId { get; set; }
         public User User { get; set; }

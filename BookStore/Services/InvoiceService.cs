@@ -17,7 +17,7 @@ namespace BookStore.Services
         {
         }
 
-        internal async Task<bool> AddNewInvoiceAsync(Invoice invoice)
+        internal async Task<bool> SaveInvoiceAsync(Invoice invoice)
         {
             return await _bookstoreContext.SaveChangesAsync() != 0;
         }

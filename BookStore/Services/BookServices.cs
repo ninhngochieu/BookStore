@@ -67,6 +67,11 @@ namespace BookStore.Services
             }
         }
 
+        internal async Task<Book> GetBookById(int bookId)
+        {
+            return await _bookstoreContext.Book.FindAsync(bookId);
+        }
+
         public async Task<ActionResult> SearchBook(SearchBookDTO model)
         {
             IQueryable<Book> book = _bookstoreContext.Book
