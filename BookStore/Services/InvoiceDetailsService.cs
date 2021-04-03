@@ -16,7 +16,7 @@ namespace BookStore.Services
 
         internal async Task<bool> SaveToDatabase(IList<InvoiceDetail> items)
         {
-            _bookstoreContext.InvoiceDetails.AddRangeAsync(items);
+            await _bookstoreContext.InvoiceDetails.AddRangeAsync(items);
             return await _bookstoreContext.SaveChangesAsync() != 0;
         }
     }
