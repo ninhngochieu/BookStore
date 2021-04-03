@@ -8,7 +8,6 @@ namespace BookStore.Models
     {
         public User()
         {
-            RoleId = 3;
         }
         public int Id { get; set; }
         [Required]
@@ -25,10 +24,12 @@ namespace BookStore.Models
 
         //User - Role: 1 - 1
         [Required]
-        public int RoleId { get; set; }
+        public int RoleId { get; set; } = 3;
         public Role? Role { get; set; }
 
         public IList<UserAddress> Addresses { get; set; }
+
+        public bool IsAccess { get; set; } = true;
 
     }
 }

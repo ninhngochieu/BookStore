@@ -37,13 +37,18 @@ namespace BookStore.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Ok(new { data = "Invalid User", error_message = "Tai khoan hoac mat khau khong hop le" });
+                return Ok(new { error_message = "Tai khoan hoac mat khau khong hop le" });
             }
 
             User fromDb = await _userServices.DoLogin(user);
             if (fromDb is null)
             {
                 return Ok(new { error_message = "Đăng nhập thất bại, vui lòng thử lại!" });
+            }
+
+            if (!fromDb.IsAccess)
+            {
+                return Ok(new { error_message = "Tai khoan cua ban bi khoa. Vui long lien he quan tri vien" });
             }
 
             TokenPair tokenPair = new TokenPair()
