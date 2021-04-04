@@ -47,12 +47,12 @@ namespace BookStore.Services
             }
         }
 
-        internal async Task<BookInfoViewModel> FindBookAsync(int id)
+        internal async Task<object> FindBookAsync(int id)
         {
             try
             {
                 var book = await _bookstoreContext.Book
-                    .Where(p => p.Private == false)
+                    //.Where(p => p.Private == false)
                     .Include(c => c.Category)
                     .Include(i => i.BookImage)
                     .Include(c => c.Comments)

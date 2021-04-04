@@ -44,5 +44,6 @@
     <Folder Include="View Models\Invoice\" />
     <Folder Include="View Models\Cart\" />
     <Folder Include="View Models\UserAddress\" />
+    <Folder Include="View Models\BookImage\" />
   </ItemGroup>
 </Project>

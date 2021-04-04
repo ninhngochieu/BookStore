@@ -6,6 +6,7 @@ using BookStore.View_Models.Book;
 using BookStore.View_Models.BookComment;
 using BookStore.View_Models.Category;
 using BookStore.View_Models.User;
+using BookStore.ViewModels.BookImage;
 using BookStore.ViewModels.Cart;
 using BookStore.ViewModels.Invoice;
 using BookStore.ViewModels.UserAddress;
@@ -26,23 +27,26 @@ namespace BookStore.Modules.AutoMapper
                 .ForSourceMember(u => u.TokenCreateAt, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Id, options => options.DoNotValidate())
                 .ForSourceMember(u => u.Password, options => options.DoNotValidate());
-                //.ForMember(c=>c.CityAddressId, options => options.MapFrom(a=>a.Addresses.FirstOrDefault().CityAddressId))
-                //.ForMember(c => c.StreetAddress, options => options.MapFrom(a => a.Addresses.FirstOrDefault().Street_Address))
-                //.ForMember(c => c.DistrictAddressId, options => options.MapFrom(a => a.Addresses.FirstOrDefault().DistrictAddressId))
-                //.ForMember(c => c.DistrictName, options => options.MapFrom(a => a.Addresses.FirstOrDefault().DistrictAddress.DistrictName))
-                //.ForMember(c => c.CityName, options => options.MapFrom(a => a.Addresses.FirstOrDefault().CityAddress.CityName))
-                //.ForSourceMember(u => u.Addresses., options => options.DoNotValidate())
-                //.ForSourceMember(u => u.Addresses.FirstOrDefault().DistrictAddress, options => options.DoNotValidate())
-                //.ForSourceMember(u => u.Addresses.FirstOrDefault().User, options => options.DoNotValidate());
+            //.ForMember(c=>c.CityAddressId, options => options.MapFrom(a=>a.Addresses.FirstOrDefault().CityAddressId))
+            //.ForMember(c => c.StreetAddress, options => options.MapFrom(a => a.Addresses.FirstOrDefault().Street_Address))
+            //.ForMember(c => c.DistrictAddressId, options => options.MapFrom(a => a.Addresses.FirstOrDefault().DistrictAddressId))
+            //.ForMember(c => c.DistrictName, options => options.MapFrom(a => a.Addresses.FirstOrDefault().DistrictAddress.DistrictName))
+            //.ForMember(c => c.CityName, options => options.MapFrom(a => a.Addresses.FirstOrDefault().CityAddress.CityName))
+            //.ForSourceMember(u => u.Addresses., options => options.DoNotValidate())
+            //.ForSourceMember(u => u.Addresses.FirstOrDefault().DistrictAddress, options => options.DoNotValidate())
+            //.ForSourceMember(u => u.Addresses.FirstOrDefault().User, options => options.DoNotValidate());
+
+            CreateMap<BookImage, BookImageViewModel>();
 
             //book
             CreateMap<Book, BookInfoViewModel>()
                 .ForMember(d => d.AuthorName, options => options.MapFrom(s => s.Author.AuthorName))
                 .ForMember(d => d.CategoryName, options => options.MapFrom(s => s.Category.CategoryName))
-                            .ForMember(d => d.Image1, options => options.MapFrom(s => s.BookImage.Image1))
-                            .ForMember(d => d.Image2, options => options.MapFrom(s => s.BookImage.Image2))
-                            .ForMember(d => d.Image3, options => options.MapFrom(s => s.BookImage.Image3))
-                            .ForMember(d => d.Image4, options => options.MapFrom(s => s.BookImage.Image4));
+                .ForMember(d=>d.BookImageViewModel,option=>option.MapFrom(s=>s.BookImage));
+                            //.ForMember(d => d.Image1, options => options.MapFrom(s => s.BookImage.Image1))
+                            //.ForMember(d => d.Image2, options => options.MapFrom(s => s.BookImage.Image2))
+                            //.ForMember(d => d.Image3, options => options.MapFrom(s => s.BookImage.Image3))
+                            //.ForMember(d => d.Image4, options => options.MapFrom(s => s.BookImage.Image4));
             //User
             CreateMap<CreateNewBookDTO, Book>()
                 .ForSourceMember(s => s.MainImage, options => options.DoNotValidate())

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BookStore.Models;
 using BookStore.View_Models.BookComment;
+using BookStore.ViewModels.BookImage;
 
 namespace BookStore.View_Models.Book
 {
@@ -22,10 +23,7 @@ namespace BookStore.View_Models.Book
         public string? AuthorName { get; set; }
         //public Author Author { get; set; }
         public IList<BookCommentViewModel> Comments { get; set; }
-        public string Image1 { get; set; }
-        public string Image2 { get; set; }
-        public string Image3 { get; set; }
-        public string Image4 { get; set; }
+        public BookImageViewModel BookImageViewModel { get; set; }
 
     }
 }
