@@ -51,11 +51,16 @@ namespace BookStore.Services
                 
                 int totalPage = Total / Limit;
                 
-                for (int i = 0; i <= 4; i++)
+                if (Total % Limit != 0)
                 {
-                    if ((Current_Page - 2 + i) >= 0 && (Current_Page - 2 + i) < totalPage)
+                    totalPage++;
+                }
+                
+                for (int i = 1; i <= 5; i++)
+                {
+                    if ((Current_Page - 3 + i) >= 1 && (Current_Page - 3 + i) <= totalPage)
                     {
-                        List_Page.Add(Current_Page - 2 + i);
+                        List_Page.Add(Current_Page - 3 + i);
                     }
                 }
 
@@ -63,7 +68,7 @@ namespace BookStore.Services
                 Prev_Page = Current_Page - 1;
 
                 //if (Curren)
-                if (Current_Page >= totalPage - 1 )
+                if (Current_Page >= totalPage)
                 {
                     Next_Page = null;
                 }
@@ -81,11 +86,15 @@ namespace BookStore.Services
                     Current_Page = 0;
                 }
 
-                int skip = Current_Page * Limit;
+                int skip = (Current_Page - 1) * Limit;
                 if (skip + Limit > Total && Total - Limit >= 0)
                 {
                     skip = Total - Limit;
-                    Current_Page = Total / Limit - 1;
+                    Current_Page = Total / Limit;
+                    if (Total % Limit != 0)
+                    {
+                        Current_Page++;
+                    }
                 }
 
                 
