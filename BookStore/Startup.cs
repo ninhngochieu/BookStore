@@ -153,7 +153,7 @@ namespace BookStore
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(env.WebRootPath, "Images")),
-                RequestPath = "/Images"
+                RequestPath = "/images"
             });
 
             AppDbInitializer.Seed(app);

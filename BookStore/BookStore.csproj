@@ -45,5 +45,8 @@
     <Folder Include="View Models\Cart\" />
     <Folder Include="View Models\UserAddress\" />
     <Folder Include="View Models\BookImage\" />
+    <Folder Include="View Models\Role\" />
+    <Folder Include="View Models\CityAddress\" />
+    <Folder Include="View Models\DistrictAddress\" />
   </ItemGroup>
 </Project>

@@ -29,21 +29,5 @@ namespace BookStore.Controllers
         public async Task<IActionResult> AddNewComment([FromBody] View_Models.BookComment.BookCommentDTO model) => Ok(await _bookCommentServices.AddNewComment(model));
 
 
-
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

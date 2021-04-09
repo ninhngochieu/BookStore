@@ -11,7 +11,7 @@ namespace BookStore.ViewModels.Invoice
         public int TotalMoney { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public Models.User User { get; set; }
 
         public IList<InvoiceDetail> InvoiceDetails { get; set; }
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.User;
+using BookStore.ViewModels.User;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,9 @@ namespace BookStore.Services
 {
     public class UserServices : Service
     {
-        public UserServices(bookstoreContext bookstoreContext, IWebHostEnvironment webHostEnvironment, IMapper mapper) : base(bookstoreContext, webHostEnvironment, mapper)
+        public UserServices(bookstoreContext bookstoreContext,
+                            IWebHostEnvironment webHostEnvironment,
+                            IMapper mapper) : base(bookstoreContext, webHostEnvironment, mapper)
         {
         }
 
@@ -35,8 +38,11 @@ namespace BookStore.Services
         {
             var users = await _bookstoreContext.Users
                 .Include(u=>u.Addresses)
+                    .ThenInclude(s=>s.CityAddress)
+                    .ThenInclude(s=>s.DistrictAddresses)
+                .Include(r=>r.Role)
                 .ToListAsync();
-            return  users;
+            return  _mapper.Map<IList<UserAdminViewModel>>(users);
         }
 
         internal async Task createUserTokenAsync(User user, string refresh)
