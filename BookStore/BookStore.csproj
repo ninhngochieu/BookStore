@@ -48,5 +48,6 @@
     <Folder Include="View Models\Role\" />
     <Folder Include="View Models\CityAddress\" />
     <Folder Include="View Models\DistrictAddress\" />
+    <Folder Include="View Models\Other\" />
   </ItemGroup>
 </Project>

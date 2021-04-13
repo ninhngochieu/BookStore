@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BookStore.Models;
+using BookStore.ViewModels.UserAddress;
 
 namespace BookStore.View_Models.User
 {
@@ -20,7 +21,9 @@ namespace BookStore.View_Models.User
 
         //public string? CityName { get; set; }
         //public string? DistrictName { get; set; }
-        public List<UserAddress> Addresses { get; set; }
+        public List<UserAddressViewModel> Addresses { get; set; }
+        public bool? IsAccess { get; set; }
+        public int ?RoleId { get; set; }
 
 #nullable disable
     }

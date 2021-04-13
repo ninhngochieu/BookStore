@@ -15,6 +15,9 @@ namespace BookStore.View_Models.User
         public int? CityAddressId { get; set; }
         public int? DistrictAddressId { get; set; }
         public IFormFile? Avatar { get; set; }
+        public bool ?IsAccess { get; set; }
+        public int ?RoleId { get; set; }
+
 #nullable disable
     }
 }

@@ -25,7 +25,7 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-            return await _context.Roles.Include(u=>u.Users).ToListAsync();
+            return Ok(new { data= await _context.Roles.ToListAsync(), success = true});
         }
 
         // GET: api/Role/5

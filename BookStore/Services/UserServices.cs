@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,12 +7,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookStore.Models;
 using BookStore.View_Models.User;
+using BookStore.ViewModels.Other;
 using BookStore.ViewModels.User;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32.SafeHandles;
 
 namespace BookStore.Services
 {
@@ -84,10 +82,24 @@ namespace BookStore.Services
             {
                 user.Avatar = DateTimeOffset.Now.ToUnixTimeSeconds()+"_"+userVM.Avatar.FileName;
             }
+            if(userVM.IsAccess is not null)
+            {
+                user.IsAccess = userVM.IsAccess??false;
+            }
+            if(userVM.RoleId is not null)
+            {
+                user.RoleId = userVM.RoleId??3;
+            }
             _bookstoreContext.Entry(user).State = EntityState.Modified;
             try
             {
                 bool isUpdateUserSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
+
+                if((userVM.IsAccess is not null || userVM.RoleId is not null) && isUpdateUserSuccess) // Tai su dung de cap nhat trang thai, tranh truong hop save o bottom case
+                {
+                    return _mapper.Map<UserInfoViewModel>(user);
+                }
+
                 if (isUpdateUserSuccess&&userVM is not null)
                 {
                     if(userVM.Avatar is not null)
@@ -156,7 +168,7 @@ namespace BookStore.Services
             {
                 throw;
             }
-            return userInfoViewModel;
+            return _mapper.Map<UserInfoViewModel>(user);
 
         }
 
@@ -170,7 +182,7 @@ namespace BookStore.Services
             //    .FirstOrDefaultAsync;
             return await _bookstoreContext.Users
                 .Where(u=>u.Id==id)
-                //.Include(a=>a.Addresses)
+                .Include(a=>a.Addresses)
                 .FirstOrDefaultAsync();
         }
 
@@ -250,6 +262,25 @@ namespace BookStore.Services
             }
 
             return true;
+        }
+
+        internal async Task<bool> UpdateRoleAndStatus(RoleAndStatus roleAndStatus)
+        {
+            User user = _bookstoreContext.Users.Find(roleAndStatus.Id);
+            if (user is null)
+            {
+                return false;
+            }
+            if (roleAndStatus.IsAccess is not null)
+            {
+                user.IsAccess = roleAndStatus.IsAccess??false;
+            }
+            if (roleAndStatus.RoleId is not null)
+            {
+                user.RoleId = roleAndStatus.RoleId??3;
+            }
+
+            return await _bookstoreContext.SaveChangesAsync() != 0;
         }
 
         internal async Task<bool> AddNewUser(User user)

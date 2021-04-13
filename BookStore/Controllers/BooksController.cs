@@ -9,6 +9,7 @@ using BookStore.Models;
 using BookStore.Services;
 using AutoMapper;
 using BookStore.View_Models.Book;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
@@ -34,6 +35,7 @@ namespace BookStore.Controllers
         }
         // GET: api/Books
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
             var books = _bookServices.GetAllBook();

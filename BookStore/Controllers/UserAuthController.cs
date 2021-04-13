@@ -6,6 +6,7 @@ using BookStore.Token;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using BookStore.View_Models.User;
+using BookStore.ViewModels.Other;
 
 namespace BookStore.Controllers
 {
@@ -191,6 +192,19 @@ namespace BookStore.Controllers
             else
             {
                 return Ok(new { error_message = "Them User that bai, co loi xay ra" });
+            }
+        }
+        [HttpPut("UpdateStatusAndRole")]
+        public async Task<ActionResult> UpdateStatusAndRole([FromForm]RoleAndStatus roleAndStatus)
+        {
+            bool isUpdate = await _userServices.UpdateRoleAndStatus(roleAndStatus);
+            if (isUpdate)
+            {
+                return Ok(new { data = "Cap nhat thanh cong", success = true });
+            }
+            else
+            {
+                return Ok(new { error_message = "Co loi xay ra" });
             }
         }
     }
