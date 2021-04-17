@@ -182,16 +182,17 @@ namespace BookStore.Controllers
             User user = new User
             {
                 Username = registerUser.Username,
-                Password = registerUser.Password
+                Password = registerUser.Password,
+                Name = registerUser.Name
             };
             bool isSave = await _userServices.AddNewUser(user);
             if (isSave)
             {
-                return Ok(new { success = true, data = "Them User thanh cong" });
+                return Ok(new { success = true, data = "Dang ki thanh cong" });
             }
             else
             {
-                return Ok(new { error_message = "Them User that bai, co loi xay ra" });
+                return Ok(new { error_message = "Dang ki that bai, co loi xay ra" });
             }
         }
         [HttpPut("UpdateStatusAndRole")]

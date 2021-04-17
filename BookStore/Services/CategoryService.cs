@@ -65,7 +65,6 @@ namespace BookStore.Services
             }
             else
             {
-                // TODO: tìm những book có category và sửa luôn
                 var category = await _bookstoreContext.Categories.FindAsync(model.Id);
                 category.CategoryName = model.CategoryName;
                 _bookstoreContext.Entry(category).State = EntityState.Modified;
