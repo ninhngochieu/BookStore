@@ -87,7 +87,7 @@ namespace BookStore.Controllers
                 CurrentCart.SubTotal = CurrentCart.Amount * book.Price;
                 if (await _cartServices.UpdateAsync(CurrentCart))
                 {
-                    return Ok(new { data = await _cartServices.GetCartByIdAsync(CurrentCart.Id), success = true });
+                    return Ok(new { data = await _cartServices.GetCartFromUser(NewItem.UserId), success = true });
                 }
                 else
                 {

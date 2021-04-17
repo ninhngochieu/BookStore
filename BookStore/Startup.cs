@@ -152,7 +152,7 @@ namespace BookStore
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.WebRootPath, "Images")),
+                    Path.Combine(env.WebRootPath, "images")),
                 RequestPath = "/images"
             });
 
