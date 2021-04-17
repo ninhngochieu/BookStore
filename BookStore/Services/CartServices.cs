@@ -40,6 +40,7 @@ namespace BookStore.Services
         internal async Task<IList<Cart>> GetCartFromUser(int userId)
         {
             return await _bookstoreContext.Carts
+                .Include(c=>c.Book)
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
         }

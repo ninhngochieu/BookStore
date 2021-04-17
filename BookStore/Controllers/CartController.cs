@@ -105,7 +105,7 @@ namespace BookStore.Controllers
                 };
                 if (await _cartServices.AddNewCartAsync(cart))
                 {
-                    return Ok(new { data = cart, success = true });
+                    return Ok(new { data = await _cartServices.GetCartFromUser(NewItem.UserId), success = true });
                 }
                 else
                 {
