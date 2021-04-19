@@ -19,7 +19,7 @@ namespace BookStore.Services
 
         internal async Task<bool> UpdateAsync(Cart getCartByUserId)
         {
-            _bookstoreContext.Entry(getCartByUserId).State = EntityState.Modified;;
+            _bookstoreContext.Entry(getCartByUserId).State = EntityState.Modified; ;
             return await _bookstoreContext.SaveChangesAsync() != 0;
         }
 
@@ -40,7 +40,7 @@ namespace BookStore.Services
         internal async Task<IList<Cart>> GetCartFromUser(int userId)
         {
             return await _bookstoreContext.Carts
-                .Include(c=>c.Book)
+                .Include(c => c.Book)
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
         }
@@ -54,12 +54,36 @@ namespace BookStore.Services
             }
 
             _bookstoreContext.Carts.RemoveRange(cart);
-            return await _bookstoreContext.SaveChangesAsync()!=0;
+            return await _bookstoreContext.SaveChangesAsync() != 0;
         }
 
         internal async Task<object> GetCartByIdAsync(int id)
         {
             return await _bookstoreContext.Carts.FindAsync(id);
         }
+
+        internal Task<List<Cart>> DeleteCartById(Cart currentCart)
+        {
+            _bookstoreContext.Remove(currentCart);
+            _bookstoreContext.SaveChangesAsync();
+            return _bookstoreContext.Carts
+             .Where(u => u.UserId == currentCart.UserId)
+             .Include(b => b.Book)
+             .Include(u => u.User)
+             .ToListAsync();
+        }
+
+        internal Task<List<Cart>> DeleteCartByCartId(int id)
+        {
+            Cart cart = _bookstoreContext.Carts.Find(id);
+            _ = _bookstoreContext.Carts.Remove(cart);
+            _ = _bookstoreContext.SaveChangesAsync();
+            return _bookstoreContext.Carts
+             .Where(u => u.UserId == cart.UserId)
+             .Include(b => b.Book)
+             .Include(u => u.User)
+             .ToListAsync();
+        }
+
     }
 }

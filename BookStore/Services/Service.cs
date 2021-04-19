@@ -29,5 +29,6 @@ namespace BookStore.Services
             string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", AvatarName);
             file.CopyToAsync(new FileStream(filePath, FileMode.Create));
         }
+
     }
 }

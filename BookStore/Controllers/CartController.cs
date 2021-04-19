@@ -40,10 +40,10 @@ namespace BookStore.Controllers
                .ToListAsync();
             if (cart is null)
             {
-                return NotFound(new {data = "Empty cart", success = true});
+                return NotFound(new { data = "Empty cart", success = true });
             }
 
-            return Ok(new {data = _mapper.Map<List<CartViewModel>>(cart), success = true });
+            return Ok(new { data = _mapper.Map<List<CartViewModel>>(cart), success = true });
         }
         [HttpPost]
         public async Task<ActionResult<Cart>> PostCart(CartPostModel NewItem)
@@ -54,34 +54,36 @@ namespace BookStore.Controllers
                 return Ok(new { error_message = "Loi gio hang" });
             }
 
-            if (NewItem.Amount <= 0)
-            {
-                return Ok(new { error_message = "So luong sach khong hop le" });
-            }
-
             //Kiem tra sach co ton tai
             Book book = await _bookServices.GetBookById(NewItem.BookId);
-            if(book is null)
+            if (book is null)
             {
                 return Ok(new { error_message = "Sach khong ton tai" });
             }
 
             //Kiem tra so luong
-            if(book.Quantity <= 0)
+            if (book.Quantity <= 0)
             {
                 return Ok(new { error_message = "Sach da het so luong" });
             }
 
             //Kiem tra so luong ton
-            if(book.Quantity - NewItem.Amount <= 0)
+            if (book.Quantity - NewItem.Amount <= 0)
             {
-                return Ok(new { error_message = "So luong sach con lai trong kho chi con "+NewItem.Amount});
+                return Ok(new { error_message = "So luong sach con lai trong kho chi con " + NewItem.Amount });
             }
 
 
             Cart CurrentCart = await _cartServices.FindAsync(NewItem);
             if (CurrentCart is not null)
             {
+                if (NewItem.Amount <= 0)
+                {
+                    List<Cart> carts = await _cartServices.DeleteCartById(CurrentCart);
+                    return Ok(new { data = carts, success = true });
+
+                }
+
                 //Cap nhat lai gio hang
                 CurrentCart.Amount += NewItem.Amount;
                 CurrentCart.SubTotal = CurrentCart.Amount * book.Price;
@@ -96,12 +98,17 @@ namespace BookStore.Controllers
             }
             else
             {
+                if (NewItem.Amount <= 0)
+                {
+                    return Ok(new { error_message = "So luong sach khong hop le" });
+                }
+
                 Cart cart = new Cart
                 {
                     UserId = NewItem.UserId,
                     BookId = NewItem.BookId,
                     Amount = NewItem.Amount,
-                    SubTotal = NewItem.Amount*book.Price
+                    SubTotal = NewItem.Amount * book.Price
                 };
                 if (await _cartServices.AddNewCartAsync(cart))
                 {
@@ -117,7 +124,7 @@ namespace BookStore.Controllers
 
         // DELETE: api/Cart/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCart(int id)
+        public async Task<IActionResult> DeleteCartByUser(int id)
         {
             bool IsDelete = await _cartServices.DeleteCartAsync(id);
             if (IsDelete)
@@ -129,6 +136,30 @@ namespace BookStore.Controllers
                 return Ok(new { data = "Gio hang khong ton tai", success = true });
             }
         }
+        [HttpDelete]
+        [Route("DeleteById/{id}")]
+        public async Task<IActionResult> DeleteCartById(int id)
+        {
+            List<Cart> carts = await _cartServices.DeleteCartByCartId(id);
+            return Ok(new { data = carts, success = true });
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateBook(CartPostModel cart)
+        {
+            Cart cart1 = await _cartServices.FindAsync(cart);
+            if(cart1 is null)
+            {
+                return Ok(new { error_message = "Gio hang khong ton tai" });
+            }
+            _context.Entry(cart1).State = EntityState.Modified; ;
+            _ = await _context.SaveChangesAsync();
+            List<Cart> carts  = await _context.Carts
+             .Where(u => u.UserId == cart1.UserId)
+             .Include(u => u.User)
+             .Include(b => b.Book)
+             .ToListAsync();
 
+            return Ok(new { data = carts, success = true });
+        }
     }
 }
