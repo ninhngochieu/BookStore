@@ -31,7 +31,7 @@ namespace BookStore.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCartByUser(int id)
+        public async Task<ActionResult> GetCartByUserId(int id)
         {
             var cart = await _context.Carts
                .Where(c => c.UserId == id)
@@ -138,19 +138,26 @@ namespace BookStore.Controllers
         }
         [HttpDelete]
         [Route("DeleteById/{id}")]
-        public async Task<IActionResult> DeleteCartById(int id)
+        public async Task<IActionResult> DeleteCartByCartId(int id)
         {
             List<Cart> carts = await _cartServices.DeleteCartByCartId(id);
             return Ok(new { data = carts, success = true });
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateBook(CartPostModel cart)
+        public async Task<IActionResult> UpdateCart(CartPostIdModel cart)
         {
-            Cart cart1 = await _cartServices.FindAsync(cart);
+            Cart cart1 = await _context.Carts.FindAsync(cart.Id);
             if(cart1 is null)
             {
                 return Ok(new { error_message = "Gio hang khong ton tai" });
             }
+            if (cart.Amount <= 0)
+            {
+                return Ok(new {data = await _cartServices.DeleteCartByCartId(cart1.Id), success = true});
+            }
+            Book book = await _context.Book.FindAsync(cart1.BookId);
+            cart1.Amount = cart.Amount;
+            cart1.SubTotal = book.Price * cart1.Amount;
             _context.Entry(cart1).State = EntityState.Modified; ;
             _ = await _context.SaveChangesAsync();
             List<Cart> carts  = await _context.Carts
