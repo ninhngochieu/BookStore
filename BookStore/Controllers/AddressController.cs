@@ -5,6 +5,8 @@ using System.Collections;
 using BookStore.Services;
 using BookStore.ViewModels.UserAddress;
 using AutoMapper;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Controllers
 {
@@ -31,19 +33,7 @@ namespace BookStore.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("GetCity")]
-        public async Task<ActionResult<IEnumerable>> GetCityAddressAsync()
-        {
-            return Ok(new { data = await _cityServices.GetAllCityAndDistrictAsync(), success = true }); ;
-        }
 
-        [HttpGet]
-        [Route("GetDistrict/{id}")]
-        public async Task<ActionResult<IEnumerable>> GetDistrictAddressByCityIdAsync(int id)
-        {
-            return Ok(new { data = await _cityServices.GetDistrictByCityIdAsync(id), success = true });
-        }
         [HttpPost("{id}")]
         public async Task<ActionResult> SetDefaultAddressForUser(int id)
         {
@@ -71,9 +61,9 @@ namespace BookStore.Controllers
             if (user is null)
             {
                 return Ok(new { error_message = "Khong ton tai User" });
-            }
+            }   
 
-            DistrictAddress districtAddress = await _cityServices.GetCityAndDistrictAsync(userAddressPostModel);
+            var districtAddress = await _cityServices.GetCityAndDistrictAsync(userAddressPostModel);
             if (districtAddress is null)
             {
                 return Ok(new { error_message = "Khong ton tai dia chi nay" });

@@ -20,6 +20,9 @@
         public int DistrictAddressId { get; set; }
         public DistrictAddress DistrictAddress { get; set; }
 
+        public int WardId { get; set; }
+        public Ward Ward { get; set; }
+
         public bool IsDefault { get; set; }
     }
 }

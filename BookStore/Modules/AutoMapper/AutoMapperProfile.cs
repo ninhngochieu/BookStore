@@ -31,9 +31,7 @@ namespace BookStore.Modules.AutoMapper
             CreateMap<CityAddress, CityAddressViewModel>();
 
             //Address
-            CreateMap<UserAddress, UserAddressViewModel>()
-                .ForMember(s=>s.CityAddress, options=> options.MapFrom(s=>s.CityAddress))
-                .ForMember(s=>s.DistrictAddress, options=>options.MapFrom(s=>s.DistrictAddress));
+            CreateMap<UserAddress, UserAddressViewModel>();
 
             //User
             CreateMap<User, UserInfoViewModel>()

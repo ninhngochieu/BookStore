@@ -174,17 +174,12 @@ namespace BookStore.Services
 
         internal async Task<User> GetUserById(int id)
         {
-            //var address =  _bookstoreContext.UserAddress
-            //    .Include(c => c.CityAddress)
-            //    .Include(d => d.DistrictAddress)
-            //    .Where(p => p.IsDefault == true)
-            //    .Where(u=>u.UserId==id)
-            //    .FirstOrDefaultAsync;
             return await _bookstoreContext.Users
                 .Where(u => u.Id == id)
                 .Include(a => a.Addresses)
-                .ThenInclude(a=>a.CityAddress)
-                .ThenInclude(a => a.DistrictAddresses)
+                .ThenInclude(a => a.Ward)
+                .ThenInclude(a => a.DistrictAddress)
+                .ThenInclude(a => a.CityAddress)
                 .FirstOrDefaultAsync();
         }
 

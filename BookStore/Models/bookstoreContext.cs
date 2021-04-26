@@ -29,6 +29,7 @@ namespace BookStore.Models
         public virtual DbSet<DistrictAddress> DistrictAddresses { get; set; }
         public virtual DbSet<UserAddress> UserAddress{ get; set; }
         public virtual DbSet<Cart> Carts{ get; set; }
+        public virtual DbSet<Ward> Ward { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

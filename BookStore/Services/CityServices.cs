@@ -18,7 +18,10 @@ namespace BookStore.Services
 
         internal async Task<List<CityAddress>> GetAllCityAndDistrictAsync()
         {
-            return await _bookstoreContext.CityAddresses.Include(d => d.DistrictAddresses).ToListAsync();
+            return await _bookstoreContext.CityAddresses
+                .Include(d => d.DistrictAddresses)
+                .ThenInclude(d=>d.Wards)
+                .ToListAsync();
         }
 
         internal async Task<List<DistrictAddress>> GetDistrictByCityIdAsync(int id)
@@ -28,11 +31,17 @@ namespace BookStore.Services
                    .ToListAsync();
         }
 
-        internal async Task<DistrictAddress> GetCityAndDistrictAsync(UserAddressPostModel userAddressPostModel)
+        internal async Task<object> GetCityAndDistrictAsync(UserAddressPostModel userAddressPostModel)
         {
-            return await _bookstoreContext.DistrictAddresses.Where(c => c.CityAddressId == userAddressPostModel.CityAddressId)
-                .Where(d => d.Id == userAddressPostModel.DistrictAddressId)
-                .FirstOrDefaultAsync();
+            return await _bookstoreContext.Ward
+                .Where(c => c.Id == userAddressPostModel.WardId)
+                .Where(c => c.DistrictAddressId == userAddressPostModel.DistrictAddressId)
+                .Where(c => c.CityAddressId == userAddressPostModel.CityAddressId).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Ward> GetWard(int wardId)
+        {
+            return await _bookstoreContext.Ward.FindAsync(wardId);
         }
     }
 }

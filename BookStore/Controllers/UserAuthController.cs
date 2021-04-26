@@ -138,6 +138,7 @@ namespace BookStore.Controllers
             {
                 return Ok(new { error_message = "Không tìm thấy user"});
             }
+            //var userInfo = user;
             UserInfoViewModel userInfo = _mapper.Map<User, UserInfoViewModel>(user);
             return Ok(new { data = userInfo, success = true });
         }

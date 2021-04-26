@@ -16,6 +16,7 @@ namespace BookStore.ViewModels.UserAddress
         public int CityAddressId { get; set; }
         //
         public int DistrictAddressId { get; set; }
+        public int WardId { get; set; }
 
         public bool? IsDefault { get; set; }
     }

@@ -15,9 +15,12 @@ namespace BookStore.ViewModels.UserAddress
         public string Phone { get; set; }
         public string Name { get; set; }
         public int CityAddressId { get; set; }
-        public CityAddressViewModel CityAddress { get; set; }
+        //public CityAddressViewModel CityAddress { get; set; }
         public int DistrictAddressId { get; set; }
-        public DistrictAddressViewModel DistrictAddress { get; set; }
+        //public DistrictAddressViewModel DistrictAddress { get; set; }
+
+        public int WardId { get; set; }
+        public Ward Ward { get; set; }
         public bool IsDefault { get; set; }
     }
 }
