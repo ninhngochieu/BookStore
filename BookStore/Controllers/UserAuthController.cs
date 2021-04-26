@@ -143,7 +143,6 @@ namespace BookStore.Controllers
         }
 
         [HttpPut("change-password/{id}")]
-        [Authorize]
         public async Task<IActionResult> ChangePassword(int id, ChangePasswordPostModel changePassword)
         {
             

@@ -181,8 +181,10 @@ namespace BookStore.Services
             //    .Where(u=>u.UserId==id)
             //    .FirstOrDefaultAsync;
             return await _bookstoreContext.Users
-                .Where(u=>u.Id==id)
-                .Include(a=>a.Addresses)
+                .Where(u => u.Id == id)
+                .Include(a => a.Addresses)
+                .ThenInclude(a=>a.CityAddress)
+                .ThenInclude(a => a.DistrictAddresses)
                 .FirstOrDefaultAsync();
         }
 

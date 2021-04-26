@@ -1,4 +1,6 @@
-﻿namespace BookStore.Models
+﻿using System.Collections.Generic;
+
+namespace BookStore.Models
 {
     public class DistrictAddress
     {
@@ -12,5 +14,7 @@
         //Navigate properties
         public int CityAddressId { get; set; }
         public CityAddress CityAddress { get; set; }
+
+        public IList<Ward> Wards { get; set; }
     }
 }
