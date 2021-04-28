@@ -99,5 +99,27 @@ namespace BookStore.Controllers
                 return Ok(new {error_message = "Co loi xay ra khi xoa" });
             }
         }
+
+        [HttpGet]
+        [Route("GetAllCity")]
+        public async Task<ActionResult> GetAllCity()
+        {
+            return Ok(new { data = await _context.CityAddresses.ToListAsync() , success = true});
+        }
+        [HttpGet]
+        [Route("GetDistrictById/{id}")]
+        public async Task<ActionResult> GetDistrictById(int id)
+        {
+            return Ok(new { data = await _context.DistrictAddresses.Where(c=>c.CityAddressId==id).ToListAsync(), success = true });
+        }
+        [HttpGet]
+        [Route("GetWardByCityIdAndDistrict/{cityId}/{districtId}")]
+        public async Task<ActionResult> GetDistrictById(int cityId, int districtId)
+        {
+            return Ok(new { data = await _context.Ward
+                .Where(c=>c.CityAddressId==cityId)
+                .Where(d=>d.DistrictAddressId==districtId)
+                .ToListAsync(), success = true });
+        }
     }
 }
