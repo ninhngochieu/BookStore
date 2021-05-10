@@ -57,7 +57,7 @@ namespace BookStore.Controllers
                 return Ok(new { error_message = "Cu phap khong hop le" });
             }
 
-            User user = await _userServices.GetUserById(userAddressPostModel.UserId);
+            User user = await _userServices.GetUserById(userAddressPostModel.UserId??0);
             if (user is null)
             {
                 return Ok(new { error_message = "Khong ton tai User" });
@@ -69,12 +69,12 @@ namespace BookStore.Controllers
                 return Ok(new { error_message = "Khong ton tai dia chi nay" });
             }
 
-            await _userAddressService.SetAllUserAddressToFalseAsync(userAddressPostModel.UserId);
+            await _userAddressService.SetAllUserAddressToFalseAsync(userAddressPostModel.UserId??0);
             UserAddress userAddress = _mapper.Map<UserAddress>(userAddressPostModel);
             bool isSaveUserAddress = await _userAddressService.AddUserAddress(userAddress);
             if (isSaveUserAddress)
             {
-                return Ok(new { data = userAddress });
+                return Ok(new { data = "Them dia chi thanh cong", success = true });
             }
             else
             {
@@ -120,6 +120,40 @@ namespace BookStore.Controllers
                 .Where(c=>c.CityAddressId==cityId)
                 .Where(d=>d.DistrictAddressId==districtId)
                 .ToListAsync(), success = true });
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> GetDistrict(int id, UserAddressPostModel userAddressPostModel)
+        {
+            UserAddress userAddress = await _context.UserAddress.Where(u => u.UserId==id).FirstOrDefaultAsync();
+            if(userAddress is null)
+            {
+                return Ok(new { error_message = "Khong ton tai dia chi cua user nay"});
+            }
+            if(userAddressPostModel.Name is not null)
+            {
+                userAddress.Name = userAddressPostModel.Name;
+            }
+            if(userAddressPostModel.Phone is not null)
+            {
+                userAddress.Phone = userAddressPostModel.Phone;
+            }
+            if(userAddressPostModel.Street_Address is not null)
+            {
+                userAddress.Street_Address = userAddressPostModel.Street_Address;
+            }
+
+            userAddress.CityAddressId = userAddressPostModel.CityAddressId;
+            userAddress.DistrictAddressId = userAddressPostModel.DistrictAddressId;
+            userAddress.WardId = userAddressPostModel.WardId;
+
+            await (_ = _context.SaveChangesAsync());
+            return Ok(new{data = "Cap nhat thanh cong", success = true});
+        }
+        [HttpGet]
+        [Route("GetDistrictAndWardByCityId/{id}")]
+        public async Task<ActionResult> GetDistrictAndWardByCityId(int id)
+        {
+            return Ok(new { data = await _context.Ward.Where(c=>c.CityAddressId==id).FirstOrDefaultAsync(), success = true });
         }
     }
 }

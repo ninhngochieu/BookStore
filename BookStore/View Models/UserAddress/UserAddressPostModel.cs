@@ -11,7 +11,7 @@ namespace BookStore.ViewModels.UserAddress
         public string? Phone { get; set; }
         public string? Name { get; set; }
         //
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         //
         public int CityAddressId { get; set; }
         //

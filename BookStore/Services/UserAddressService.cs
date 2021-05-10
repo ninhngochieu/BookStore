@@ -18,7 +18,7 @@ namespace BookStore.Services
 
         internal async Task<UserAddress> FindUserAddress(int id)
         {
-            return await _bookstoreContext.UserAddress.FindAsync(id);
+            return await _bookstoreContext.UserAddress.Where(u=>u.UserId==id).FirstOrDefaultAsync();
         }
 
         internal async Task<IList<UserAddress>> GetAllUserAddress(int userId)
