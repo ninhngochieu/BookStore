@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
-using BookStore.Services;
 using BookStore.ViewModels.Invoice;
 using AutoMapper;
 
@@ -15,22 +16,12 @@ namespace BookStore.Controllers
     public class InvoiceController : ControllerBase
     {
         private readonly bookstoreContext _context;
-        private readonly InvoiceService _invoiceService;
-        private readonly IMapper _mapper;
-        private readonly CartServices _cartServices;
-        private readonly InvoiceDetailsService _invoiceDetailsService;
+        private readonly IMapper _imapper;
 
-        public InvoiceController(bookstoreContext context,
-                                 InvoiceService invoiceService,
-                                 IMapper mapper,
-                                 CartServices cartServices,
-                                 InvoiceDetailsService invoiceDetailsService)
+        public InvoiceController(bookstoreContext context, IMapper imapper)
         {
             _context = context;
-            _invoiceService = invoiceService;
-            _mapper = mapper;
-            _cartServices = cartServices;
-            _invoiceDetailsService = invoiceDetailsService;
+            _imapper = imapper;
         }
 
         // GET: api/Invoice
@@ -88,53 +79,20 @@ namespace BookStore.Controllers
         // POST: api/Invoice
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> PostInvoice(InvoicePostModel model)
+        public async Task<ActionResult<Invoice>> PostInvoice(InvoicePostModel invoice)
         {
-            //_context.Invoices.Add(invoice);
-            //await _context.SaveChangesAsync();
-
-            //return CreatedAtAction("GetInvoice", new { id = invoice.Id }, invoice);
-
-
-            //Tạo ra 1 invoice cho user khi nhấn thanh toán
-            var invoice = _mapper.Map<Invoice>(model);
-
-            await _context.Invoices.AddAsync(invoice);
-            bool isSave = await _invoiceService.SaveInvoiceAsync(invoice);
-
-            if(!isSave)
+            Invoice NewInvoice = _imapper.Map<Invoice>(invoice);
+            _context.Invoices.Add(NewInvoice);
+            try
             {
-                return Ok(new { error_message = "Khong the luu don hang do co loi xay ra" });
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return Ok(new { error_message = "Co loi xay ra khi dat hang"});
             }
 
-            //Lấy món hàng trong cart rồi thêm vào InvoiceDetail
-            var cartItems = await _cartServices.GetCartFromUser(model.UserId);
-
-            if (cartItems.Count == 0)
-            {
-                return Ok(new {error_message = "Gio hang rong, xin vui long mua hang"});
-            }
-
-            var invoiceDetails = _mapper.Map<IList<InvoiceDetail>>(cartItems);
-
-            //Gán id Invoice vào InvoiceDetail
-            foreach (var item in invoiceDetails)
-            {
-                item.InvoiceId = invoice.Id;
-            }
-
-            //Lưu vào db
-            isSave = await _invoiceDetailsService.SaveToDatabase(invoiceDetails);
-
-            if(!isSave)
-            {
-                return Ok(new { error_message = "Khong the luu chi tiet don hang do co loi xay ra" });
-
-            }
-            await _cartServices.DeleteCartAsync(model.UserId);
-            invoice.TotalMoney = invoiceDetails.Sum(i => i.SubTotal);
-            isSave = await _invoiceService.SaveInvoiceAsync(invoice);
-            return Ok(new { data = invoiceDetails , success = true});
+            return Ok(new { data = NewInvoice, success = true});
         }
 
         // DELETE: api/Invoice/5
@@ -156,15 +114,6 @@ namespace BookStore.Controllers
         private bool InvoiceExists(int id)
         {
             return _context.Invoices.Any(e => e.Id == id);
-        }
-
-        [HttpGet("InvoiceStatus")]
-        public async Task<bool> SetStatus(int invoiceId, int statusId)
-        {
-            var invoice = await _context.Invoices.FindAsync(invoiceId);
-            invoice.StatusId = statusId;
-            
-            return await _context.SaveChangesAsync() != 0;
         }
     }
 }
