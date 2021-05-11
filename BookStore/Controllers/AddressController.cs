@@ -155,5 +155,16 @@ namespace BookStore.Controllers
         {
             return Ok(new { data = await _context.Ward.Where(c=>c.CityAddressId==id).FirstOrDefaultAsync(), success = true });
         }
+        [HttpGet]
+        [Route("GetUserAddressByUserId/{id}")]
+        public async Task<ActionResult> GetUserAddressByUserId(int id)
+        {
+            return Ok(new { data = await _context.UserAddress
+                .Where(u=>u.UserId==id)
+                .Include(s=>s.Ward)
+                .ThenInclude(s=>s.DistrictAddress)
+                .ThenInclude(s=>s.CityAddress)
+                .ToListAsync(), success = true });;
+        }
     }
 }
