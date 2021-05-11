@@ -83,6 +83,11 @@ namespace BookStore.Controllers
         {
             Invoice NewInvoice = _imapper.Map<Invoice>(invoice);
             _context.Invoices.Add(NewInvoice);
+            UserAddress userAddress = await _context.UserAddress.Where(u=>u.UserId==NewInvoice.UserId).FirstOrDefaultAsync();
+            if(userAddress is null)
+            {
+                return Ok(new {error_message = "Khong ton tai dia chi cua User nay" });
+            }
             try
             {
                 await _context.SaveChangesAsync();

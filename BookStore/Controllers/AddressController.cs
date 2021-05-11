@@ -33,7 +33,6 @@ namespace BookStore.Controllers
             _mapper = mapper;
         }
 
-
         [HttpPost("{id}")]
         public async Task<ActionResult> SetDefaultAddressForUser(int id)
         {
