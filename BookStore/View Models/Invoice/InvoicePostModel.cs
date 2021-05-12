@@ -14,6 +14,7 @@ namespace BookStore.ViewModels.Invoice
 
         public int UserId { get; set; }
 
+        public string Street_Address { get; set; }
 
         public int CityAddressId { get; set; }
 

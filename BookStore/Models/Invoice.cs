@@ -22,6 +22,8 @@ namespace BookStore.Models
 
         public bool IsOnlinePayment { get; set; } = false;
 
+        public string Street_Address { get; set; }
+
         public int CityAddressId { get; set; }
         public CityAddress CityAddress { get; set; }
 

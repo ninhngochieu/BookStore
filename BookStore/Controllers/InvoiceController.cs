@@ -35,8 +35,30 @@ namespace BookStore.Controllers
         }
 
         // GET: api/Invoice/5
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetInvoiceByUserId/{id}")]
         public async Task<ActionResult<Invoice>> GetInvoice(int id)
+        {
+            //var invoice = await _context.Invoices.FindAsync(id);
+
+            //if (invoice == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return invoice;
+            List<Invoice> invoices = await _context.Invoices
+                .Where(u => u.UserId == id)
+                .Include(w=>w.Ward)
+                .ThenInclude(d => d.DistrictAddress)
+                .ThenInclude(c => c.CityAddress)
+                .ToListAsync();
+            return Ok(new { data = invoices, success = true });
+        }
+
+        // GET: api/Invoice/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Invoice>> GetInvoiceByUserId(int id)
         {
             var invoice = await _context.Invoices.FindAsync(id);
 
