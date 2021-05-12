@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BookStore.Models;
-
-namespace BookStore.ViewModels.Invoice
+﻿namespace BookStore.ViewModels.Invoice
 {
     public class InvoicePostModel
     {
