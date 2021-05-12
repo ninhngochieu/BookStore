@@ -85,5 +85,11 @@ namespace BookStore.Services
              .ToListAsync();
         }
 
+        internal async Task DeleteCartByUserIdAsync(int userId)
+        {
+            List<Cart> carts = await _bookstoreContext.Carts.Where(u => u.UserId == userId).ToListAsync();
+            _bookstoreContext.RemoveRange(carts);
+            _ = await _bookstoreContext.SaveChangesAsync();
+        }
     }
 }

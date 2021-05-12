@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
 using BookStore.ViewModels.Invoice;
 using AutoMapper;
+using BookStore.Services;
 
 namespace BookStore.Controllers
 {
@@ -17,11 +18,13 @@ namespace BookStore.Controllers
     {
         private readonly bookstoreContext _context;
         private readonly IMapper _mapper;
+        private readonly CartServices _cartServices;
 
-        public InvoiceController(bookstoreContext context, IMapper mapper)
+        public InvoiceController(bookstoreContext context, IMapper mapper, CartServices cartServices)
         {
             _context = context;
             _mapper = mapper;
+            _cartServices = cartServices;
         }
 
         // GET: api/Invoice
@@ -83,9 +86,16 @@ namespace BookStore.Controllers
         {
             Invoice NewInvoice = _mapper.Map<Invoice>(invoice);
             _context.Invoices.Add(NewInvoice);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInvoice", new { id = NewInvoice.Id }, invoice);
+            bool isSave = await _context.SaveChangesAsync()!=0;
+            if (isSave)
+            {
+                await _cartServices.DeleteCartByUserIdAsync(NewInvoice.UserId);
+                return Ok(new { data = new { InvoiceId = NewInvoice.Id}, success = true });
+            }
+            else
+            {
+                return Ok(new {error_message = "Co loi xay ra" });
+            }
         }
 
         // DELETE: api/Invoice/5
