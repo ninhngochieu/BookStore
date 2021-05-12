@@ -31,14 +31,15 @@ namespace BookStore.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<InvoiceDetail>> GetInvoiceDetail(int id)
         {
-            var invoiceDetail = await _context.InvoiceDetails.FindAsync(id);
-
-            if (invoiceDetail == null)
-            {
-                return NotFound();
-            }
-
-            return invoiceDetail;
+            var invoiceDetail = await _context.InvoiceDetails
+                .Where(u => u.InvoiceId == id)
+                .Include(b => b.Book)
+                .Include(i => i.Invoice)
+                .ThenInclude(w => w.Ward)
+                .ThenInclude(d => d.DistrictAddress)
+                .ThenInclude(c => c.CityAddress)
+                .ToListAsync();
+            return Ok(new { data = invoiceDetail, success = true});
         }
 
         // PUT: api/InvoiceDetail/5

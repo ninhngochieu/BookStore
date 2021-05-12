@@ -49,7 +49,7 @@ namespace BookStore.Controllers
             //return invoice;
             List<Invoice> invoices = await _context.Invoices
                 .Where(u => u.UserId == id)
-                .Include(w=>w.Ward)
+                .Include(w => w.Ward)
                 .ThenInclude(d => d.DistrictAddress)
                 .ThenInclude(c => c.CityAddress)
                 .ToListAsync();
@@ -108,16 +108,37 @@ namespace BookStore.Controllers
         {
             Invoice NewInvoice = _mapper.Map<Invoice>(invoice);
             _context.Invoices.Add(NewInvoice);
-            bool isSave = await _context.SaveChangesAsync()!=0;
+            bool isSave = await _context.SaveChangesAsync() != 0;
             if (isSave)
             {
                 await _cartServices.DeleteCartByUserIdAsync(NewInvoice.UserId);
-                return Ok(new { data = new { InvoiceId = NewInvoice.Id}, success = true });
+                return Ok(new { data = new { InvoiceId = NewInvoice.Id }, success = true });
             }
             else
             {
-                return Ok(new {error_message = "Co loi xay ra" });
+                return Ok(new { error_message = "Co loi xay ra" });
             }
+        }
+
+        [HttpPost]
+        [Route("CancelInvoice/{id}")]
+        public async Task<ActionResult<Invoice>> CancelInvoice(int id)
+        {
+            Invoice invoice = await _context.Invoices.FindAsync(id);
+            if(invoice is null)
+            {
+                return Ok(new { error_message = "Don hang nay khong ton tai" });
+            }
+            invoice.StatusId = 3;
+            _ = await _context.SaveChangesAsync();
+            List<Invoice> invoices = await _context.Invoices
+                .Where(u => u.UserId == invoice.UserId)
+                .Include(w => w.Ward)
+                .ThenInclude(d => d.DistrictAddress)
+                .ThenInclude(c => c.CityAddress)
+                .ToListAsync();
+            return Ok(new { data = invoices, success = true });
+
         }
 
         // DELETE: api/Invoice/5
