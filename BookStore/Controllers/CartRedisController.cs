@@ -16,11 +16,9 @@ namespace BookStore.Controllers
     public class CartRedisController : ControllerBase
     {
         private readonly bookstoreContext _context;
-        private readonly IDistributedCache _distributedCache;
 
-        public CartRedisController(bookstoreContext context, IDistributedCache distributedCache)
+        public CartRedisController(bookstoreContext context)
         {
-            _distributedCache = distributedCache;
         }
 
         // GET: api/CartRedis
@@ -28,13 +26,6 @@ namespace BookStore.Controllers
         public async Task<ActionResult<IEnumerable<Cart>>> GetCarts()
         {
             return await _context.Carts.ToListAsync();
-        }
-
-        [HttpGet("SetMap")]
-        public async Task<ActionResult<IEnumerable<Cart>>> SetMap()
-        {
-            _distributedCache.SetString("Key 1", "1");
-            return Ok(new { });
         }
 
         // GET: api/CartRedis/5
