@@ -122,6 +122,10 @@ namespace BookStore
 
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
+            services.AddStackExchangeRedisCache(options => {
+                options.Configuration = "localhost:6379";
+                options.InstanceName = "RedisCart";
+            });
             //services.AddDirectoryBrowser();
         }
 
