@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace BookStore
 {
@@ -121,6 +122,17 @@ namespace BookStore
 
 
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:5002"));
+
+            
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("RedisServer");
+                options.InstanceName = "BookstoreRedis";
+            });
+
+
             //services.AddDirectoryBrowser();
         }
 
