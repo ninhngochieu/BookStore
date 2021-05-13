@@ -123,8 +123,7 @@ namespace BookStore
 
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:5002"));
-
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379"));
             
             services.AddStackExchangeRedisCache(options =>
             {

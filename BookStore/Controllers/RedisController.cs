@@ -28,32 +28,14 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCartRedis(int userId)
         {
-            string recordKey = userId.ToString();
-            var cart = await redis.GetRecordAsync<IList<Cart>>(recordKey);
-            
-            if (cart is null)
-            {
-                return NotFound(new { data = "Empty cart", success = true });
-            }
-            //string recordKey = "string_" + DateTime.Now.ToString("yyyyMMdd_hhmm");
-            //listStr = new string[2];
-            //listStr[0] = "Not";
-            //listStr[1] = "Working";
-            //var serializedStr = JsonSerializer.Serialize(listStr);
-            //await redis.StringSetAsync(recordKey, serializedStr);
-
-            await redis.SetRecordAsync(recordKey, listStr);
-
-            //var redisResult = await redis.GetRecordAsync<string[]>(recordKey);
-            //var deserializedStr = JsonSerializer.Deserialize<string[]>(redisResult);
-            //return Ok(cart);
-            return Ok(new { data = _mapper.Map<List<CartViewModel>>(cart), success = true });
+            return Ok(new { data = await redis.GetRecordAsync<String>("Key") });
         }
 
-
         [HttpPost]
-        public void SetCartRedis([FromBody] string value)
+        public async Task<ActionResult> SetCartRedisAsync([FromBody] string value)
         {
+            await redis.SetRecordAsync("Key", value, TimeSpan.FromDays(100));
+            return Ok(new { data = await redis.GetRecordAsync<String>("Key") });
         }
 
     }
