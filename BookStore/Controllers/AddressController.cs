@@ -152,7 +152,9 @@ namespace BookStore.Controllers
         [Route("GetDistrictAndWardByCityId/{id}")]
         public async Task<ActionResult> GetDistrictAndWardByCityId(int id)
         {
-            return Ok(new { data = await _context.Ward.Where(c=>c.CityAddressId==id).FirstOrDefaultAsync(), success = true });
+            return Ok(new { data = await _context.Ward
+                .Where(c=>c.CityAddressId==id)
+                .FirstOrDefaultAsync(), success = true });
         }
         [HttpGet]
         [Route("GetUserAddressByUserId/{id}")]

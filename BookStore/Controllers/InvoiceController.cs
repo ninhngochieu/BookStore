@@ -50,8 +50,9 @@ namespace BookStore.Controllers
             List<Invoice> invoices = await _context.Invoices
                 .Where(u => u.UserId == id)
                 .Include(w => w.Ward)
-                .ThenInclude(d => d.DistrictAddress)
-                .ThenInclude(c => c.CityAddress)
+                    .ThenInclude(d => d.DistrictAddress)
+                    .ThenInclude(c => c.CityAddress)
+                .OrderByDescending(c=>c.CreateAt)
                 .ToListAsync();
             return Ok(new { data = invoices, success = true });
         }
@@ -136,6 +137,7 @@ namespace BookStore.Controllers
                 .Include(w => w.Ward)
                 .ThenInclude(d => d.DistrictAddress)
                 .ThenInclude(c => c.CityAddress)
+                .OrderByDescending(s=>s.CreateAt)
                 .ToListAsync();
             return Ok(new { data = invoices, success = true });
 
