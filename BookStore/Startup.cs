@@ -123,13 +123,20 @@ namespace BookStore
 
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379"));
-            
-            services.AddStackExchangeRedisCache(options =>
+            try
             {
-                options.Configuration = Configuration.GetConnectionString("RedisServer");
-                options.InstanceName = "BookstoreRedis";
-            });
+                services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379"));
+
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = Configuration.GetConnectionString("RedisServer");
+                    options.InstanceName = "BookstoreRedis";
+                });
+            }
+            catch
+            {
+                throw new Exception("Co loi trong qua trinh ket noi Redis");
+            }
 
 
             //services.AddDirectoryBrowser();
