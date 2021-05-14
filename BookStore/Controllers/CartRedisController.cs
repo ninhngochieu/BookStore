@@ -4,6 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Models;
+using StackExchange.Redis;
+using BookStore.Modules;
+using AutoMapper;
+using BookStore.ViewModels.Cart;
+using System;
+using BookStore.Services;
 
 namespace BookStore.Controllers
 {
@@ -12,93 +18,53 @@ namespace BookStore.Controllers
     public class CartRedisController : ControllerBase
     {
         private readonly bookstoreContext _context;
+        private readonly CartServices _cartServices;
+        private IDatabase database;
+        private readonly IMapper _mapper;
 
-        public CartRedisController(bookstoreContext context)
+        public CartRedisController(bookstoreContext context, IConnectionMultiplexer connectionMultiplexer, IMapper mapper, CartServices cartServices)
         {
+            database = connectionMultiplexer.GetDatabase();
+            _mapper = mapper;
+            _context = context;
+            _cartServices = cartServices;
         }
 
-        // GET: api/CartRedis
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cart>>> GetCarts()
-        {
-            return await _context.Carts.ToListAsync();
-        }
-
-        // GET: api/CartRedis/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cart>> GetCart(int id)
+        public async Task<ActionResult> GetCartByUserId(int id)
         {
-            var cart = await _context.Carts.FindAsync(id);
-
-            if (cart == null)
+            List<Cart> cartRedis = await database.GetRecordAsync<List<Cart>>(id.ToString());
+            if (cartRedis is null)
             {
-                return NotFound();
+                cartRedis = await _context.Carts
+                   .Where(c => c.UserId == id)
+                   .Include(u => u.User)
+                   .Include(b => b.Book)
+                   .ToListAsync();
+                await database.SetRecordAsync(id.ToString(), cartRedis, TimeSpan.FromDays(1));
             }
-
-            return cart;
-        }
-
-        // PUT: api/CartRedis/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCart(int id, Cart cart)
-        {
-            if (id != cart.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(cart).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CartExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/CartRedis
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Cart>> PostCart(Cart cart)
-        {
-            _context.Carts.Add(cart);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCart", new { id = cart.Id }, cart);
-        }
-
-        // DELETE: api/CartRedis/5
+            return Ok(new { data = _mapper.Map<List<CartViewModel>>(cartRedis), success = true });
+         }
+        // DELETE: api/Cart/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCart(int id)
+        public async Task<IActionResult> DeleteCartByUser(int id)
         {
-            var cart = await _context.Carts.FindAsync(id);
-            if (cart == null)
+            bool IsDeleteRedis = await database.KeyDeleteAsync(id.ToString());
+            if (IsDeleteRedis)
             {
-                return NotFound();
+                await database.KeyDeleteAsync(id.ToString());
+                return Ok(new { data = "Xoa thanh cong", success = true });
             }
+            IsDeleteRedis = await _cartServices.DeleteCartAsync(id);
+            if (IsDeleteRedis)
+            {
+                return Ok(new { data = "Xoa thanh cong", success = true });
 
-            _context.Carts.Remove(cart);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CartExists(int id)
-        {
-            return _context.Carts.Any(e => e.Id == id);
+            }
+            else
+            {
+                return Ok(new { data = "Gio hang khong ton tai", success = true });
+            }
         }
     }
 }
