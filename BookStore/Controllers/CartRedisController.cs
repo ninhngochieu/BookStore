@@ -19,15 +19,21 @@ namespace BookStore.Controllers
     {
         private readonly bookstoreContext _context;
         private readonly CartServices _cartServices;
+        private readonly BookServices _bookServices;
         private IDatabase database;
         private readonly IMapper _mapper;
 
-        public CartRedisController(bookstoreContext context, IConnectionMultiplexer connectionMultiplexer, IMapper mapper, CartServices cartServices)
+        public CartRedisController(bookstoreContext context,
+                                   IConnectionMultiplexer connectionMultiplexer,
+                                   IMapper mapper,
+                                   CartServices cartServices,
+                                   BookServices bookServices)
         {
             database = connectionMultiplexer.GetDatabase();
             _mapper = mapper;
             _context = context;
             _cartServices = cartServices;
+            _bookServices = bookServices;
         }
 
         [HttpGet("{id}")]
@@ -61,10 +67,83 @@ namespace BookStore.Controllers
                 return Ok(new { data = "Xoa thanh cong", success = true });
 
             }
+            return Ok(new { data = "Gio hang khong ton tai", success = true });    
+        }
+        [HttpPost]
+        public async Task<ActionResult<Cart>> PostCart(CartPostModel NewItem)
+        {
+            //Kiem tra hop le
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { error_message = "Loi gio hang" });
+            }
+
+            //Kiem tra sach co ton tai
+            Book book = await _bookServices.GetBookById(NewItem.BookId);
+            if (book is null)
+            {
+                return Ok(new { error_message = "Sach khong ton tai" });
+            }
+
+            //Kiem tra so luong
+            if (book.Quantity <= 0)
+            {
+                return Ok(new { error_message = "Sach da het so luong" });
+            }
+
+            //Kiem tra so luong ton
+            if (book.Quantity - NewItem.Amount <= 0)
+            {
+                return Ok(new { error_message = "So luong sach con lai trong kho chi con " + NewItem.Amount });
+            }
+
+
+            Cart CurrentCart = await _cartServices.FindAsync(NewItem);
+            if (CurrentCart is not null)
+            {
+                if (NewItem.Amount <= 0)
+                {
+                    List<Cart> carts = await _cartServices.DeleteCartById(CurrentCart);
+                    return Ok(new { data = carts, success = true });
+
+                }
+
+                //Cap nhat lai gio hang
+                CurrentCart.Amount += NewItem.Amount;
+                CurrentCart.SubTotal = CurrentCart.Amount * book.Price;
+                if (await _cartServices.UpdateAsync(CurrentCart))
+                {
+                    return Ok(new { data = await _cartServices.GetCartFromUser(NewItem.UserId), success = true });
+                }
+                else
+                {
+                    return Ok(new { error_message = "Co loi khi cap nhat gio hang" });
+                }
+            }
             else
             {
-                return Ok(new { data = "Gio hang khong ton tai", success = true });
+                if (NewItem.Amount <= 0)
+                {
+                    return Ok(new { error_message = "So luong sach khong hop le" });
+                }
+
+                Cart cart = new Cart
+                {
+                    UserId = NewItem.UserId,
+                    BookId = NewItem.BookId,
+                    Amount = NewItem.Amount,
+                    SubTotal = NewItem.Amount * book.Price
+                };
+                if (await _cartServices.AddNewCartAsync(cart))
+                {
+                    return Ok(new { data = await _cartServices.GetCartFromUser(NewItem.UserId), success = true });
+                }
+                else
+                {
+                    return Ok(new { error_message = "Loi them gio hang" });
+                }
             }
+            //return CreatedAtAction("GetCart", new { id = cart.Id }, cart);
         }
     }
 }

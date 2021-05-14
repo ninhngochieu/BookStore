@@ -36,6 +36,7 @@
     <PackageReference Include="EasyCaching.InMemory" Version="1.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+    <PackageReference Include="Stripe.net" Version="39.48.0" />
   </ItemGroup>
 
   <ItemGroup>

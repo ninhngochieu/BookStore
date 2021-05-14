@@ -21,7 +21,8 @@ namespace BookStore.Models
         public string? Avatar { get; set; }
         public string? Phone { get; set; }
         public DateTime? TokenCreateAt { get; set; }
-
+        public string? StripePublicKey { get; set; }
+        public string? StripePrivateKey { get; set; }
         //User - Role: 1 - 1
         [Required]
         public int RoleId { get; set; } = 3;
