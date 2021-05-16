@@ -140,7 +140,7 @@ namespace BookStore.Services
 
         }
 
-        internal async Task<bool> UpdateBookAsync(Book book, UpdateBookPostModel bookVM)
+        	internal async Task<bool> UpdateBookAsync(Book book, UpdateBookPostModel bookVM)
         {
             if(bookVM.AuthorId is not null)
             {
@@ -167,35 +167,74 @@ namespace BookStore.Services
             {
                 book.Private = bookVM.Private;
             }
+
             //Reup image
-            BookImage bookImage = new BookImage();
-            bookImage.BookId = book.Id;
+            var existingBookImage = await _bookstoreContext.BookImage
+                                    .FirstOrDefaultAsync(images => images.BookId == book.Id);
+            if (existingBookImage is null)
+            {
+                BookImage bookImage = new BookImage();
+                bookImage.BookId = book.Id;
 
-            if(bookVM.MainImage is not null)
-            {
-                book.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.MainImage.FileName;
-                _imageServices.UploadImage(bookVM.MainImage, book.MainImage);
-            }
+                if (bookVM.MainImage is not null)
+                {
+                    book.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.MainImage.FileName;
+                    _imageServices.UploadImage(bookVM.MainImage, book.MainImage);
+                }
 
-            if(bookVM.Image1 is not null)
-            {
-                bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image1.FileName;
-                _imageServices.UploadImage(bookVM.Image1, bookImage.Image1);
+                if (bookVM.Image1 is not null)
+                {
+                    bookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image1.FileName;
+                    _imageServices.UploadImage(bookVM.Image1, bookImage.Image1);
+                }
+                if (bookVM.Image2 is not null)
+                {
+                    bookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image2.FileName;
+                    _imageServices.UploadImage(bookVM.Image2, bookImage.Image2);
+                }
+                if (bookVM.Image3 is not null)
+                {
+                    bookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image3.FileName;
+                    _imageServices.UploadImage(bookVM.Image3, bookImage.Image3);
+                }
+                if (bookVM.Image4 is not null)
+                {
+                    bookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image4.FileName;
+                    _imageServices.UploadImage(bookVM.Image4, bookImage.Image4);
+                }
+
+                await _bookstoreContext.BookImage
+                    .AddAsync(bookImage);
             }
-            if (bookVM.Image2 is not null)
+            else
             {
-                bookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image2.FileName;
-                _imageServices.UploadImage(bookVM.Image2, bookImage.Image2);
-            }
-            if (bookVM.Image3 is not null)
-            {
-                bookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image3.FileName;
-                _imageServices.UploadImage(bookVM.Image3, bookImage.Image3);
-            }
-            if (bookVM.Image4 is not null)
-            {
-                bookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image4.FileName;
-                _imageServices.UploadImage(bookVM.Image4, bookImage.Image4);
+                if (bookVM.MainImage is not null)
+                {
+                    book.MainImage = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.MainImage.FileName;
+                    _imageServices.UploadImage(bookVM.MainImage, book.MainImage);
+                }
+
+                if (bookVM.Image1 is not null)
+                {
+                    existingBookImage.Image1 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image1.FileName;
+                    _imageServices.UploadImage(bookVM.Image1, existingBookImage.Image1);
+                }
+                if (bookVM.Image2 is not null)
+                {
+                    existingBookImage.Image2 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image2.FileName;
+                    _imageServices.UploadImage(bookVM.Image2, existingBookImage.Image2);
+                }
+                if (bookVM.Image3 is not null)
+                {
+                    existingBookImage.Image3 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image3.FileName;
+                    _imageServices.UploadImage(bookVM.Image3, existingBookImage.Image3);
+                }
+                if (bookVM.Image4 is not null)
+                {
+                    existingBookImage.Image4 = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() + '_' + bookVM.Image4.FileName;
+                    _imageServices.UploadImage(bookVM.Image4, existingBookImage.Image4);
+                }
+                _bookstoreContext.Entry(existingBookImage).State = EntityState.Modified;
             }
 
             _bookstoreContext.Entry(book).State = EntityState.Modified;
