@@ -135,7 +135,7 @@ namespace BookStore
             }
             catch
             {
-                throw new Exception("Co loi trong qua trinh ket noi Redis");
+
             }
 
 
