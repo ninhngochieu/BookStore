@@ -196,6 +196,7 @@ namespace BookStore.Controllers
             }
         }
         [HttpPut("UpdateStatusAndRole")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateStatusAndRole([FromForm]RoleAndStatus roleAndStatus)
         {
             bool isUpdate = await _userServices.UpdateRoleAndStatus(roleAndStatus);

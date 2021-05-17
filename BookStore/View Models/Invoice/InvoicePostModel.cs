@@ -17,6 +17,7 @@
         public int DistrictAddressId { get; set; }
 
         public int WardId { get; set; }
+        public bool? IsOnlinePayment { get; set; } = false;
 
         public string Email { get; set; }
         public string Name { get; set; }

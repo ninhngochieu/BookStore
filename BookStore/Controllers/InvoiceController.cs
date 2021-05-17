@@ -31,7 +31,7 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices()
         {
-            return await _context.Invoices.ToListAsync();
+            return await _context.Invoices.OrderByDescending(s=>s.CreateAt).ToListAsync();
         }
 
         // GET: api/Invoice/5
@@ -143,6 +143,46 @@ namespace BookStore.Controllers
 
         }
 
+        [HttpPost]
+        [Route("CancelInvoiceAdmin/{id}")]
+        public async Task<ActionResult<Invoice>> CancelInvoiceAdmin(int id)
+        {
+            Invoice invoice = await _context.Invoices.FindAsync(id);
+            if (invoice is null)
+            {
+                return Ok(new { error_message = "Don hang nay khong ton tai" });
+            }
+            invoice.StatusId = 3;
+            _ = await _context.SaveChangesAsync();
+            List<Invoice> invoices = await _context.Invoices
+                .Include(w => w.Ward)
+                .ThenInclude(d => d.DistrictAddress)
+                .ThenInclude(c => c.CityAddress)
+                .OrderByDescending(s => s.CreateAt)
+                .ToListAsync();
+            return Ok(invoices);
+        }
+
+        [HttpPost]
+        [Route("AcceptInvoiceAdmin/{id}")]
+        public async Task<ActionResult<Invoice>> AcceptInvoiceAdmin(int id)
+        {
+            Invoice invoice = await _context.Invoices.FindAsync(id);
+            if (invoice is null)
+            {
+                return Ok(new { error_message = "Don hang nay khong ton tai" });
+            }
+            invoice.StatusId = 2;
+            _ = await _context.SaveChangesAsync();
+            List<Invoice> invoices = await _context.Invoices
+                .Include(w => w.Ward)
+                .ThenInclude(d => d.DistrictAddress)
+                .ThenInclude(c => c.CityAddress)
+                .OrderByDescending(s => s.CreateAt)
+                .ToListAsync();
+            return Ok(invoices);
+        }
+
         // DELETE: api/Invoice/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInvoice(int id)
@@ -163,5 +203,6 @@ namespace BookStore.Controllers
         {
             return _context.Invoices.Any(e => e.Id == id);
         }
+
     }
 }

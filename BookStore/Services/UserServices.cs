@@ -161,12 +161,12 @@ namespace BookStore.Services
                     }
                     _bookstoreContext.Add(newUserAddress);
                 }
-                isUpdateUserSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
+                //isUpdateUserSuccess = await _bookstoreContext.SaveChangesAsync() != 0;
 
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw;
+
             }
             return _mapper.Map<UserInfoViewModel>(user);
 
