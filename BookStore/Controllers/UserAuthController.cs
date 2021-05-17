@@ -111,6 +111,7 @@ namespace BookStore.Controllers
             });
         }
         [HttpPut("profile/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id,[FromForm]UserInfoPostModel userVM)
         {
             if (userVM.Avatar is not null)

@@ -94,6 +94,7 @@ namespace BookStore.Services
             }            //Category
             if (model.CategoryName is not null)
             {
+
                 book = book.Where(x => x.Category.CategoryName.ToLower().Contains(model.CategoryName.ToLower()));
             }            //Start price
             if (model.StartPrice is not null)
