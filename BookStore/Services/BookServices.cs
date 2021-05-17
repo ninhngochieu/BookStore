@@ -26,7 +26,6 @@ namespace BookStore.Services
         public async Task<IList<BookInfoViewModel>> GetAllBook()
         {
         var books = await _bookstoreContext.Book
-                .Where(p=>p.Private == false)
                 .Include(c => c.Category)
                 .Include(a=>a.Author)
                 .Include(c=>c.Comments)
@@ -75,6 +74,7 @@ namespace BookStore.Services
         public async Task<ActionResult> SearchBook(SearchBookDTO model)
         {
             IQueryable<Book> book = _bookstoreContext.Book
+                .Where(x=>x.Private == false)
                 .Include(c => c.Category)
                 .Include(c => c.Author)
                 .Include(b => b.BookImage);

@@ -9,6 +9,7 @@ using BookStore.Models;
 using BookStore.ViewModels.Invoice;
 using AutoMapper;
 using BookStore.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
@@ -33,9 +34,14 @@ namespace BookStore.Controllers
         {
             return await _context.Invoices.OrderByDescending(s=>s.CreateAt).ToListAsync();
         }
-
+        [HttpGet("AllInvoice")]
+        public async Task<ActionResult<IEnumerable<Invoice>>> GetAllInvoices()
+        {
+            return Ok(new {data = await _context.Invoices.OrderByDescending(s => s.CreateAt).ToListAsync(), success = true });
+        }
         // GET: api/Invoice/5
         [HttpGet]
+        [Authorize]
         [Route("GetInvoiceByUserId/{id}")]
         public async Task<ActionResult<Invoice>> GetInvoice(int id)
         {
@@ -123,6 +129,7 @@ namespace BookStore.Controllers
 
         [HttpPost]
         [Route("CancelInvoice/{id}")]
+        [Authorize]
         public async Task<ActionResult<Invoice>> CancelInvoice(int id)
         {
             Invoice invoice = await _context.Invoices.FindAsync(id);
@@ -144,6 +151,7 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager, Store")]
         [Route("CancelInvoiceAdmin/{id}")]
         public async Task<ActionResult<Invoice>> CancelInvoiceAdmin(int id)
         {
@@ -160,10 +168,11 @@ namespace BookStore.Controllers
                 .ThenInclude(c => c.CityAddress)
                 .OrderByDescending(s => s.CreateAt)
                 .ToListAsync();
-            return Ok(invoices);
+            return Ok(new { data = invoices, success = true});
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager, Store")]
         [Route("AcceptInvoiceAdmin/{id}")]
         public async Task<ActionResult<Invoice>> AcceptInvoiceAdmin(int id)
         {
@@ -180,7 +189,7 @@ namespace BookStore.Controllers
                 .ThenInclude(c => c.CityAddress)
                 .OrderByDescending(s => s.CreateAt)
                 .ToListAsync();
-            return Ok(invoices);
+            return Ok(new { data = invoices, success = true });
         }
 
         // DELETE: api/Invoice/5

@@ -35,7 +35,6 @@ namespace BookStore.Controllers
         }
         // GET: api/Books
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
             var books = _bookServices.GetAllBook();
@@ -58,7 +57,8 @@ namespace BookStore.Controllers
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut()]
+        [HttpPut]
+        [Authorize(Roles = "Admin, Manager, Store")]
         public async Task<IActionResult> PutBook([FromForm]UpdateBookPostModel bookVM)
         {
             Book book = await _context.Book.FindAsync(bookVM.Id);
@@ -79,6 +79,7 @@ namespace BookStore.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager, Store")]
         public async Task<ActionResult<BookInfoViewModel>> PostBook([FromForm]CreateNewBookDTO bookDTO)
         {
             Book addNewBook = _mapper.Map<Book>(bookDTO);
