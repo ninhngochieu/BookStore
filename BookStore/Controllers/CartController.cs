@@ -84,6 +84,12 @@ namespace BookStore.Controllers
 
                 }
 
+                //Kiem tra so luong ton
+                if (CurrentCart.Amount >= book.Quantity)
+                {
+                    return Ok(new { error_message = "So luong sach con lai trong kho chi con " + book.Quantity });
+                }
+
                 //Cap nhat lai gio hang
                 CurrentCart.Amount += NewItem.Amount;
                 CurrentCart.SubTotal = CurrentCart.Amount * book.Price;
@@ -156,6 +162,10 @@ namespace BookStore.Controllers
                 return Ok(new {data = await _cartServices.DeleteCartByCartId(cart1.Id), success = true});
             }
             Book book = await _context.Book.FindAsync(cart1.BookId);
+            if(cart.Amount >= book.Quantity)
+            {
+                return Ok(new { error_message = "So luong sach con lai trong kho chi con " + book.Quantity });
+            }
             cart1.Amount = cart.Amount;
             cart1.SubTotal = book.Price * cart1.Amount;
             _context.Entry(cart1).State = EntityState.Modified; ;

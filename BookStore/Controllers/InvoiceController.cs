@@ -32,12 +32,22 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices()
         {
-            return await _context.Invoices.OrderByDescending(s=>s.CreateAt).ToListAsync();
+            return await _context.Invoices
+                .OrderByDescending(s => s.CreateAt)
+                .Include(s => s.CityAddress)
+                .Include(s => s.DistrictAddress)
+                .Include(s => s.Ward)
+                .ToListAsync();
         }
         [HttpGet("AllInvoice")]
         public async Task<ActionResult<IEnumerable<Invoice>>> GetAllInvoices()
         {
-            return Ok(new {data = await _context.Invoices.OrderByDescending(s => s.CreateAt).ToListAsync(), success = true });
+            return Ok(new {data = await _context.Invoices
+                .OrderByDescending(s => s.CreateAt)
+                .Include(s=>s.CityAddress)
+                .Include(s=>s.DistrictAddress)
+                .Include(s=>s.Ward)
+                .ToListAsync(), success = true });
         }
         // GET: api/Invoice/5
         [HttpGet]
