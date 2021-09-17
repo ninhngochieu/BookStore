@@ -20,7 +20,13 @@ namespace BookStore
     {
         public static async Task Main(string[] args)
         {
-            IHost host = CreateHostBuilder(args).Build();
+            IHost host = CreateHostBuilder(args).ConfigureWebHostDefaults(w=>
+            {
+                var port = Environment.GetEnvironmentVariable("PORT");
+
+                w.UseStartup<Startup>()
+                .UseUrls("http://*:" + port);
+            }).Build();
             //writeJsonFile();
             using (var scope = host.Services.CreateScope())
             {
