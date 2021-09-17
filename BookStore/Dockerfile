@@ -16,6 +16,6 @@ COPY --from=sdk /app/out /app/
 EXPOSE 80
 EXPOSE 443
 
-# ENV ASPNETCORE_URLS=http://*:$PORT
+ENV ASPNETCORE_URLS=http://*:$PORT
 
 ENTRYPOINT [ "dotnet","BookStore.dll" ]
