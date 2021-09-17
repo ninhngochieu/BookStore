@@ -13,9 +13,11 @@ WORKDIR /app
 
 COPY --from=sdk /app/out /app/
 
-EXPOSE 80
-EXPOSE 443
+# EXPOSE 80
+# EXPOSE 443
 
-ENV ASPNETCORE_URLS=http://*:$PORT
+# ENV ASPNETCORE_URLS=http://*:$PORT
 
-ENTRYPOINT [ "dotnet","BookStore.dll" ]
+# ENTRYPOINT [ "dotnet","BookStore.dll" ]
+
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet BookStore.dll
