@@ -13,8 +13,8 @@ WORKDIR /app
 
 COPY --from=sdk /app/out /app/
 
-EXPOSE 5001
+EXPOSE 80
 
-ENV ASPNETCORE_URLS=http://+:5001
+ENV ASPNETCORE_URLS=http://+:80
 
 ENTRYPOINT [ "dotnet","BookStore.dll" ]
