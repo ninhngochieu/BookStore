@@ -14,7 +14,7 @@ namespace BookStore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("ProductVersion", "5.0.9");
 
             modelBuilder.Entity("BookStore.Models.Author", b =>
                 {

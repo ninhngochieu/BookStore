@@ -27,16 +27,16 @@ namespace BookStore.Models
         //Navigation Properties
         [Required]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public int AuthorId { get; set; }
-        public Author Author { get; set; }
+        public virtual Author Author { get; set; }
 
-        public BookImage BookImage { get; set; }
+        public virtual BookImage BookImage { get; set; }
 
         //
-        public IList<BookComment> Comments { get; set; }
+        public virtual IList<BookComment> Comments { get; set; }
 
-        public IList<InvoiceDetail> InvoiceDetails { get; set; }
+        public virtual IList<InvoiceDetail> InvoiceDetails { get; set; }
     }
 }

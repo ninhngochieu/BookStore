@@ -13,25 +13,25 @@ namespace BookStore.Models
         public int? TotalMoney { get; set; } = 0;
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public IList<InvoiceDetail> InvoiceDetails { get; set; }
+        public virtual IList<InvoiceDetail> InvoiceDetails { get; set; }
 
         public int StatusId { get; set; } = 1;
-        public Status Status { get; set; }
+        public virtual Status Status { get; set; }
 
         public bool IsOnlinePayment { get; set; } = false;
 
         public string Street_Address { get; set; }
 
         public int CityAddressId { get; set; }
-        public CityAddress CityAddress { get; set; }
+        public virtual CityAddress CityAddress { get; set; }
 
         public int DistrictAddressId { get; set; }
-        public DistrictAddress DistrictAddress{ get; set; }
+        public virtual DistrictAddress DistrictAddress{ get; set; }
 
         public int WardId { get; set; }
-        public Ward Ward { get; set; }
+        public virtual Ward Ward { get; set; }
 
         public string Email { get; set; }
         public string Name { get; set; }

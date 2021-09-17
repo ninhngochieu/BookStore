@@ -26,9 +26,9 @@ namespace BookStore.Models
         //User - Role: 1 - 1
         [Required]
         public int RoleId { get; set; } = 3;
-        public Role? Role { get; set; }
+        public virtual Role? Role { get; set; }
 
-        public IList<UserAddress> Addresses { get; set; }
+        public virtual IList<UserAddress> Addresses { get; set; }
 
         public bool IsAccess { get; set; } = true;
 

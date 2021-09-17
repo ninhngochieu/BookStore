@@ -13,8 +13,8 @@ namespace BookStore.Models
         public string Prefix { get; set; }
         //Navigate properties
         public int CityAddressId { get; set; }
-        public CityAddress CityAddress { get; set; }
+        public virtual CityAddress CityAddress { get; set; }
 
-        public IList<Ward> Wards { get; set; }
+        public virtual IList<Ward> Wards { get; set; }
     }
 }

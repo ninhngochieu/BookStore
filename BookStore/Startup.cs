@@ -4,12 +4,12 @@ using System.IO;
 using System.Text;
 using BookStore.Models;
 using BookStore.Modules.AutoMapper;
-using BookStore.Seed_Data;
 using BookStore.Services;
 using BookStore.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -64,7 +64,10 @@ namespace BookStore
                     .AllowAnyHeader();
                 });
             });
-            services.AddEntityFrameworkSqlite().AddDbContext<bookstoreContext>();
+            services.AddDbContext<bookstoreContext>(x=>
+            {
+                x.UseSqlite("Data source = bookstore.db");
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -148,9 +151,13 @@ namespace BookStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
@@ -161,7 +168,7 @@ namespace BookStore
             app.UseAuthentication(); 
 
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -172,8 +179,6 @@ namespace BookStore
                     Path.Combine(env.WebRootPath, "images")),
                 RequestPath = "/images"
             });
-
-            AppDbInitializer.Seed(app);
         }
     }
 }

@@ -13,6 +13,6 @@ namespace BookStore.Models
         [Required]
         public string RoleName { get; set; }
 
-        public IList<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

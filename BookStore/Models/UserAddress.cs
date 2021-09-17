@@ -12,16 +12,16 @@
         public string? Name { get; set; }
         //
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
         //
         public int CityAddressId { get; set; }
-        public CityAddress CityAddress { get; set; }
+        public virtual CityAddress CityAddress { get; set; }
         //
         public int DistrictAddressId { get; set; }
-        public DistrictAddress DistrictAddress { get; set; }
+        public virtual DistrictAddress DistrictAddress { get; set; }
 
         public int WardId { get; set; }
-        public Ward Ward { get; set; }
+        public virtual Ward Ward { get; set; }
 
         public bool IsDefault { get; set; }
     }

@@ -9,6 +9,6 @@
 
         //Navigate Properties
         public int DistrictAddressId { get; set; }
-        public DistrictAddress DistrictAddress { get; set; }
+        public virtual DistrictAddress DistrictAddress { get; set; }
     }
 }
